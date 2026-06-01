@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TopCV - Chỉnh sửa CV chuyên nghiệp</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f5f7fa;
+      color: #1a1a2e;
+    }
+
+    /* ========== HEADER ========== */
+    .header {
+      background: white;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: #2C7DA0;
+    }
+
+    .logo i {
+      margin-right: 8px;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .nav-menu a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .nav-menu a:hover {
+      color: #2C7DA0;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn-outline {
+      padding: 8px 20px;
+      border: 1px solid #2C7DA0;
+      background: transparent;
+      border-radius: 6px;
+      color: #2C7DA0;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      padding: 8px 20px;
+      background: #2C7DA0;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    /* ========== BREADCRUMB ========== */
+    .breadcrumb {
+      padding: 20px 40px;
+      background: white;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .breadcrumb a {
+      color: #2C7DA0;
+      text-decoration: none;
+    }
+
+    /* ========== LAYOUT CHÍNH ========== */
+    .main-container {
+      display: flex;
+      min-height: calc(100vh - 140px);
+      gap: 0;
+    }
+
+    /* Bên trái: CV (chiếm 2/3) */
+    .cv-wrapper {
+      flex: 2;
+      background: #f0f2f5;
+      padding: 30px;
+      overflow-y: auto;
+      height: calc(100vh - 140px);
+      position: sticky;
+      top: 110px;
+    }
+
+    .cv-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      padding: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Bên phải: Bình luận (chiếm 1/3) */
+    .comments-wrapper {
+      flex: 1;
+      background: white;
+      border-left: 1px solid #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 140px);
+      position: sticky;
+      top: 110px;
+    }
+
+    /* ========== CV STYLES (giống TopCV) ========== */
+    .cv-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #2C7DA0;
+    }
+
+    .cv-title-section h1 {
+      font-size: 32px;
+      color: #1a1a2e;
+      margin-bottom: 5px;
+    }
+
+    .cv-title-section h3 {
+      font-size: 18px;
+      color: #2C7DA0;
+      font-weight: 500;
+    }
+
+    .cv-info {
+      text-align: right;
+      font-size: 14px;
+      color: #666;
+      line-height: 1.8;
+    }
+
+    .cv-section {
+      margin-bottom: 25px;
+    }
+
+    .cv-section h2 {
+      font-size: 18px;
+      color: #2C7DA0;
+      border-left: 3px solid #2C7DA0;
+      padding-left: 12px;
+      margin-bottom: 15px;
+    }
+
+    .timeline-item {
+      margin-bottom: 20px;
+    }
+
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .timeline-title {
+      color: #1a1a2e;
+    }
+
+    .timeline-date {
+      color: #2C7DA0;
+    }
+
+    .timeline-company {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .timeline-desc {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .achievement-list {
+      list-style: none;
+      padding-left: 20px;
+    }
+
+    .achievement-list li {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 5px;
+      position: relative;
+    }
+
+    .achievement-list li:before {
+      content: "•";
+      color: #2C7DA0;
+      font-weight: bold;
+      position: absolute;
+      left: -15px;
+    }
+
+    /* Editable styles */
+    .editable {
+      cursor: pointer;
+      transition: all 0.2s ease;
+      padding: 4px 8px;
+      border-radius: 6px;
+      position: relative;
+    }
+
+    .editable:hover {
+      background: #f0f7ff;
+      outline: 1px dashed #2C7DA0;
+    }
+
+    .editable:hover::after {
+      content: "✎";
+      position: absolute;
+      right: -20px;
+      top: 0;
+      color: #2C7DA0;
+      font-size: 12px;
+    }
+
+    .edit-input {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      border: 2px solid #2C7DA0;
+      border-radius: 6px;
+      font-family: inherit;
+    }
+
+    /* ========== COMMENTS STYLES ========== */
+    .comments-header {
+      padding: 20px;
+      background: white;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .comments-header h3 {
+      font-size: 18px;
+      color: #2C7DA0;
+    }
+
+    .comments-header p {
+      font-size: 13px;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .comments-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    .comment-item {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .comment-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .comment-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2C7DA0, #1a5d7a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .comment-name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .comment-time {
+      font-size: 11px;
+      color: #999;
+    }
+
+    .comment-text {
+      font-size: 14px;
+      color: #333;
+      line-height: 1.5;
+    }
+
+    .comment-actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 15px;
+    }
+
+    .comment-actions button {
+      background: none;
+      border: none;
+      color: #999;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .comment-actions button:hover {
+      color: #2C7DA0;
+    }
+
+    .comment-input-area {
+      padding: 20px;
+      background: white;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .comment-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: inherit;
+      resize: vertical;
+      font-size: 13px;
+    }
+
+    .comment-input:focus {
+      outline: none;
+      border-color: #2C7DA0;
+    }
+
+    .send-btn {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: #2C7DA0;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+      }
+      .cv-wrapper, .comments-wrapper {
+        flex: auto;
+        height: auto;
+        position: static;
+      }
+      .cv-header {
+        flex-direction: column;
+      }
+      .cv-info {
+        text-align: left;
+        margin-top: 10px;
+      }
+      .header {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">
+      <i class="fas fa-file-alt"></i> TopCV
+    </div>
+    <div class="nav-menu">
+      <a href="#">Việc làm</a>
+      <a href="#">Tạo CV</a>
+      <a href="#">Công cụ</a>
+      <a href="#">Cảm nang nghề nghiệp</a>
+      <a href="#">TopCV Pro</a>
+    </div>
+    <div class="auth-buttons">
+      <button class="btn-outline">Đăng ký</button>
+      <button class="btn-primary">Đăng nhập</button>
+      <button class="btn-outline">Đăng tuyển & tìm hồ sơ</button>
+    </div>
+  </div>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="#">Trang chủ</a> > <a href="#">Mẫu CV theo style</a> > <span style="color:#333">Mẫu CV tiếng Việt - Tiêu chuẩn</span>
+  </div>
+
+  <!-- Main content -->
+  <div class="main-container">
+    <!-- Bên trái: CV có thể chỉnh sửa -->
+    <div class="cv-wrapper">
+      <div class="cv-card" id="cvCard">
+        <div class="cv-header">
+          <div class="cv-title-section">
+            <h1 class="editable" data-field="fullName">Nguyễn Văn A</h1>
+            <h3 class="editable" data-field="title">Business Development Executive</h3>
+          </div>
+          <div class="cv-info">
+            <div class="editable" data-field="birthday"><strong>Ngày sinh:</strong> 06/12/1998</div>
+            <div class="editable" data-field="gender"><strong>Giới tính:</strong> Nam</div>
+            <div class="editable" data-field="phone"><strong>Số điện thoại:</strong> 0123456789</div>
+            <div class="editable" data-field="email"><strong>Email:</strong> nguyenvana@mail.vn</div>
+            <div class="editable" data-field="website"><strong>Website:</strong> linkedin.com/in/nguyenvana</div>
+            <div class="editable" data-field="address"><strong>Địa chỉ:</strong> Quận Hoàng Mai, Hà Nội</div>
+          </div>
+        </div>
+
+        <div class="cv-section">
+          <h2>MỤC TIÊU NGHỀ NGHIỆP</h2>
+          <div class="timeline-desc editable" data-field="careerObjective">
+            Với hơn 4 năm kinh nghiệm công tác ở vị trí Nhân viên phát triển kinh doanh tại các doanh nghiệp lớn trong và ngoài nước, tôi có khả năng xây dựng, phát triển chiến lược kinh doanh và mở rộng mạng lưới khách hàng tiềm năng. Trong năm 2024, tôi đã đóng góp vào việc tăng trưởng 15% doanh thu của Công ty TNHH ABC khi hoàn thành 120% KPI trong 4 tháng liên tiếp. Mục tiêu của tôi trong 2 năm tới là trở thành Trưởng nhóm Phát triển kinh doanh, dẫn dắt đội ngũ hoàn thành các mục tiêu chiến lược của Quý công ty.
+          </div>
+        </div>
+
+        <div class="cv-section">
+          <h2>HỌC VẤN</h2>
+          <div class="timeline-item">
+            <div class="timeline-header">
+              <span class="timeline-title editable" data-field="educationPeriod">2016 - 2020</span>
+            </div>
+            <div class="timeline-company editable" data-field="educationSchool">Trường Đại học Ngoại Thương</div>
+            <div class="timeline-desc">
+              <div class="editable" data-field="educationMajor"><strong>Chuyên ngành:</strong> Quản trị Kinh doanh</div>
+              <div class="editable" data-field="educationGpa"><strong>Xếp loại:</strong> Xuất sắc - GPA: 3.7/4.0</div>
+              <div class="editable" data-field="educationSubjects"><strong>Môn học liên quan:</strong> Quản trị bán hàng, Chiến lược kinh doanh, Đàm phán thương mại, Phân tích dữ liệu kinh doanh</div>
+              <strong>Thành tích nổi bật:</strong>
+              <ul class="achievement-list">
+                <li class="editable">Đạt học bổng Xuất sắc 3 năm liên tiếp</li>
+                <li class="editable">Giải Nhì cuộc thi Business Case Competition 2022</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="cv-section">
+          <h2>KINH NGHIỆM LÀM VIỆC</h2>
+          <div class="timeline-item">
+            <div class="timeline-header">
+              <span class="timeline-title editable" data-field="expPeriod">03/2022 - 02/2025</span>
+            </div>
+            <div class="timeline-company editable" data-field="expCompany">Công ty TNHH ABC</div>
+            <div class="timeline-desc editable" data-field="expPosition">Business Development Executive</div>
+            <strong>Thành tích:</strong>
+            <ul class="achievement-list">
+              <li class="editable">Thu thập, phân tích thông tin về thị trường và phát triển chiến lược kinh doanh, đóng góp vào việc tăng trưởng 10% thị phần sau 2 năm</li>
+              <li class="editable">Mở rộng cơ sở dữ liệu khách hàng và phát triển mạng lưới khách hàng doanh nghiệp, góp phần tăng 25% số lượng khách hàng mới</li>
+              <li class="editable">Đàm phán thành công 10+ hợp đồng lớn với tổng giá trị lên đến 50 tỷ đồng</li>
+              <li class="editable">Đạt danh hiệu Nhân viên xuất sắc nhất quý 3 năm 2024</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bên phải: Phần bình luận -->
+    <div class="comments-wrapper">
+      <div class="comments-header">
+        <h3><i class="fas fa-comments"></i> Nhận xét & Bình luận</h3>
+        <p>Nhà tuyển dụng và đồng nghiệp đánh giá về CV này</p>
+      </div>
+      <div class="comments-list" id="commentsList">
+        <!-- Bình luận mẫu -->
+        <div class="comment-item">
+          <div class="comment-author">
+            <div class="comment-avatar">MT</div>
+            <div>
+              <div class="comment-name">Minh Thảo - HR Manager</div>
+              <div class="comment-time">2 ngày trước</div>
+            </div>
+          </div>
+          <div class="comment-text">CV của bạn rất ấn tượng! Kỹ năng phù hợp với vị trí Senior Dev bên công ty mình.</div>
+          <div class="comment-actions">
+            <button onclick="deleteComment(this)"><i class="fas fa-trash"></i> Xóa</button>
+            <button onclick="likeComment(this)"><i class="fas fa-thumbs-up"></i> Thích (3)</button>
+          </div>
+        </div>
+        <div class="comment-item">
+          <div class="comment-author">
+            <div class="comment-avatar">HL</div>
+            <div>
+              <div class="comment-name">Hoàng Long - Technical Lead</div>
+              <div class="comment-time">5 ngày trước</div>
+            </div>
+          </div>
+          <div class="comment-text">Kinh nghiệm làm việc tốt, nhưng nên thêm phần dự án cá nhân để nổi bật hơn.</div>
+          <div class="comment-actions">
+            <button onclick="deleteComment(this)"><i class="fas fa-trash"></i> Xóa</button>
+            <button onclick="likeComment(this)"><i class="fas fa-thumbs-up"></i> Thích (2)</button>
+          </div>
+        </div>
+      </div>
+      <div class="comment-input-area">
+        <textarea class="comment-input" id="commentInput" rows="3" placeholder="Viết bình luận của bạn... (tối đa 500 ký tự)"></textarea>
+        <button class="send-btn" id="sendCommentBtn">
+          <i class="fas fa-paper-plane"></i> Gửi bình luận
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ========== 1. CHỨC NĂNG CHỈNH SỬA CV ==========
+    function attachEditEvents() {
+      const editableElements = document.querySelectorAll('.editable');
+      
+      editableElements.forEach(element => {
+        // Gỡ event cũ để tránh trùng
+        const newElement = element.cloneNode(true);
+        element.parentNode.replaceChild(newElement, element);
+        
+        newElement.addEventListener('click', function(e) {
+          e.stopPropagation();
+          if (this.querySelector('input, textarea')) return;
+          
+          const currentText = this.innerText;
+          
+          // Tạo input/textarea để sửa
+          const input = document.createElement('textarea');
+          input.value = currentText;
+          input.style.width = '100%';
+          input.style.padding = '8px';
+          input.style.border = '2px solid #2C7DA0';
+          input.style.borderRadius = '6px';
+          input.style.fontFamily = 'inherit';
+          input.rows = Math.min(5, currentText.split('\n').length + 1);
+          
+          this.innerText = '';
+          this.appendChild(input);
+          input.focus();
+          
+          const saveEdit = () => {
+            const newValue = input.value;
+            this.innerText = newValue;
+            // Lưu vào localStorage
+            saveCVToLocalStorage();
+          };
+          
+          input.addEventListener('blur', saveEdit);
+          input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              saveEdit();
+            }
+          });
+        });
+      });
+    }
+    
+    // Lưu toàn bộ CV vào localStorage
+    function saveCVToLocalStorage() {
+      const cvHTML = document.getElementById('cvCard').innerHTML;
+      localStorage.setItem('cvContent', cvHTML);
+      console.log('Đã lưu CV');
+    }
+    
+    // Tải CV từ localStorage
+    function loadCVFromLocalStorage() {
+      const saved = localStorage.getItem('cvContent');
+      if (saved) {
+        document.getElementById('cvCard').innerHTML = saved;
+        attachEditEvents(); // Gắn lại sự kiện sau khi load
+      }
+    }
+    
+    // ========== 2. CHỨC NĂNG BÌNH LUẬN ==========
+    let comments = [];
+    
+    function loadComments() {
+      const saved = localStorage.getItem('cvComments');
+      if (saved) {
+        comments = JSON.parse(saved);
+      } else {
+        // Dữ liệu mẫu
+        comments = [
+          { id: 'c1', author: 'Minh Thảo - HR Manager', text: 'CV của bạn rất ấn tượng! Kỹ năng phù hợp với vị trí Senior Dev bên công ty mình.', time: new Date(Date.now() - 2*24*60*60*1000).toISOString(), likes: 3, liked: false },
+          { id: 'c2', author: 'Hoàng Long - Technical Lead', text: 'Kinh nghiệm làm việc tốt, nhưng nên thêm phần dự án cá nhân để nổi bật hơn.', time: new Date(Date.now() - 5*24*60*60*1000).toISOString(), likes: 2, liked: false }
+        ];
+      }
+      renderComments();
+    }
+    
+    function saveComments() {
+      localStorage.setItem('cvComments', JSON.stringify(comments));
+    }
+    
+    function renderComments() {
+      const container = document.getElementById('commentsList');
+      if (!container) return;
+      
+      if (comments.length === 0) {
+        container.innerHTML = '<div style="text-align:center;color:#999;padding:40px;">Chưa có bình luận nào. Hãy là người đầu tiên bình luận!</div>';
+        return;
+      }
+      
+      container.innerHTML = comments.map(comment => `
+        <div class="comment-item">
+          <div class="comment-author">
+            <div class="comment-avatar">${getInitials(comment.author)}</div>
+            <div>
+              <div class="comment-name">${escapeHtml(comment.author)}</div>
+              <div class="comment-time">${formatTime(comment.time)}</div>
+            </div>
+          </div>
+          <div class="comment-text">${escapeHtml(comment.text)}</div>
+          <div class="comment-actions">
+            <button onclick="deleteComment('${comment.id}')"><i class="fas fa-trash"></i> Xóa</button>
+            <button onclick="likeComment('${comment.id}')" style="${comment.liked ? 'color:#2C7DA0' : ''}">
+              <i class="fas fa-thumbs-up"></i> Thích (${comment.likes || 0})
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function addComment(author, text) {
+      if (!text.trim()) {
+        alert('Vui lòng nhập nội dung bình luận!');
+        return false;
+      }
+      if (text.length > 500) {
+        alert('Bình luận không được quá 500 ký tự!');
+        return false;
+      }
+      
+      const newComment = {
+        id: 'c_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+        author: author || 'Người dùng',
+        text: text.trim(),
+        time: new Date().toISOString(),
+        likes: 0,
+        liked: false
+      };
+      
+      comments.unshift(newComment);
+      saveComments();
+      renderComments();
+      return true;
+    }
+    
+    function deleteComment(id) {
+      if (confirm('Bạn có chắc muốn xóa bình luận này?')) {
+        comments = comments.filter(c => c.id !== id);
+        saveComments();
+        renderComments();
+      }
+    }
+    
+    function likeComment(id) {
+      const comment = comments.find(c => c.id === id);
+      if (comment && !comment.liked) {
+        comment.likes = (comment.likes || 0) + 1;
+        comment.liked = true;
+        saveComments();
+        renderComments();
+      }
+    }
+    
+    // ========== 3. HÀM TIỆN ÍCH ==========
+    function getInitials(name) {
+      if (!name) return 'U';
+      const words = name.split(' ');
+      if (words.length >= 2) {
+        return (words[0][0] + words[1][0]).toUpperCase();
+      }
+      return name.substring(0, 2).toUpperCase();
+    }
+    
+    function formatTime(timestamp) {
+      const date = new Date(timestamp);
+      const now = new Date();
+      const diff = Math.floor((now - date) / 1000 / 60 / 60 / 24);
+      
+      if (diff === 0) return 'Hôm nay';
+      if (diff === 1) return 'Hôm qua';
+      if (diff < 7) return `${diff} ngày trước`;
+      return date.toLocaleDateString('vi-VN');
+    }
+    
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+    
+    function sendComment() {
+      const commentInput = document.getElementById('commentInput');
+      const text = commentInput.value;
+      
+      let userName = localStorage.getItem('commentUserName');
+      if (!userName) {
+        userName = prompt('Vui lòng nhập tên của bạn để hiển thị trong bình luận:', 'Người dùng');
+        if (userName && userName.trim()) {
+          localStorage.setItem('commentUserName', userName.trim());
+        } else {
+          userName = 'Người dùng';
+        }
+      }
+      
+      if (addComment(userName, text)) {
+        commentInput.value = '';
+      }
+    }
+    
+    // ========== 4. KHỞI TẠO ==========
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCVFromLocalStorage();
+      attachEditEvents();
+      loadComments();
+      
+      // Gắn sự kiện gửi bình luận
+      const sendBtn = document.getElementById('sendCommentBtn');
+      if (sendBtn) {
+        sendBtn.addEventListener('click', sendComment);
+      }
+      
+      // Cho phép Ctrl+Enter để gửi
+      const commentInput = document.getElementById('commentInput');
+      if (commentInput) {
+        commentInput.addEventListener('keydown', (e) => {
+          if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+            sendComment();
+          }
+        });
+      }
+    });
+    
+    // Lưu CV khi rời trang
+    window.addEventListener('beforeunload', () => {
+      saveCVToLocalStorage();
+    });
+  </script>
+</body>
+</html>
