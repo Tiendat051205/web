@@ -1,7 +1,11 @@
 // controllers/authController.js
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 import { UserModel } from '../models/UserModel.js';
+
+dotenv.config();
+const JWT_SECRET = process.env.JWT_SECRET || 'changeme123';
 
 export const authController = {
   // ĐĂNG KÝ
@@ -69,7 +73,7 @@ export const authController = {
       // Tạo token
       const token = jwt.sign(
         { userId: user.id, email: user.email, fullName: user.fullName },
-        process.env.JWT_SECRET,
+        JWT_SECRET,
         { expiresIn: '7d' }
       );
 

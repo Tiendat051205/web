@@ -23,6 +23,16 @@ export const CVModel = {
     return rows[0];
   },
 
+  async create(data) {
+    const { userId, templateId, templateName, fullName, title, phone, email, address, careerObjective } = data;
+    const [result] = await db.execute(
+      `INSERT INTO cvs (userId, templateId, templateName, fullName, title, phone, email, address, careerObjective, createdAt, updatedAt)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+      [userId, templateId, templateName, fullName, title, phone, email, address, careerObjective]
+    );
+    return { id: result.insertId };
+  },
+
   // Cập nhật CV
   async update(id, userId, data) {
     const [result] = await db.execute(

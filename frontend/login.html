@@ -2,38 +2,35 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <link rel="stylesheet" href="login.css">
-    <title>Login - JobGenius</title>
-
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Đăng nhập - CV Maker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="login-container">
-        <h2>Login</h2>
-    
-        <form>
-            <div class="input-group">
-                <label>Email</label>
-                <input type="email" placeholder="Enter email">
-            </div>
-    
-            <div class="input-group">
-                <label>Password</label>
-                <input type="password" placeholder="Enter password">
-            </div>
-    
-            <button class="login-btn">Login</button>
-    
-            <p class="register-text">
-                Don't have an account?
-                <a href="#">Register</a>
-            </p>
-        </form>
-    </div>
-    <link rel="stylesheet" href ="script.js"> <script src="script.js"></script>
+<body data-page="login">
+  <main class="auth-card">
+    <h2>Đăng nhập</h2>
+    <p class="section-note">Đăng nhập để tạo CV, lưu lịch sử và bình luận bằng tên của bạn.</p>
+
+    <form id="loginForm" class="form-grid">
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="Nhập email" required>
+      </div>
+
+      <div class="form-field">
+        <label for="password">Mật khẩu</label>
+        <input id="password" type="password" placeholder="Nhập mật khẩu" required>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Đăng nhập</button>
+        <a class="btn btn-outline" href="register.html">Đăng ký</a>
+        <a class="small-link" href="home.html">Về trang chủ</a>
+      </div>
+    </form>
+  </main>
+
+  <script src="script.js"></script>
 </body>
-
-    
-
 </html>

@@ -50,6 +50,41 @@ export const cvController = {
   },
 
   // Cập nhật CV
+  async createCV(req, res) {
+    try {
+      const userId = req.userId;
+      const { templateId, templateName, fullName, title, phone, email, address, careerObjective } = req.body;
+
+      if (!templateId || !templateName || !fullName || !title || !email) {
+        return res.status(400).json({ success: false, error: 'Thiếu thông tin bắt buộc để tạo CV' });
+      }
+
+      const newCV = await CVModel.create({
+        userId,
+        templateId,
+        templateName,
+        fullName,
+        title,
+        phone,
+        email,
+        address,
+        careerObjective
+      });
+
+      res.status(201).json({
+        success: true,
+        message: 'Tạo CV thành công',
+        cvId: newCV.id
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ 
+        success: false, 
+        error: 'Lỗi tạo CV' 
+      });
+    }
+  },
+
   async updateCV(req, res) {
     try {
       const cvId = req.params.id;

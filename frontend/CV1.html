@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>CV1 - CV Maker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-template="CV1" class="template-cv1">
+  <header class="top-header">
+    <div class="brand-block">
+      <div class="brand-badge">CV</div>
+      <div>
+        <h1>CV1</h1>
+        <p>Mẫu CV cá nhân, bố cục gọn và dễ chỉnh sửa</p>
+      </div>
+    </div>
+
+    <div class="auth-area">
+      <div class="auth-actions" data-logged-out>
+        <a class="btn btn-outline" href="login.html">Đăng nhập</a>
+        <a class="btn btn-primary" href="register.html">Đăng ký</a>
+      </div>
+
+      <div class="user-panel" data-logged-in hidden>
+        <span class="welcome-text">Xin chào, <strong data-user-name>Người dùng</strong></span>
+        <button class="btn btn-outline" type="button" data-logout-btn>Đăng xuất</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="main-nav">
+    <a href="home.html" class="nav-link">Trang chủ</a>
+    <a href="CV1.html" class="nav-link active">CV1</a>
+    <a href="CV2.html" class="nav-link" data-protected-link="CV2.html">CV2</a>
+    <a href="history.html" class="nav-link" data-protected-link="history.html">Lịch sử CV</a>
+  </nav>
+
+  <main class="page-split page-split-cv1">
+    <section class="editor-shell">
+      <div class="editor-toolbar">
+        <div class="toolbar-group">
+          <button class="btn btn-outline" type="button" data-home-link>Trang chủ</button>
+          <button class="btn btn-outline" type="button" data-history-link>Lịch sử</button>
+        </div>
+        <div class="toolbar-group">
+          <button class="btn btn-primary" type="button" data-save-cv>Lưu CV</button>
+          <button class="btn btn-primary" type="button" data-export-pdf>Tải PDF</button>
+          <button class="btn btn-outline" type="button" data-reset-cv>Khôi phục</button>
+        </div>
+      </div>
+
+      <div class="editor-content">
+        <div class="cv-root" data-cv-root>
+          <article class="cv-page cv-page-cv1">
+            <section class="cv-hero cv-hero-cv1">
+              <div class="avatar-wrap">
+                <img class="avatar-image" data-photo-preview src="https://randomuser.me/api/portraits/men/32.jpg" alt="Ảnh CV">
+                <label class="btn btn-outline photo-input" data-no-export>
+                  Thêm ảnh
+                  <input
+                    type="file"
+                    accept="image/*"
+                    data-photo-input
+                    style="width:1px;height:1px;opacity:0;position:absolute;pointer-events:none;"
+                  >
+                </label>
+              </div>
+
+              <div class="cv-intro">
+                <p class="cv-kicker">Hồ sơ cá nhân</p>
+                <h1 class="cv-title" data-editable data-template-title>Nguyễn Văn A</h1>
+                <p class="cv-subtitle" data-editable>Full Stack Developer</p>
+                <p class="file-note" data-no-export>Bấm vào nội dung để chỉnh sửa trực tiếp. Phần này sẽ không xuất hiện trong PDF.</p>
+              </div>
+            </section>
+
+            <section class="cv-section cv-section-card">
+              <h3>Thông tin liên hệ</h3>
+              <div class="cv-grid-2 cv-grid-compact">
+                <div class="editable" data-editable>📧 nguyenvana@example.com</div>
+                <div class="editable" data-editable>📞 0123 456 789</div>
+                <div class="editable" data-editable>📍 Hà Nội, Việt Nam</div>
+                <div class="editable" data-editable>🌐 linkedin.com/in/nguyenvana</div>
+              </div>
+            </section>
+
+            <section class="cv-section cv-section-card">
+              <h3>Mục tiêu nghề nghiệp</h3>
+              <div class="editable" data-editable>
+                Tôi mong muốn phát triển sự nghiệp trong môi trường chuyên nghiệp, tập trung vào xây dựng giao diện web, tối ưu trải nghiệm người dùng và phối hợp hiệu quả với đội ngũ sản phẩm.
+              </div>
+            </section>
+
+            <section class="cv-section cv-section-card">
+              <h3>Học vấn</h3>
+              <div class="cv-grid-2 cv-grid-compact">
+                <div class="editable" data-editable><strong>Đại học Bách Khoa Hà Nội</strong></div>
+                <div class="editable" data-editable>Công nghệ thông tin, 2016 - 2020</div>
+                <div class="editable" data-editable>GPA: 3.6/4.0</div>
+              </div>
+            </section>
+
+            <section class="cv-section cv-section-card">
+              <h3>Kinh nghiệm làm việc</h3>
+              <div class="cv-grid-2 cv-grid-compact">
+                <div class="editable" data-editable><strong>Công ty ABC</strong> - Frontend Developer (2020 - 2023)</div>
+                <div class="editable" data-editable>Phát triển web app bằng React, cải thiện tốc độ tải trang và tái cấu trúc component.</div>
+                <div class="editable" data-editable><strong>Công ty XYZ</strong> - Intern Developer (2019 - 2020)</div>
+                <div class="editable" data-editable>Hỗ trợ xây dựng website thương mại điện tử và tối ưu giao diện responsive.</div>
+              </div>
+            </section>
+
+            <section class="cv-section cv-section-card">
+              <h3>Kỹ năng</h3>
+              <div class="editable" data-editable>
+                <ul class="cv-list">
+                  <li>JavaScript / TypeScript</li>
+                  <li>React / Vue</li>
+                  <li>Node.js</li>
+                  <li>HTML / CSS / Responsive UI</li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="cv-section cv-section-card">
+              <h3>Dự án tiêu biểu</h3>
+              <div class="editable" data-editable>
+                Đã tham gia xây dựng nhiều trang web giới thiệu sản phẩm, hệ thống quản lý CV và các tính năng lưu hồ sơ trực tuyến.
+              </div>
+            </section>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <aside class="comment-panel">
+      <div class="comment-header">
+        <h3>Nhận xét & Bình luận</h3>
+        <p>Chỉ người đã đăng nhập mới gửi được bình luận. Tên sẽ hiển thị theo tài khoản của bạn.</p>
+      </div>
+
+      <div class="comment-list" data-comment-list>
+        <div class="comment-empty">Đang tải bình luận...</div>
+      </div>
+
+      <form class="comment-form" data-comment-form>
+        <textarea data-comment-input placeholder="Viết bình luận của bạn..."></textarea>
+        <div class="toolbar-inline">
+          <button class="btn btn-primary" type="submit">Gửi bình luận</button>
+        </div>
+      </form>
+    </aside>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

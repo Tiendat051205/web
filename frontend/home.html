@@ -3,143 +3,105 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>JobGenius - Chọn Mẫu CV Tối Ưu</title>
-  <!-- Google Fonts & Font Awesome -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <title>CV Maker - Trang chủ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-
-  </style>
 </head>
-<body>
-<div class="container">
-  <div class="top-bar">
-    <div class="header-title">
-      <h1><i class="fas fa-file-alt" style="color: #2C7DA0; margin-right: 8px;"></i>Select a job-winning CV template</h1>
-      <p>You can always change your template later. <span style="color:#2C7DA0;">✨ Preview: "Professional Modern"</span></p>
-    </div>
-    <button class="choose-later-btn">Choose later →</button>
-  </div>
-  <div class="auth-corner">
-    <button class="btn-login">Log in</button>
-    <button class="btn-signup">Sign up</button>
-  </div>
-  
-
-  <div class="templates-bar">
-    <div class="templates-left">
-      <span class="templates-label"><i class="fas fa-layer-group"></i> All templates</span>
-      <div class="template-list">
-        <button class="template-chip active">Simple</button>
-        <button class="template-chip">Professional</button>
-        <button class="template-chip">Modern</button>
-        <button class="template-chip">ATS</button>
-        <button class="template-chip">Two columns</button>
-        <button class="template-chip">Europass</button>
+<body data-page="home">
+  <header class="top-header">
+    <div class="brand-block">
+      <div class="brand-badge">CV</div>
+      <div>
+        <h1>CV Maker</h1>
+        <p>Website tạo CV gọn, rõ, dễ chỉnh sửa và xuất PDF</p>
       </div>
     </div>
-    <button class="photo-btn"><i class="fas fa-camera"></i> Make all with photo</button>
-  </div>
-  <!-- Grid 3 cột -->
-  <div class="cv-grid">
-      
-    <!-- CV 1 -->
-    <div class="cv-card" data-cv-id="professional_modern">
-      <img src="https://picsum.photos/id/1/400/280" alt="Professional Modern" class="cv-thumbnail">
-      <div class="cv-info">
-        <div class="cv-name">Professional Modern</div>
-        <div class="cv-category">Hiện đại · Chuyên nghiệp</div>
-        <div class="cv-description">Mẫu CV hiện đại, bố cục rõ ràng, phù hợp với mọi ngành nghề.</div>
-        <div class="cv-tags">
-          <span class="tag">ATS-Friendly</span>
-          <span class="tag premium">Premium</span>
+
+    <div class="auth-area">
+      <div class="auth-actions" data-logged-out>
+        <a class="btn btn-outline" href="login.html">Đăng nhập</a>
+        <a class="btn btn-primary" href="register.html">Đăng ký</a>
+      </div>
+
+      <div class="user-panel" data-logged-in hidden>
+        <span class="welcome-text">Xin chào, <strong data-user-name>Người dùng</strong></span>
+        <button class="btn btn-outline" type="button" data-logout-btn>Đăng xuất</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="main-nav">
+    <a href="home.html" class="nav-link active">Trang chủ</a>
+    <a href="CV1.html" class="nav-link" data-protected-link="CV1.html">CV1</a>
+    <a href="CV2.html" class="nav-link" data-protected-link="CV2.html">CV2</a>
+    <a href="history.html" class="nav-link" data-protected-link="history.html">Lịch sử CV</a>
+  </nav>
+
+  <main class="page-wrap">
+    <section class="hero-card hero-card-home">
+      <div class="hero-copy">
+        <span class="hero-chip">2 mẫu CV khác nhau về bố cục và màu sắc</span>
+        <h2>Chọn mẫu phù hợp, chỉnh nội dung và lưu thành PDF sạch sẽ</h2>
+        <p>
+          CV1 thiên về bố cục cá nhân, CV2 thiên về phong cách chuyên nghiệp.
+          Khi xuất PDF, hệ thống chỉ giữ nội dung CV và bỏ toàn bộ phần hướng dẫn.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="CV1.html" data-protected-link="CV1.html">Bắt đầu với CV1</a>
+          <a class="btn btn-outline" href="CV2.html" data-protected-link="CV2.html">Xem CV2</a>
         </div>
-        <button class="select-btn">✏️ Tạo CV này</button>
       </div>
-    </div>
 
-    <!-- CV 2 -->
-    <div class="cv-card" data-cv-id="classic_traditional">
-      <img src="https://picsum.photos/id/2/400/280" alt="Classic Traditional" class="cv-thumbnail">
-      <div class="cv-info">
-        <div class="cv-name">Classic Traditional</div>
-        <div class="cv-category">Cổ điển · Trang trọng</div>
-        <div class="cv-description">Mẫu CV truyền thống, phù hợp với vị trí quản lý cấp cao.</div>
-        <div class="cv-tags">
-          <span class="tag">ATS-Friendly</span>
-          <span class="tag">Miễn phí</span>
+      <div class="hero-quick">
+        <div class="hero-stat hero-stat-accent">
+          <strong>Login</strong>
+          <span>Đăng nhập để lưu lịch sử và bình luận</span>
         </div>
-        <button class="select-btn">✏️ Tạo CV này</button>
-      </div>
-    </div>
-
-    <!-- CV 3 -->
-    <div class="cv-card" data-cv-id="creative_design">
-      <img src="https://picsum.photos/id/3/400/280" alt="Creative Design" class="cv-thumbnail">
-      <div class="cv-info">
-        <div class="cv-name">Creative Design</div>
-        <div class="cv-category">Sáng tạo · Nổi bật</div>
-        <div class="cv-description">Mẫu CV sáng tạo, màu sắc ấn tượng, phù hợp ngành thiết kế.</div>
-        <div class="cv-tags">
-          <span class="tag">Portfolio</span>
-          <span class="tag premium">Premium</span>
+        <div class="hero-stat">
+          <strong>PDF</strong>
+          <span>Xuất file sạch, không dính hướng dẫn người dùng</span>
         </div>
-        <button class="select-btn">✏️ Tạo CV này</button>
-      </div>
-    </div>
-
-    <!-- CV 4 -->
-    <div class="cv-card" data-cv-id="minimal_clean">
-      <img src="https://picsum.photos/id/4/400/280" alt="Minimal Clean" class="cv-thumbnail">
-      <div class="cv-info">
-        <div class="cv-name">Minimal Clean</div>
-        <div class="cv-category">Tối giản · Tinh tế</div>
-        <div class="cv-description">Bố cục tối giản, tập trung vào nội dung, dễ đọc trên mọi thiết bị.</div>
-        <div class="cv-tags">
-          <span class="tag">ATS-Friendly</span>
-          <span class="tag">Miễn phí</span>
+        <div class="hero-stat">
+          <strong>DB</strong>
+          <span>Tài khoản, bình luận và CV đều lưu đúng cơ sở dữ liệu</span>
         </div>
-        <button class="select-btn">✏️ Tạo CV này</button>
       </div>
-    </div>
+    </section>
 
-    <!-- CV 5 -->
-    <div class="cv-card" data-cv-id="executive_pro">
-      <img src="https://picsum.photos/id/5/400/280" alt="Executive Pro" class="cv-thumbnail">
-      <div class="cv-info">
-        <div class="cv-name">Executive Pro</div>
-        <div class="cv-category">Cao cấp · Lãnh đạo</div>
-        <div class="cv-description">Dành riêng cho vị trí cấp cao, nhấn mạnh thành tích nổi bật.</div>
-        <div class="cv-tags">
-          <span class="tag">Executive</span>
-          <span class="tag premium">Premium</span>
+    <section class="section-head">
+      <h3>Mẫu CV nổi bật</h3>
+      <p>Hai lựa chọn chính, tập trung vào nội dung và trải nghiệm chỉnh sửa.</p>
+    </section>
+
+    <section class="template-grid">
+      <article class="template-card template-card-cv1">
+        <div class="template-preview template-preview-one">
+          <span class="template-preview-tag">CV1</span>
         </div>
-        <button class="select-btn">✏️ Tạo CV này</button>
-      </div>
-    </div>
-
-    <!-- CV 6 -->
-    <div class="cv-card" data-cv-id="tech_developer">
-      <img src="https://picsum.photos/id/6/400/280" alt="Tech Developer" class="cv-thumbnail">
-      <div class="cv-info">
-        <div class="cv-name">Tech Developer</div>
-        <div class="cv-category">Công nghệ · IT</div>
-        <div class="cv-description">Nhấn mạnh kỹ năng kỹ thuật, dự án và công nghệ sử dụng.</div>
-        <div class="cv-tags">
-          <span class="tag">Developer</span>
-          <span class="tag">Technical</span>
+        <div class="template-content">
+          <h4>CV1 - Cá nhân, rõ ràng</h4>
+          <p>Bố cục chia lớp nội dung, màu trầm, hợp hồ sơ cá nhân và portfolio ngắn.</p>
+          <div class="card-actions">
+            <a class="btn btn-primary btn-full" href="CV1.html" data-protected-link="CV1.html">Mở CV1</a>
+          </div>
         </div>
-        <button class="select-btn">✏️ Tạo CV này</button>
-      </div>
-    </div>
-  </div>
-</div>
+      </article>
 
+      <article class="template-card template-card-cv2">
+        <div class="template-preview template-preview-two">
+          <span class="template-preview-tag">CV2</span>
+        </div>
+        <div class="template-content">
+          <h4>CV2 - Chuyên nghiệp, nổi bật</h4>
+          <p>Bố cục hai cột, nhấn mạnh thành tích và kỹ năng theo phong cách hiện đại.</p>
+          <div class="card-actions">
+            <a class="btn btn-primary btn-full" href="CV2.html" data-protected-link="CV2.html">Mở CV2</a>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
 
-
-<!-- một chút tương tác nhỏ: các category chuyển active (chỉ demo visual) -->
-<link rel="stylesheet" href ="script.js"> <script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
-
 </html>

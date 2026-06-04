@@ -1,345 +1,55 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lịch sử CV của tôi</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
-            min-height: 100vh;
-        }
-
-        /* Header */
-        .header {
-            background: white;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2C7DA0;
-        }
-
-        .logo i {
-            margin-right: 8px;
-        }
-
-        .nav-menu a {
-            text-decoration: none;
-            color: #333;
-            margin: 0 15px;
-            font-weight: 500;
-        }
-
-        .nav-menu a:hover, .nav-menu a.active {
-            color: #2C7DA0;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .user-name {
-            font-weight: 500;
-            color: #333;
-        }
-
-        .logout-btn {
-            padding: 8px 20px;
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        .logout-btn:hover {
-            background: #c82333;
-        }
-
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-
-        /* Title */
-        .page-title {
-            font-size: 28px;
-            color: #1a1a2e;
-            margin-bottom: 10px;
-        }
-
-        .page-subtitle {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: #666;
-        }
-
-        /* Grid CV */
-        .cv-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 25px;
-        }
-
-        /* Card CV */
-        .cv-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            transition: transform 0.2s, box-shadow 0.2s;
-            cursor: pointer;
-        }
-
-        .cv-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-        }
-
-        .cv-template {
-            display: inline-block;
-            padding: 4px 12px;
-            background: #e8f4f8;
-            color: #2C7DA0;
-            border-radius: 20px;
-            font-size: 12px;
-            margin-bottom: 12px;
-        }
-
-        .cv-name {
-            font-size: 20px;
-            font-weight: 600;
-            color: #1a1a2e;
-            margin-bottom: 8px;
-        }
-
-        .cv-title {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 12px;
-        }
-
-        .cv-date {
-            color: #999;
-            font-size: 12px;
-            margin-bottom: 15px;
-        }
-
-        .cv-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn-edit {
-            flex: 1;
-            padding: 10px;
-            background: #2C7DA0;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .btn-edit:hover {
-            background: #1a5d7a;
-        }
-
-        /* Empty state */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            background: white;
-            border-radius: 12px;
-        }
-
-        .empty-state i {
-            font-size: 64px;
-            color: #ccc;
-            margin-bottom: 20px;
-        }
-
-        .empty-state h3 {
-            color: #666;
-            margin-bottom: 10px;
-        }
-
-        .empty-state p {
-            color: #999;
-            margin-bottom: 20px;
-        }
-
-        .btn-create {
-            padding: 12px 30px;
-            background: #2C7DA0;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .btn-create:hover {
-            background: #1a5d7a;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 15px;
-                padding: 15px 20px;
-            }
-            
-            .cv-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Lịch sử CV - CV Maker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="header">
-        <div class="logo">
-            📄 CV Maker
-        </div>
-        <div class="nav-menu">
-            <a href="home.html">Mẫu CV</a>
-            <a href="history.html" class="active">Lịch sử CV</a>
-        </div>
-        <div class="user-info">
-            <span class="user-name" id="userName"></span>
-            <button class="logout-btn" onclick="logout()">Đăng xuất</button>
-        </div>
+<body data-page="history">
+  <header class="top-header">
+    <div class="brand-block">
+      <div class="brand-badge">CV</div>
+      <div>
+        <h1>Lịch sử CV</h1>
+        <p>Xem lại các CV đã lưu và mở lại để chỉnh sửa</p>
+      </div>
     </div>
 
-    <div class="container">
-        <h1 class="page-title">📋 Lịch sử CV của tôi</h1>
-        <p class="page-subtitle">Những CV bạn đã tạo trước đây. Click vào CV để chỉnh sửa.</p>
+    <div class="auth-area">
+      <div class="auth-actions" data-logged-out>
+        <a class="btn btn-outline" href="login.html">Đăng nhập</a>
+        <a class="btn btn-primary" href="register.html">Đăng ký</a>
+      </div>
 
-        <div id="cvList">
-            <div class="loading">Đang tải...</div>
-        </div>
+      <div class="user-panel" data-logged-in hidden>
+        <span class="welcome-text">Xin chào, <strong data-user-name>Người dùng</strong></span>
+        <button class="btn btn-outline" type="button" data-logout-btn>Đăng xuất</button>
+      </div>
     </div>
+  </header>
 
-    <script>
-        const API_URL = 'http://localhost:3000/api';
+  <nav class="main-nav">
+    <a href="home.html" class="nav-link">Trang chủ</a>
+    <a href="CV1.html" class="nav-link" data-protected-link="CV1.html">CV1</a>
+    <a href="CV2.html" class="nav-link" data-protected-link="CV2.html">CV2</a>
+    <a href="history.html" class="nav-link active">Lịch sử CV</a>
+  </nav>
 
-        // Kiểm tra đăng nhập
-        const token = localStorage.getItem('token');
-        const user = JSON.parse(localStorage.getItem('user') || '{}');
+  <main class="page-wrap">
+    <section class="section-head">
+      <h3>Danh sách CV đã lưu</h3>
+      <p>Chỉ hiển thị các CV của tài khoản đang đăng nhập.</p>
+    </section>
 
-        if (!token) {
-            window.location.href = 'login.html';
-        }
+    <section class="history-layout">
+      <div class="history-list" data-history-list>
+        <div class="empty-state">Đang tải...</div>
+      </div>
+    </section>
+  </main>
 
-        // Hiển thị tên user
-        document.getElementById('userName').innerText = user.fullName || 'User';
-
-        // Hàm logout
-        function logout() {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            window.location.href = 'login.html';
-        }
-
-        // Lấy danh sách CV
-        async function loadCVHistory() {
-            const container = document.getElementById('cvList');
-            
-            try {
-                const response = await fetch(`${API_URL}/cvs`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    if (result.cvs.length === 0) {
-                        // Chưa có CV nào
-                        container.innerHTML = `
-                            <div class="empty-state">
-                                <div>📭</div>
-                                <h3>Bạn chưa có CV nào</h3>
-                                <p>Hãy tạo CV đầu tiên từ các mẫu có sẵn</p>
-                                <button class="btn-create" onclick="window.location.href='home.html'">
-                                    + Tạo CV ngay
-                                </button>
-                            </div>
-                        `;
-                    } else {
-                        // Hiển thị danh sách CV
-                        container.innerHTML = `
-                            <div class="cv-grid">
-                                ${result.cvs.map(cv => `
-                                    <div class="cv-card" onclick="editCV(${cv.id})">
-                                        <span class="cv-template">📄 ${cv.templateName || 'Mẫu CV'}</span>
-                                        <div class="cv-name">${cv.fullName || 'Chưa có tên'}</div>
-                                        <div class="cv-title">${cv.title || 'Chưa có tiêu đề'}</div>
-                                        <div class="cv-date">🕒 Cập nhật: ${formatDate(cv.updatedAt)}</div>
-                                        <div class="cv-actions">
-                                            <button class="btn-edit" onclick="event.stopPropagation(); editCV(${cv.id})">
-                                                ✏️ Chỉnh sửa
-                                            </button>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        `;
-                    }
-                } else {
-                    container.innerHTML = `<div class="empty-state">❌ ${result.error}</div>`;
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                container.innerHTML = `<div class="empty-state">❌ Lỗi kết nối server</div>`;
-            }
-        }
-
-        // Format ngày tháng
-        function formatDate(dateString) {
-            if (!dateString) return 'Chưa cập nhật';
-            const date = new Date(dateString);
-            return date.toLocaleDateString('vi-VN');
-        }
-
-        // Chỉnh sửa CV
-        function editCV(cvId) {
-            window.location.href = `edit-cv.html?id=${cvId}`;
-        }
-
-        // Load dữ liệu khi trang vừa mở
-        loadCVHistory();
-    </script>
+  <script src="script.js"></script>
 </body>
 </html>

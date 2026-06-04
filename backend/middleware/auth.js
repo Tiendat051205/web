@@ -1,6 +1,10 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
-function checkAuth(req, res, next) {
+dotenv.config();
+const JWT_SECRET = process.env.JWT_SECRET || 'changeme123';
+
+export function authMiddleware(req, res, next) {
   const token = req.headers.authorization?.replace('Bearer ', '');
   
   if (!token) {
@@ -8,7 +12,7 @@ function checkAuth(req, res, next) {
   }
   
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     req.userId = decoded.userId;
     req.userEmail = decoded.email;
     req.userName = decoded.fullName;
@@ -17,5 +21,3 @@ function checkAuth(req, res, next) {
     return res.status(401).json({ success: false, error: 'Token không hợp lệ' });
   }
 }
-
-module.exports = checkAuth;

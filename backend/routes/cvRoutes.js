@@ -4,11 +4,9 @@ import { authMiddleware } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Tất cả API CV đều cần đăng nhập
-router.use(authMiddleware);
-
-router.get('/cvs', cvController.getMyCVs);
-router.get('/cv/:id', cvController.getCVById);
-router.put('/cv/:id', cvController.updateCV);
+router.get('/cvs', authMiddleware, cvController.getMyCVs);
+router.get('/cv/:id', authMiddleware, cvController.getCVById);
+router.post('/cvs', authMiddleware, cvController.createCV);
+router.put('/cv/:id', authMiddleware, cvController.updateCV);
 
 export default router;
