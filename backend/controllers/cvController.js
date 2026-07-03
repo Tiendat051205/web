@@ -24,11 +24,12 @@ export const cvController = {
   async getTemplateIdByCvId(req, res) {
     try {
       const { cvId } = req.params;
+      console.log('🔍 getTemplateIdByCvId, cvId:', cvId);
       const [rows] = await db.execute(
         'SELECT templateId FROM cvs WHERE id = ?',
         [cvId]
       );
-      
+      console.log('🔍 Kết quả từ DB:', rows);
       if (rows.length > 0) {
         res.json({ success: true, templateId: rows[0].templateId });
       } else {
@@ -36,6 +37,7 @@ export const cvController = {
       }
     } catch (error) {
       console.error(error);
+      console.error('❌ Lỗi getTemplateIdByCvId:', error);
       res.status(500).json({ success: false, error: 'Lỗi server' });
     }
   },

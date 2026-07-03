@@ -88,6 +88,9 @@ export const commentController = {
   // },
   // Lấy bình luận theo templateId (công khai)
 async getCommentsByTemplate(req, res) {
+  console.log('📥 getCommentsByTemplate được gọi!');
+  console.log('📥 headers:', req.headers);
+  console.log('📥 params:', req.params);
   try {
     const { templateId } = req.params;
     

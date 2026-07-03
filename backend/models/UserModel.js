@@ -15,7 +15,7 @@ export const UserModel = {
   // Tìm user theo email
   async findByEmail(email) {
     const [rows] = await pool.execute(
-      'SELECT id, fullName, email, password, createdAt FROM users WHERE email = ?',
+      'SELECT id, fullName, email, password, role, createdAt FROM users WHERE email = ?',
       [email]
     );
     return rows[0];

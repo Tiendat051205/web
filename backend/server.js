@@ -34,6 +34,10 @@ import authRoutes from './routes/authRoutes.js';
 import templateRoutes from './routes/templateRoutes.js';
 import cvRoutes from './routes/cvRoutes.js';
 import commentRoutes from './routes/commentRoutes.js';
+import { commentController } from './controllers/commentController.js';
+import contactRoutes from './routes/contactRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
+import { trackViews } from './middleware/view.js';
 
 dotenv.config();
 
@@ -44,6 +48,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(trackViews);
 
 const frontendDir = path.join(__dirname, '..', 'frontend');
 app.use(express.static(frontendDir, { index: false }));
@@ -55,11 +60,14 @@ app.get('/', (req, res) => {
 app.get('/index.html', (req, res) => {
   res.redirect('/home.html');
 });
+app.get('/api/public/template/:templateId/comments', commentController.getCommentsByTemplate);
 
 app.use('/api', authRoutes);
 app.use('/api', templateRoutes);
 app.use('/api', cvRoutes);
 app.use('/api', commentRoutes);
+app.use('/api', contactRoutes);
+app.use('/api', adminRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
