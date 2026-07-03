@@ -18,11 +18,15 @@
       <h1><i class="fas fa-file-alt" style="color: #2C7DA0; margin-right: 8px;"></i>Select a job-winning CV template</h1>
       <p>You can always change your template later. <span style="color:#2C7DA0;">✨ Preview: "Professional Modern"</span></p>
     </div>
+    <a href="history.html" style="text-decoration: none; color: #2C7DA0; font-weight: 500;">📋 Lịch sử CV</a>
+    <a href="about.html">Giới thiệu</a>
     <button class="choose-later-btn">Choose later →</button>
   </div>
   <div class="auth-corner">
-    <button class="btn-login">Log in</button>
-    <button class="btn-signup">Sign up</button>
+    <span id="userNameDisplay" style="margin-right: 10px;"></span>
+    <button class="btn-login" id="loginBtn">Log in</button>
+    <button class="btn-signup" id="signupBtn">Sign up</button>
+    <button class="btn-logout" id="logoutBtn" style="display: none; background: #dc3545; color: white;">Đăng xuất</button>
   </div>
   
 
@@ -42,103 +46,159 @@
   </div>
   <!-- Grid 3 cột -->
   <div class="cv-grid">
-      
-    <!-- CV 1 -->
-    <div class="cv-card" data-cv-id="professional_modern">
-      <img src="https://picsum.photos/id/1/400/280" alt="Professional Modern" class="cv-thumbnail">
+  
+    <!-- Mẫu Henry Jones - Simple (1 cột) -->
+    <div class="cv-card" data-template-id="henry_simple">
+      <img src="https://picsum.photos/id/20/400/280" alt="Henry Jones Simple" class="cv-thumbnail">
       <div class="cv-info">
-        <div class="cv-name">Professional Modern</div>
-        <div class="cv-category">Hiện đại · Chuyên nghiệp</div>
-        <div class="cv-description">Mẫu CV hiện đại, bố cục rõ ràng, phù hợp với mọi ngành nghề.</div>
+        <div class="cv-name">Henry Jones - Simple</div>
+        <div class="cv-category">Đơn giản · Chuyên nghiệp</div>
+        <div class="cv-description">Mẫu CV bố cục 1 cột, rõ ràng, tập trung vào nội dung.</div>
         <div class="cv-tags">
           <span class="tag">ATS-Friendly</span>
-          <span class="tag premium">Premium</span>
+          <span class="tag">Miễn phí</span>
+        </div>
+        <button class="select-btn" >✏️ Tạo CV này</button>
+      </div>
+    </div>
+  
+    <!-- Mẫu Henry Jones - Professional (2 cột) -->
+    <div class="cv-card" data-template-id="henry_professional">
+      <img src="https://picsum.photos/id/21/400/280" alt="Henry Jones Professional" class="cv-thumbnail">
+      <div class="cv-info">
+        <div class="cv-name">Henry Jones - Professional</div>
+        <div class="cv-category">2 cột · Hiện đại</div>
+        <div class="cv-description">Mẫu CV 2 cột, nổi bật kỹ năng và thông tin liên hệ.</div>
+        <div class="cv-tags">
+          <span class="tag">ATS-Friendly</span>
+          <span class="tag">Miễn phí</span>
         </div>
         <button class="select-btn">✏️ Tạo CV này</button>
       </div>
     </div>
-
-    <!-- CV 2 -->
-    <div class="cv-card" data-cv-id="classic_traditional">
-      <img src="https://picsum.photos/id/2/400/280" alt="Classic Traditional" class="cv-thumbnail">
+  
+    <!-- Mẫu Henry Jones - Traditional -->
+    <div class="cv-card" data-template-id="henry_traditional">
+      <img src="https://picsum.photos/id/22/400/280" alt="Henry Jones Traditional" class="cv-thumbnail">
       <div class="cv-info">
-        <div class="cv-name">Classic Traditional</div>
+        <div class="cv-name">Henry Jones - Traditional</div>
         <div class="cv-category">Cổ điển · Trang trọng</div>
-        <div class="cv-description">Mẫu CV truyền thống, phù hợp với vị trí quản lý cấp cao.</div>
-        <div class="cv-tags">
-          <span class="tag">ATS-Friendly</span>
-          <span class="tag">Miễn phí</span>
-        </div>
-        <button class="select-btn">✏️ Tạo CV này</button>
-      </div>
-    </div>
-
-    <!-- CV 3 -->
-    <div class="cv-card" data-cv-id="creative_design">
-      <img src="https://picsum.photos/id/3/400/280" alt="Creative Design" class="cv-thumbnail">
-      <div class="cv-info">
-        <div class="cv-name">Creative Design</div>
-        <div class="cv-category">Sáng tạo · Nổi bật</div>
-        <div class="cv-description">Mẫu CV sáng tạo, màu sắc ấn tượng, phù hợp ngành thiết kế.</div>
-        <div class="cv-tags">
-          <span class="tag">Portfolio</span>
-          <span class="tag premium">Premium</span>
-        </div>
-        <button class="select-btn">✏️ Tạo CV này</button>
-      </div>
-    </div>
-
-    <!-- CV 4 -->
-    <div class="cv-card" data-cv-id="minimal_clean">
-      <img src="https://picsum.photos/id/4/400/280" alt="Minimal Clean" class="cv-thumbnail">
-      <div class="cv-info">
-        <div class="cv-name">Minimal Clean</div>
-        <div class="cv-category">Tối giản · Tinh tế</div>
-        <div class="cv-description">Bố cục tối giản, tập trung vào nội dung, dễ đọc trên mọi thiết bị.</div>
-        <div class="cv-tags">
-          <span class="tag">ATS-Friendly</span>
-          <span class="tag">Miễn phí</span>
-        </div>
-        <button class="select-btn">✏️ Tạo CV này</button>
-      </div>
-    </div>
-
-    <!-- CV 5 -->
-    <div class="cv-card" data-cv-id="executive_pro">
-      <img src="https://picsum.photos/id/5/400/280" alt="Executive Pro" class="cv-thumbnail">
-      <div class="cv-info">
-        <div class="cv-name">Executive Pro</div>
-        <div class="cv-category">Cao cấp · Lãnh đạo</div>
-        <div class="cv-description">Dành riêng cho vị trí cấp cao, nhấn mạnh thành tích nổi bật.</div>
+        <div class="cv-description">Mẫu CV truyền thống, phù hợp vị trí quản lý cấp cao.</div>
         <div class="cv-tags">
           <span class="tag">Executive</span>
-          <span class="tag premium">Premium</span>
+          <span class="tag">Premium</span>
         </div>
-        <button class="select-btn">✏️ Tạo CV này</button>
+        <button class="select-btn" >✏️ Tạo CV này</button>
       </div>
     </div>
-
-    <!-- CV 6 -->
-    <div class="cv-card" data-cv-id="tech_developer">
-      <img src="https://picsum.photos/id/6/400/280" alt="Tech Developer" class="cv-thumbnail">
+  
+    <!-- Mẫu Henry Jones - Modern -->
+    <div class="cv-card" data-template-id="henry_modern">
+      <img src="https://picsum.photos/id/23/400/280" alt="Henry Jones Modern" class="cv-thumbnail">
       <div class="cv-info">
-        <div class="cv-name">Tech Developer</div>
-        <div class="cv-category">Công nghệ · IT</div>
-        <div class="cv-description">Nhấn mạnh kỹ năng kỹ thuật, dự án và công nghệ sử dụng.</div>
+        <div class="cv-name">Henry Jones - Modern</div>
+        <div class="cv-category">Sáng tạo · Nổi bật</div>
+        <div class="cv-description">Mẫu CV màu sắc nổi bật, phù hợp ngành sáng tạo.</div>
         <div class="cv-tags">
-          <span class="tag">Developer</span>
-          <span class="tag">Technical</span>
+          <span class="tag">Creative</span>
+          <span class="tag">Premium</span>
         </div>
-        <button class="select-btn">✏️ Tạo CV này</button>
+        <button class="select-btn" >✏️ Tạo CV này</button>
+      </div>
+    </div>
+  
+  </div>
+  
+  
+  <div id="adPopup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
+    <div style="background: white; border-radius: 20px; padding: 30px; max-width: 450px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.4); position: relative; animation: popupFadeIn 0.4s ease;">
+      
+      <!-- Nút đóng (X) -->
+      <button id="closeAdBtn" style="position: absolute; top: 12px; right: 18px; background: none; border: none; font-size: 28px; cursor: pointer; color: #999; transition: 0.3s;">&times;</button>
+      
+      <!-- Nội dung quảng cáo -->
+      <div style="text-align: center;">
+        <!-- Ảnh quảng cáo (có thể thay link) -->
+        <img src="https://picsum.photos/seed/ad/400/200" alt="Quảng cáo" style="width: 100%; border-radius: 12px; margin-bottom: 15px;">
+        
+        <h2 style="color: #2C7DA0; margin: 10px 0;">🎯 Tạo CV Chuyên Nghiệp</h2>
+        <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
+          Nhận ngay ưu đãi đặc biệt cho CV của bạn. Hàng trăm mẫu CV đẹp, chuẩn nhà tuyển dụng.
+        </p>
+        
+        <!-- Nút hành động -->
+        <a href="#" style="display: inline-block; padding: 12px 35px; background: #2C7DA0; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; transition: 0.3s;">Khám phá ngay</a>
       </div>
     </div>
   </div>
-</div>
+  <style>
+    @keyframes popupFadeIn {
+      from { opacity: 0; transform: scale(0.9) translateY(-30px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+  </style>
+  
+  
+  
 
 
 
 <!-- một chút tương tác nhỏ: các category chuyển active (chỉ demo visual) -->
-<link rel="stylesheet" href ="script.js"> <script src="script.js"></script>
+<script src="home.js"></script>
+<script src="auth-ui.js"></script><script>
+  // ==========================================
+  // POPUP QUẢNG CÁO - CHỈ DÙNG COOKIE CLIENT
+  // ==========================================
+  (function() {
+    const popup = document.getElementById('adPopup');
+    const closeBtn = document.getElementById('closeAdBtn');
+
+    // Đọc cookie
+    function getCookie(name) {
+      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return match ? match[2] : null;
+    }
+
+    // Lưu cookie (30 ngày)
+    function setCookie(name, value, days) {
+      const date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      document.cookie = name + '=' + value + '; expires=' + date.toUTCString() + '; path=/';
+    }
+
+    // Kiểm tra đã đóng popup chưa
+    function isPopupClosed() {
+      return getCookie('popup_closed') === 'true';
+    }
+
+    // Đóng popup + lưu cookie
+    function closePopup() {
+      popup.style.display = 'none';
+      setCookie('popup_closed', 'true', 30); // Lưu 30 ngày
+    }
+
+    // Hiển thị popup sau 1.5 giây nếu chưa đóng
+    setTimeout(function() {
+      if (!isPopupClosed()) {
+        popup.style.display = 'flex';
+      }
+    }, 1500);
+
+    // Sự kiện đóng
+    closeBtn.addEventListener('click', closePopup);
+
+    // Click ra ngoài nội dung cũng đóng
+    popup.addEventListener('click', function(e) {
+      if (e.target === this) {
+        closePopup();
+      }
+    });
+
+    // (Tùy chọn) Reset cookie để test: Mở Console gõ document.cookie = 'popup_closed=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/'; rồi F5
+
+  })();
+</script>
+
 
 </body>
 

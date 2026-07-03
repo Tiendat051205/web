@@ -67,7 +67,11 @@ if (loginForm) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         alert('Đăng nhập thành công!');
-        window.location.href = 'home.html';
+        if (data.user.role === 'admin') {
+          window.location.href = 'admin.html';
+        } else {
+          window.location.href = 'home.html';
+        }
       } else {
         alert(data.error || 'Đăng nhập thất bại');
       }

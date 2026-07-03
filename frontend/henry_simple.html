@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Henry Jones - Professional CV</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #f0f2f5; }
+    .header { background: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 24px; font-weight: 700; color: #2C7DA0; }
+    .nav-menu a { text-decoration: none; color: #333; margin: 0 15px; }
+    .main-container { display: flex; min-height: calc(100vh - 80px); }
+    .cv-wrapper { flex: 2; background: #eef2f5; padding: 40px; overflow-y: auto; }
+    .cv-card { background: white; max-width: 1000px; margin: 0 auto; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); display: flex; overflow: hidden; }
+    .comments-wrapper { flex: 1; background: white; border-left: 1px solid #e0e0e0; display: flex; flex-direction: column; height: calc(100vh - 80px); }
+    
+    /* 2 cột */
+    .cv-left { width: 33%; background: #1a3a4a; color: white; padding: 30px; }
+    .cv-right { width: 67%; padding: 30px; }
+    
+    .cv-name-left { font-size: 24px; font-weight: 700; margin-bottom: 20px; border-bottom: 2px solid #2C7DA0; padding-bottom: 10px; }
+    .section-left { margin-bottom: 25px; }
+    .section-title-left { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; color: #2C7DA0; }
+    .contact-item-left { font-size: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+    .skill-tag-left { background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 15px; font-size: 12px; display: inline-block; margin: 3px; cursor: pointer; }
+    
+    .cv-name-right { font-size: 28px; font-weight: 700; color: #1a3a4a; margin-bottom: 5px; cursor: pointer; }
+    .cv-title-right { font-size: 16px; color: #2C7DA0; margin-bottom: 20px; border-bottom: 2px solid #2C7DA0; padding-bottom: 10px; cursor: pointer; }
+    .section-right { margin-bottom: 20px; }
+    .section-title-right { font-size: 16px; font-weight: 700; color: #2C7DA0; margin-bottom: 10px; }
+    .exp-item { margin-bottom: 15px; }
+    .exp-header { display: flex; justify-content: space-between; font-weight: 600; }
+    .exp-date { color: #2C7DA0; font-size: 12px; cursor: pointer; }
+    .editable { cursor: pointer; padding: 4px 8px; border-radius: 4px; transition: background 0.2s; }
+    .editable:hover { background: rgba(44, 125, 160, 0.1); }
+    
+    .edit-input {
+      padding: 8px 12px;
+      border: 2px solid #2C7DA0;
+      border-radius: 4px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      width: 100%;
+    }
+    
+    .comments-header { padding: 20px; border-bottom: 1px solid #e0e0e0; }
+    .comments-list { flex: 1; overflow-y: auto; padding: 20px; }
+    .comment-item { background: #f8f9fa; border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+    .comment-author { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .comment-avatar { width: 36px; height: 36px; border-radius: 50%; background: #2C7DA0; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; }
+    .comment-name { font-weight: 600; font-size: 14px; }
+    .comment-time { font-size: 11px; color: #999; }
+    .comment-text { font-size: 14px; color: #333; }
+    .comment-input-area { padding: 20px; border-top: 1px solid #e0e0e0; }
+    .comment-input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; resize: vertical; font-family: 'Inter', sans-serif; }
+    .send-btn { margin-top: 10px; padding: 8px 16px; background: #2C7DA0; color: white; border: none; border-radius: 6px; cursor: pointer; }
+    
+    @media (max-width: 768px) { .cv-card { flex-direction: column; } .cv-left, .cv-right { width: 100%; } .main-container { flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <a href="home.html"><i class="fas fa-file-alt"></i> JobGenius</a>
+    </div>
+    <nav class="nav-menu">
+      <a href="home.html">Trang chủ</a>
+      <a href="#">Mẫu CV</a>
+      <a href="#">Công cụ</a>
+    </nav>
+    <div class="auth-section" id="authSection">
+      <!-- Sẽ được JS cập nhật -->
+    </div>
+  </header>
+
+  <div class="main-container">
+    <div class="cv-wrapper">
+      <div class="cv-card">
+        <div class="cv-left">
+          <div class="cv-name-left editable" data-field="fullName">HENRY JONES</div>
+          <div class="section-left">
+            <div class="section-title-left">CONTACTS</div>
+            <div class="contact-item-left editable" data-field="phone"><i class="fas fa-phone"></i> (512) 555-0199</div>
+            <div class="contact-item-left editable" data-field="email"><i class="fas fa-envelope"></i> resume@example.com</div>
+            <div class="contact-item-left editable" data-field="location"><i class="fas fa-map-marker-alt"></i> Austin, TX</div>
+          </div>
+          <div class="section-left">
+            <div class="section-title-left">SKILLS</div>
+            <div class="skills-left" data-field="skills">
+              <span class="skill-tag-left">Strategic Upselling</span>
+              <span class="skill-tag-left">Visual Merchandising</span>
+              <span class="skill-tag-left">Inventory Reconciliation</span>
+              <span class="skill-tag-left">Conflict Resolution</span>
+            </div>
+          </div>
+        </div>
+        <div class="cv-right">
+          <div class="cv-name-right editable" data-field="fullName">HENRY JONES</div>
+          <div class="cv-title-right editable" data-field="jobTitle">Lead Sales Operations Manager</div>
+          
+          <div class="section-right">
+            <div class="section-title-right">SUMMARY</div>
+            <div class="editable" data-field="summary">Results-oriented Retail Operations Specialist with over 5 years of experience in high-volume consumer environments. Expert in inventory management, visual merchandising, and team leadership.</div>
+          </div>
+          
+          <div class="section-right">
+            <div class="section-title-right">EXPERIENCE</div>
+            <div class="exp-item">
+              <div class="exp-header"><span class="editable" data-field="exp1_title">Lead Sales Coordinator</span><span class="exp-date editable" data-field="exp1_date">Apr 2022 — Current</span></div>
+              <div class="editable" data-field="exp1_company">HomeGoods Solutions - Austin, TX</div>
+              <ul class="exp-list editable" data-field="exp1_desc"><li>Executed comprehensive loss prevention protocols to identify security vulnerabilities and decrease annual inventory shrinkage by 12%.</li><li>Facilitated weekly training workshops for 15+ staff members on advanced closing techniques.</li></ul>
+            </div>
+            <div class="exp-item">
+              <div class="exp-header"><span class="editable" data-field="exp2_title">Retail Sales Specialist</span><span class="exp-date editable" data-field="exp2_date">Jul 2021 — Apr 2022</span></div>
+              <div class="editable" data-field="exp2_company">Global Apparel Corp - Austin, TX</div>
+              <ul class="exp-list editable" data-field="exp2_desc"><li>Managed inventory replenishment cycles to ensure 100% availability of core product lines during peak seasonal periods.</li><li>Direct department aesthetics by implementing corporate style guides to maintain premium brand positioning.</li></ul>
+            </div>
+          </div>
+          
+          <div class="section-right">
+            <div class="section-title-right">EDUCATION</div>
+            <div class="exp-header"><span class="editable" data-field="edu_degree">Bachelor of Science, Marketing</span><span class="exp-date editable" data-field="edu_date">Sep 2011 - May 2015</span></div>
+            <div class="editable" data-field="edu_school">University of Texas at Austin</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comments-wrapper">
+      <div class="comments-header">
+        <h3><i class="fas fa-comments"></i> Nhận xét & Bình luận</h3>
+        <p>Để lại bình luận về CV này</p>
+      </div>
+      
+      <!-- Danh sách bình luận sẽ được render bằng JS -->
+      <div class="comments-list" id="commentsList">
+        <div style="text-align:center;color:#999;padding:40px;">Đang tải bình luận...</div>
+      </div>
+      
+      <!-- Form nhập bình luận (chỉ hiện khi đã đăng nhập) -->
+      <div class="comment-input-area" id="commentInputArea" style="display: none;">
+        <textarea id="commentContent" class="comment-input" rows="3" placeholder="Viết bình luận của bạn... (tối đa 500 ký tự)"></textarea>
+        <button id="submitCommentBtn" class="send-btn">
+          <i class="fas fa-paper-plane"></i> Gửi bình luận
+        </button>
+      </div>
+      
+      <!-- Thông báo chưa đăng nhập -->
+      <div class="comment-input-area" id="loginPrompt" style="display: none; text-align: center;">
+        <p style="padding: 15px; color: #666;">
+          <i class="fas fa-lock"></i> Vui lòng <a href="login.html">đăng nhập</a> để bình luận
+        </p>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-info">
+          <h3><i class="fas fa-file-alt"></i> JobGenius</h3>
+          <p>Tạo CV chuyên nghiệp, dễ dàng và nhanh chóng.</p>
+        </div>
+        <div class="footer-links">
+          <a href="#">Giới thiệu</a>
+          <a href="#">Mẫu CV</a>
+          <a href="#">Hỗ trợ</a>
+          <a href="#">Điều khoản</a>
+        </div>
+        <div class="footer-copy">
+          &copy; 2024 JobGenius. All rights reserved.
+        </div>
+      </div>
+    </footer>
+  <script src="edit-cv-common.js"></script>
+  <script src="auth-ui.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giới thiệu - JobGenius</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ===== ABOUT PAGE STYLES ===== */
+    .about-container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .about-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .about-header h1 {
+      font-size: 36px;
+      color: #1a3a4a;
+      margin-bottom: 10px;
+    }
+
+    .about-header h1 i {
+      color: #2C7DA0;
+      margin-right: 10px;
+    }
+
+    .about-header p {
+      color: #666;
+      font-size: 16px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .about-card {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .about-card h2 {
+      font-size: 22px;
+      color: #2C7DA0;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .about-card p {
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 15px;
+    }
+
+    .about-card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .about-card ul li {
+      padding: 8px 0;
+      color: #555;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .about-card ul li i {
+      color: #2C7DA0;
+      width: 20px;
+    }
+
+    .about-card ul li:last-child {
+      border-bottom: none;
+    }
+
+    /* Form liên hệ */
+    .contact-form {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      margin-top: 40px;
+    }
+
+    .contact-form h2 {
+      font-size: 22px;
+      color: #2C7DA0;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: #333;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      transition: border 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #2C7DA0;
+      box-shadow: 0 0 0 3px rgba(44,125,160,0.1);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .btn-submit {
+      padding: 14px 35px;
+      background: #2C7DA0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-submit:hover {
+      background: #1a5d7a;
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-submit i {
+      font-size: 18px;
+    }
+
+    .success-message {
+      display: none;
+      background: #d4edda;
+      color: #155724;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    .error-message {
+      display: none;
+      background: #f8d7da;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="logo">
+      <a href="home.html"><i class="fas fa-file-alt"></i> JobGenius</a>
+    </div>
+    <nav class="nav-menu">
+      <a href="home.html">Trang chủ</a>
+      <a href="history.html">Lịch sử CV</a>
+      <a href="about.html" class="active">Giới thiệu</a>
+      <a href="#">Mẫu CV</a>
+    </nav>
+    <div class="auth-section" id="authSection"></div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="about-container">
+
+    <!-- Giới thiệu -->
+    <div class="about-header">
+      <h1><i class="fas fa-info-circle"></i> Giới thiệu về JobGenius</h1>
+      <p>Tạo CV chuyên nghiệp, dễ dàng và nhanh chóng chỉ trong vài phút</p>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-card">
+        <h2><i class="fas fa-rocket"></i> Sứ mệnh</h2>
+        <p>JobGenius ra đời với mục tiêu giúp hàng triệu ứng viên trên toàn thế giới tạo ra những CV ấn tượng, thu hút nhà tuyển dụng ngay từ cái nhìn đầu tiên.</p>
+        <p>Chúng tôi tin rằng mỗi người đều có một câu chuyện nghề nghiệp riêng và xứng đáng được thể hiện một cách chuyên nghiệp nhất.</p>
+      </div>
+
+      <div class="about-card">
+        <h2><i class="fas fa-check-circle"></i> Tại sao chọn JobGenius?</h2>
+        <ul>
+          <li><i class="fas fa-check"></i> Hơn 50 mẫu CV đa dạng, phong phú</li>
+          <li><i class="fas fa-check"></i> Dễ sử dụng, chỉ cần click và chỉnh sửa</li>
+          <li><i class="fas fa-check"></i> Tương thích ATS - Tối ưu cho ứng tuyển</li>
+          <li><i class="fas fa-check"></i> Lưu và quản lý CV không giới hạn</li>
+          <li><i class="fas fa-check"></i> Xuất PDF với 1 click</li>
+          <li><i class="fas fa-check"></i> Miễn phí cơ bản, không cần thẻ tín dụng</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ===== FORM LIÊN HỆ ===== -->
+    <div class="contact-form" id="contactForm">
+      <h2><i class="fas fa-envelope"></i> Liên hệ với chúng tôi</h2>
+      <p style="color: #666; margin-bottom: 20px;">Mọi ý kiến đóng góp và thắc mắc, vui lòng gửi cho chúng tôi!</p>
+
+      <form id="contactFormSubmit">
+        <div class="form-row">
+            <div class="form-group">
+              <label for="fullName">Họ và tên</label>
+              <input type="text" id="fullName" disabled style="background: #f5f5f5; cursor: not-allowed;">
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" disabled style="background: #f5f5f5; cursor: not-allowed;">
+            </div>
+          </div>
+        <div class="form-group">
+          <label for="subject">Chủ đề</label>
+          <select id="subject">
+            <option value="Góp ý">Góp ý</option>
+            <option value="Hỗ trợ">Hỗ trợ</option>
+            <option value="Báo lỗi">Báo lỗi</option>
+            <option value="Hợp tác">Hợp tác</option>
+            <option value="Khác">Khác</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Nội dung <span style="color:red;">*</span></label>
+          <textarea id="message" placeholder="Nhập nội dung của bạn..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <i class="fas fa-paper-plane"></i> Gửi liên hệ
+        </button>
+
+        <div class="success-message" id="successMessage">
+          ✅ Cảm ơn bạn! Tin nhắn của bạn đã được gửi thành công.
+        </div>
+
+        <div class="error-message" id="errorMessage">
+          ❌ Có lỗi xảy ra, vui lòng thử lại sau.
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-info">
+        <h3><i class="fas fa-file-alt"></i> JobGenius</h3>
+        <p>Tạo CV chuyên nghiệp, dễ dàng và nhanh chóng.</p>
+      </div>
+      <div class="footer-links">
+        <a href="about.html">Giới thiệu</a>
+        <a href="#">Mẫu CV</a>
+        <a href="#">Hỗ trợ</a>
+        <a href="#">Điều khoản</a>
+      </div>
+      <div class="footer-copy">&copy; 2024 JobGenius. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script src="auth-ui.js"></script>
+  <script>
+    // Kiểm tra đăng nhập
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+  
+    if (!token || !user.fullName) {
+      alert('Vui lòng đăng nhập để gửi liên hệ');
+      window.location.href = 'login.html';
+    }
+  
+    // Tự động điền tên và email
+    document.addEventListener('DOMContentLoaded', function() {
+      const fullNameInput = document.getElementById('fullName');
+      const emailInput = document.getElementById('email');
+      
+      if (fullNameInput && user.fullName) {
+        fullNameInput.value = user.fullName;
+        fullNameInput.disabled = true; // Không cho sửa
+      }
+      
+      if (emailInput && user.email) {
+        emailInput.value = user.email;
+        emailInput.disabled = true; // Không cho sửa
+      }
+    });
+  
+    // Xử lý gửi form
+    document.getElementById('contactFormSubmit').addEventListener('submit', async function(e) {
+      e.preventDefault();
+  
+      const subject = document.getElementById('subject').value;
+      const message = document.getElementById('message').value.trim();
+  
+      if (!message) {
+        alert('Vui lòng nhập nội dung!');
+        return;
+      }
+  
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang gửi...';
+  
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ subject, message })
+        });
+  
+        const data = await res.json();
+  
+        if (data.success) {
+          document.getElementById('successMessage').classList.add('show');
+          this.reset();
+          // Reset lại các ô đã disable
+          document.getElementById('fullName').value = user.fullName;
+          document.getElementById('email').value = user.email;
+        } else {
+          alert(data.error || 'Gửi thất bại');
+        }
+      } catch (error) {
+        alert('Lỗi kết nối server');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Gửi liên hệ';
+      }
+    });
+  </script>
+
+</body>
+</html>
