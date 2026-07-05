@@ -70,6 +70,12 @@
     .send-btn { margin-top: 10px; padding: 8px 16px; background: #2C7DA0; color: white; border: none; border-radius: 6px; cursor: pointer; }
     
     @media (max-width: 768px) { .main-container { flex-direction: column; } .contact-bar { flex-direction: column; gap: 8px; } }
+    .cv-action-buttons { display:flex; gap:12px; margin-top:20px; margin-bottom:20px; flex-wrap:wrap; }
+    .btn-save, .btn-download { padding:10px 16px; border:none; border-radius:999px; cursor:pointer; font-weight:600; color:white; min-width:140px; }
+    .btn-save { background:#2C7DA0; }
+    .btn-download { background:#28a745; }
+    .btn-save:hover { background:#1a5d7a; }
+    .btn-download:hover { background:#1e7e34; }
     /* ========== NÚT LƯU VÀ TẢI CV ========== */
 .cv-action-buttons {
   display: flex;
@@ -170,8 +176,9 @@
     </div>
     <nav class="nav-menu">
       <a href="home.html">Trang chủ</a>
-      <a href="#">Mẫu CV</a>
-      <a href="#">Công cụ</a>
+      <a href="history.html">Lịch sử CV</a>
+      <a href="about.html">Giới thiệu</a>
+      <a href="admin.html">Quản trị</a>
     </nav>
     <div class="auth-section" id="authSection">
       <!-- Sẽ được JS cập nhật -->

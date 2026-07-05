@@ -50,7 +50,6 @@ export const authController = {
 
       // Tìm user theo email
       const user = await UserModel.findByEmail(email);
-      console.log('🔑 user.role:', user.role);
       if (!user) {
         return res.status(401).json({ 
           success: false, 

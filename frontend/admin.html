@@ -31,9 +31,44 @@
     .user-name-display { font-weight: 500; color: #333; }
 
     .admin-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .admin-header h1 { font-size: 28px; color: #1a3a4a; }
     .admin-header h1 i { color: #2C7DA0; margin-right: 10px; }
+
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: white;
+      color: #1a3a4a;
+      text-decoration: none;
+      font-weight: 600;
+      border: 1px solid #dfe8ef;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: all 0.2s ease;
+    }
+    .action-btn:hover {
+      transform: translateY(-1px);
+      border-color: #2C7DA0;
+      color: #2C7DA0;
+    }
+    .action-btn-primary {
+      background: linear-gradient(135deg, #2C7DA0, #1a5d7a);
+      color: white;
+      border-color: #2C7DA0;
+    }
+    .action-btn-primary:hover {
+      color: white;
+      box-shadow: 0 8px 20px rgba(44,125,160,0.2);
+    }
 
     .stats-grid {
       display: grid;
@@ -126,9 +161,11 @@
 <body>
   <header class="header">
     <div class="logo"><a href="home.html"><i class="fas fa-file-alt"></i> JobGenius Admin</a></div>
-    <nav class="nav-menu">
-      <a href="home.html">Trang chủ</a>
-      <a href="admin.html" class="active">Quản trị</a>
+    <nav class="nav-menu site-nav">
+      <a href="home.html" class="site-nav__link"><i class="fas fa-home"></i> Trang chủ</a>
+      <a href="history.html" class="site-nav__link"><i class="fas fa-history"></i> Lịch sử CV</a>
+      <a href="about.html" class="site-nav__link"><i class="fas fa-info-circle"></i> Giới thiệu</a>
+      <a href="admin.html" class="site-nav__link active"><i class="fas fa-cog"></i> Quản trị</a>
     </nav>
     <div class="auth-section" id="authSection"></div>
   </header>
@@ -137,6 +174,12 @@
     <div class="admin-header">
       <h1><i class="fas fa-cog"></i> Bảng điều khiển</h1>
       <span style="color:#666;">Chào mừng Admin!</span>
+    </div>
+
+    <div class="quick-actions">
+      <a href="home.html" class="action-btn action-btn-primary"><i class="fas fa-plus-circle"></i> Tạo CV mới</a>
+      <a href="history.html" class="action-btn"><i class="fas fa-history"></i> Xem lịch sử CV</a>
+      <a href="home.html" class="action-btn"><i class="fas fa-layer-group"></i> Chọn mẫu CV</a>
     </div>
 
     <!-- Stats -->

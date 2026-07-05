@@ -178,29 +178,99 @@
     .photo-btn {
       justify-content: center;
     }
+
+    .page-nav {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .auth-corner {
+      justify-content: flex-start;
+      margin-left: 0;
+    }
+
+    .site-nav {
+      border-radius: 16px;
+      padding: 8px;
+    }
+
+    .site-nav__link {
+      padding: 8px 10px;
+      font-size: 0.88rem;
+    }
   }
 
   /* preview chính */
   
 
   /* header giới thiệu mạnh mẽ */
-  .auth-corner {
-    position: fixed;
-    top: 16px;
-    right: 24px;
-    z-index: 999;
+  .page-nav {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
     gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-start;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid #DCE8F0;
+    border-radius: 999px;
+    padding: 6px;
+    box-shadow: 0 8px 24px rgba(11, 41, 58, 0.08);
+  }
+
+  .site-nav__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #2F4858;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+
+  .site-nav__link:hover,
+  .site-nav__link.active {
+    background: #2C7DA0;
+    color: white;
+  }
+
+  .site-nav__link i {
+    font-size: 0.9rem;
+  }
+
+  .auth-corner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
   }
   
-  .btn-login, .btn-signup {
-    padding: 8px 24px;
+  .btn-login, .btn-signup, .btn-logout {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
     font-size: 0.9rem;
     font-weight: 600;
-    border-radius: 40px;
+    border-radius: 999px;
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: inherit;
+    white-space: nowrap;
   }
   
   .btn-login {
@@ -223,6 +293,16 @@
   .btn-signup:hover {
     background: #1F5E7E;
     transform: translateY(-1px);
+  }
+
+  .btn-logout {
+    border: none;
+    background: #DC3545;
+    color: white;
+  }
+
+  .btn-logout:hover {
+    background: #B52A3A;
   }
   
   .btn-login, .btn-signup {

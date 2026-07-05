@@ -192,11 +192,11 @@
     <div class="logo">
       <a href="home.html"><i class="fas fa-file-alt"></i> JobGenius</a>
     </div>
-    <nav class="nav-menu">
-      <a href="home.html">Trang chủ</a>
-      <a href="history.html" class="active">📋 Lịch sử CV</a>
-      <a href="#">Mẫu CV</a>
-      <a href="#">Công cụ</a>
+    <nav class="nav-menu site-nav">
+      <a href="home.html" class="site-nav__link"><i class="fas fa-home"></i> Trang chủ</a>
+      <a href="history.html" class="site-nav__link active"><i class="fas fa-history"></i> Lịch sử CV</a>
+      <a href="about.html" class="site-nav__link"><i class="fas fa-info-circle"></i> Giới thiệu</a>
+      <a href="login.html" class="site-nav__link"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
     </nav>
     <div class="auth-section" id="authSection"></div>
   </header>
@@ -315,8 +315,8 @@
                       <div class="cv-title">${content.title || 'Chưa có tiêu đề'}</div>
                       <div class="cv-preview">${(content.summary || '').substring(0, 120)}${(content.summary || '').length > 120 ? '...' : ''}</div>
                       <div class="cv-actions">
-                        <button class="btn-edit" onclick="event.stopPropagation(); editCV(${cv.id})">✏️ Chỉnh sửa</button>
-                        <button class="btn-view" onclick="event.stopPropagation(); viewCV(${cv.id})">👁️ Xem</button>
+                        <button class="btn-edit" onclick="event.stopPropagation(); editCV(${cv.id}, '${cv.templateId || ''}')">✏️ Chỉnh sửa</button>
+                        <button class="btn-view" onclick="event.stopPropagation(); viewCV(${cv.id}, '${cv.templateId || ''}')">👁️ Xem</button>
                         <button class="btn-delete" onclick="event.stopPropagation(); deleteCV(${cv.id})">🗑️ Xóa</button>
                       </div>
                     </div>
@@ -343,13 +343,27 @@
     }
 
     // Chỉnh sửa CV
-    function editCV(cvId) {
-      window.location.href = `henry_simple.html?id=${cvId}`;
+    function editCV(cvId, templateId = '') {
+      const templateFileMap = {
+        'henry_simple': 'henry_simple.html',
+        'henry_professional': 'Henry_professional.html',
+        'henry_traditional': 'henry_tranditional.html',
+        'henry_modern': 'henry_modern.html'
+      };
+      const file = templateFileMap[templateId] || 'henry_simple.html';
+      window.location.href = `${file}?id=${cvId}`;
     }
 
     // Xem CV (preview)
-    function viewCV(cvId) {
-      window.open(`henry_simple.html?id=${cvId}`, '_blank');
+    function viewCV(cvId, templateId = '') {
+      const templateFileMap = {
+        'henry_simple': 'henry_simple.html',
+        'henry_professional': 'Henry_professional.html',
+        'henry_traditional': 'henry_tranditional.html',
+        'henry_modern': 'henry_modern.html'
+      };
+      const file = templateFileMap[templateId] || 'henry_simple.html';
+      window.open(`${file}?id=${cvId}`, '_blank');
     }
 
     // Xóa CV

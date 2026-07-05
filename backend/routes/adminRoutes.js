@@ -9,11 +9,11 @@ const router = express.Router();
 const isAdmin = async (req, res, next) => {
   try {
     const [rows] = await db.execute(
-      'SELECT role FROM users WHERE id = ?',
+      'SELECT isAdmin FROM users WHERE id = ?',
       [req.userId]
     );
-    
-    if (rows.length > 0 && rows[0].role === 'admin') {
+
+    if (rows.length > 0 && Number(rows[0].isAdmin) === 1) {
       return next();
     }
     res.status(403).json({ success: false, error: 'Không có quyền truy cập' });

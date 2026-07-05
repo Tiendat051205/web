@@ -15,18 +15,32 @@ export const UserModel = {
   // Tìm user theo email
   async findByEmail(email) {
     const [rows] = await pool.execute(
-      'SELECT id, fullName, email, password, role, createdAt FROM users WHERE email = ?',
+      'SELECT id, fullName, email, password, isAdmin, createdAt FROM users WHERE email = ?',
       [email]
     );
-    return rows[0];
+
+    const user = rows[0];
+    if (!user) return null;
+
+    return {
+      ...user,
+      role: user.isAdmin ? 'admin' : 'user'
+    };
   },
 
   // Tìm user theo id
   async findById(id) {
     const [rows] = await pool.execute(
-      'SELECT id, fullName, email, createdAt FROM users WHERE id = ?',
+      'SELECT id, fullName, email, isAdmin, createdAt FROM users WHERE id = ?',
       [id]
     );
-    return rows[0];
+
+    const user = rows[0];
+    if (!user) return null;
+
+    return {
+      ...user,
+      role: user.isAdmin ? 'admin' : 'user'
+    };
   }
 };

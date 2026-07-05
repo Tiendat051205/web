@@ -1,5 +1,24 @@
 import db from '../config/database.js';
 
+function normalizeContent(content) {
+  if (!content) return {};
+  if (typeof content === 'object') return content;
+  if (typeof content !== 'string') return {};
+
+  const trimmed = content.trim();
+  if (!trimmed) return {};
+
+  if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+    try {
+      return JSON.parse(trimmed);
+    } catch {
+      return { raw: trimmed };
+    }
+  }
+
+  return { raw: trimmed };
+}
+
 export const CVModel = {
   // Lấy danh sách CV của user
   async findByUserId(userId) {
@@ -12,7 +31,7 @@ export const CVModel = {
     );
     return rows.map(row => ({
       ...row,
-      content: typeof row.content === 'string' ? JSON.parse(row.content) : row.content
+      content: normalizeContent(row.content)
     }));
   },
 
@@ -23,7 +42,7 @@ export const CVModel = {
       [id, userId]
     );
     if (rows[0]) {
-      rows[0].content = typeof rows[0].content === 'string' ? JSON.parse(rows[0].content) : rows[0].content;
+      rows[0].content = normalizeContent(rows[0].content);
     }
     return rows[0];
   },

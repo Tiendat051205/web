@@ -1,7 +1,7 @@
 // edit-cv-common.js - Dùng chung cho tất cả mẫu CV
 
 const API_URL = 'http://localhost:3000/api';
-const token = localStorage.getItem('token');
+const getAuthToken = () => localStorage.getItem('token') || '';
 const urlParams = new URLSearchParams(window.location.search);
 let templateId = urlParams.get('templateId');
 const cvId = urlParams.get('id');
@@ -10,13 +10,14 @@ let currentCVId = cvId;
 let isNewCV = !cvId && templateId;
 
 // Kiểm tra đăng nhập
-if (!token) {
+if (!getAuthToken()) {
   alert('Vui lòng đăng nhập');
   window.location.href = 'login.html';
 }
 
 // Hàm lấy templateId từ CV (khi chỉ có cvId)
 async function getTemplateIdFromCV(cvId) {
+  const token = getAuthToken();
   console.log('🔍 getTemplateIdFromCV được gọi với cvId:', cvId);
   try {
     const res = await fetch(`${API_URL}/cv/${cvId}/template`, {
@@ -37,7 +38,7 @@ async function getTemplateIdFromCV(cvId) {
 
 // Hàm kiểm tra CV đã tồn tại
 async function getExistingCV(templateId) {
-  const token = localStorage.getItem('token');
+  const token = getAuthToken();
   if (!templateId || !token) return null;
   
   try {
@@ -70,6 +71,7 @@ function collectCVData() {
 
 // Tải CV từ server
 async function loadCVFromServer() {
+  const token = getAuthToken();
   if (!currentCVId || !token) return false;
   try {
     const res = await fetch(`${API_URL}/cv/${currentCVId}`, {
@@ -99,6 +101,7 @@ async function loadCVFromServer() {
 // LƯU CV
 async function saveCV() {
   const cvData = collectCVData();
+  const token = getAuthToken();
   
   try {
     if (isNewCV && templateId) {
@@ -178,12 +181,19 @@ function attachEditEvents() {
 }
 
 // ========== BÌNH LUẬN ==========
+function getCurrentTemplateId() {
+  if (templateId) return templateId;
+  const params = new URLSearchParams(window.location.search);
+  return params.get('templateId') || '';
+}
+
 async function loadComments() {
+  const token = getAuthToken();
   console.log('🔍 loadComments bắt đầu');
   console.log('🔍 templateId hiện tại:', templateId);
   console.log('🔍 currentCVId hiện tại:', currentCVId);
   // Nếu chưa có templateId, thử lấy từ URL
-  let currentTemplateId = templateId || urlParams.get('templateId');
+  let currentTemplateId = getCurrentTemplateId();
   
   // Nếu vẫn chưa có và có cvId -> lấy templateId từ CV
   if (!currentTemplateId && currentCVId) {
@@ -205,10 +215,7 @@ async function loadComments() {
     
     console.log('📥 Tải bình luận cho template:', currentTemplateId);
    
-    const token = localStorage.getItem('token');
-    
-    
-    const res = await fetch(`${API_URL}/template/${currentTemplateId}/comments`);
+    const res = await fetch(`${API_URL}/public/template/${currentTemplateId}/comments`);
     
     console.log('📥 Response status:', res.status);
     const data = await res.json();
@@ -224,6 +231,14 @@ async function loadComments() {
   }
 }
 
+function getCurrentUser() {
+  try {
+    return JSON.parse(localStorage.getItem('user') || '{}');
+  } catch {
+    return {};
+  }
+}
+
 function renderComments(comments) {
   const container = document.getElementById('commentsList');
   if (!container) return;
@@ -233,28 +248,39 @@ function renderComments(comments) {
     container.innerHTML = '<div style="padding:40px;text-align:center;color:#999;">Chưa có bình luận nào</div>';
     return;
   }
+
+  const currentUser = getCurrentUser();
+  const canManageComment = (comment) => {
+    const userId = currentUser.id ?? currentUser.userId;
+    const role = currentUser.role;
+    return role === 'admin' || Number(comment.userId) === Number(userId);
+  };
   
   container.innerHTML = comments.map(c => {
     const displayName = c.authorName || 'Người dùng';
     const avatar = displayName.charAt(0).toUpperCase();
+    const manageButton = canManageComment(c)
+      ? `<button class="delete-comment-btn" onclick="deleteComment(${c.id})" style="margin-top:10px;border:none;background:#ff4d4f;color:white;padding:6px 10px;border-radius:8px;cursor:pointer;">Xóa</button>`
+      : '';
     
     return `
     <div class="comment-item">
       <div class="comment-author">
         <div class="comment-avatar">${avatar}</div>
-        <div>
+        <div style="flex:1;">
           <div class="comment-name">${escapeHtml(displayName)}</div>
           <div class="comment-time">${formatTime(c.createdAt)}</div>
         </div>
       </div>
       <div class="comment-text">${escapeHtml(c.content)}</div>
+      ${manageButton}
     </div>
     `;
   }).join('');
 }
 
 async function addComment() {
-  const token = localStorage.getItem('token');
+  const token = getAuthToken();
   if (!token) {
     alert('Vui lòng đăng nhập để bình luận');
     return;
@@ -270,7 +296,7 @@ async function addComment() {
   }
 
   // Lấy templateId hiện tại
-  let currentTemplateId = templateId || urlParams.get('templateId');
+  let currentTemplateId = getCurrentTemplateId();
   
   // Nếu chưa có templateId và có cvId, lấy từ CV
   if (!currentTemplateId && currentCVId) {
@@ -292,7 +318,7 @@ async function addComment() {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ text })
+      body: JSON.stringify({ text, content: text })
     });
     
     const data = await res.json();
@@ -305,6 +331,37 @@ async function addComment() {
     }
   } catch (error) {
     console.error('Lỗi gửi bình luận:', error);
+    alert('Lỗi kết nối server');
+  }
+}
+
+async function deleteComment(commentId) {
+  const token = getAuthToken();
+  if (!token) {
+    alert('Vui lòng đăng nhập để xóa bình luận');
+    return;
+  }
+
+  if (!confirm('Bạn có chắc muốn xóa bình luận này?')) {
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/comments/${commentId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      await loadComments();
+    } else {
+      alert(data.error || 'Xóa bình luận thất bại');
+    }
+  } catch (error) {
+    console.error('Lỗi xóa bình luận:', error);
     alert('Lỗi kết nối server');
   }
 }
@@ -343,16 +400,32 @@ if (saveBtn) {
 const downloadBtn = document.getElementById('downloadCVBtn');
 if (downloadBtn) {
   downloadBtn.addEventListener('click', async () => {
-    if (!currentCVId) {
+    const authToken = getAuthToken();
+    if (!authToken) {
+      alert('Vui lòng đăng nhập lại để tải PDF');
+      return;
+    }
+
+    if (!currentCVId && templateId) {
+      downloadBtn.textContent = '⏳ Đang lưu và tạo PDF...';
+      downloadBtn.disabled = true;
+      const saved = await saveCV();
+      if (!saved) {
+        downloadBtn.textContent = '📄 Tải CV (PDF)';
+        downloadBtn.disabled = false;
+        return;
+      }
+    } else if (!currentCVId) {
       alert('Vui lòng lưu CV trước khi tải PDF');
       return;
     }
+
     downloadBtn.textContent = '⏳ Đang tạo PDF...';
     downloadBtn.disabled = true;
     try {
       const response = await fetch(`${API_URL}/cv/${currentCVId}/export-pdf`, {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` }
+        headers: { 'Authorization': `Bearer ${authToken}` }
       });
       if (response.ok) {
         const blob = await response.blob();
@@ -378,9 +451,12 @@ if (downloadBtn) {
 
 // ========== KHỞI TẠO ==========
 document.addEventListener('DOMContentLoaded', async () => {
-  const token = localStorage.getItem('token');
+  const token = getAuthToken();
   const urlParams = new URLSearchParams(window.location.search);
-  const templateId = urlParams.get('templateId');
+  const templateParam = urlParams.get('templateId');
+  if (templateParam) {
+    templateId = templateParam;
+  }
   const cvId = urlParams.get('id');
 
   // Nếu có cvId → dùng luôn

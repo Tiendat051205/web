@@ -24,14 +24,12 @@ export const cvController = {
   async getTemplateIdByCvId(req, res) {
     try {
       const { cvId } = req.params;
+      const userId = req.userId;
       console.log('🔍 getTemplateIdByCvId, cvId:', cvId);
-      const [rows] = await db.execute(
-        'SELECT templateId FROM cvs WHERE id = ?',
-        [cvId]
-      );
-      console.log('🔍 Kết quả từ DB:', rows);
-      if (rows.length > 0) {
-        res.json({ success: true, templateId: rows[0].templateId });
+      const cv = await CVModel.findById(cvId, userId);
+      console.log('🔍 Kết quả từ CVModel:', cv);
+      if (cv) {
+        res.json({ success: true, templateId: cv.templateId });
       } else {
         res.status(404).json({ success: false, error: 'Không tìm thấy CV' });
       }
@@ -121,7 +119,7 @@ export const cvController = {
   // Tạo CV mới
   async createCV(req, res) {
     try {
-      const { templateId } = req.body;
+      const { templateId, content } = req.body;
       const userId = req.userId;
       
       const defaultContent = {
@@ -150,8 +148,13 @@ export const cvController = {
         edu_date: 'Sep 2011 — May 2015',
         edu_school: 'University of Texas at Austin, Austin, TX'
       };
+
+      const mergedContent = {
+        ...defaultContent,
+        ...(content && typeof content === 'object' ? content : {})
+      };
       
-      const newCV = await CVModel.create(userId, templateId, defaultContent);
+      const newCV = await CVModel.create(userId, templateId, mergedContent);
       
       res.status(201).json({
         success: true,
