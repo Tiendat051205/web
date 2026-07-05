@@ -167,6 +167,48 @@ export const cvController = {
     }
   },
 
+  // Xóa CV
+  async deleteCV(req, res) {
+    try {
+      const cvId = req.params.id;
+      const userId = req.userId;
+
+      const cv = await CVModel.findById(cvId, userId);
+      if (!cv) {
+        return res.status(404).json({
+          success: false,
+          error: 'Không tìm thấy CV hoặc không có quyền truy cập'
+        });
+      }
+
+      if (String(cv.userId) !== String(userId)) {
+        return res.status(403).json({
+          success: false,
+          error: 'Không có quyền truy cập'
+        });
+      }
+
+      const deleted = await CVModel.delete(cvId, userId);
+      if (!deleted) {
+        return res.status(500).json({
+          success: false,
+          error: 'Không thể xóa CV'
+        });
+      }
+
+      res.json({
+        success: true,
+        message: 'Xóa CV thành công'
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        success: false,
+        error: 'Lỗi xóa CV'
+      });
+    }
+  },
+
   // Xuất PDF
   async exportPDF(req, res) {
     try {

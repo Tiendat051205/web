@@ -49,3 +49,49 @@ test('createCV stores provided content when it is sent in the request body', asy
 
   CVModel.create = originalCreate;
 });
+
+test('deleteCV removes a CV when the authenticated user owns it', async () => {
+  const originalFindById = CVModel.findById;
+  const originalDelete = CVModel.delete;
+  let deletedId = null;
+  let deletedUserId = null;
+
+  CVModel.findById = async (id, userId) => ({
+    id,
+    userId,
+    content: {}
+  });
+  CVModel.delete = async (id, userId) => {
+    deletedId = id;
+    deletedUserId = userId;
+    return true;
+  };
+
+  const req = {
+    userId: 7,
+    params: { id: '12' }
+  };
+
+  const res = {
+    statusCode: 200,
+    payload: null,
+    status(code) {
+      this.statusCode = code;
+      return this;
+    },
+    json(payload) {
+      this.payload = payload;
+      return this;
+    }
+  };
+
+  await cvController.deleteCV(req, res);
+
+  assert.equal(deletedId, '12');
+  assert.equal(deletedUserId, 7);
+  assert.equal(res.payload.success, true);
+  assert.equal(res.statusCode, 200);
+
+  CVModel.findById = originalFindById;
+  CVModel.delete = originalDelete;
+});

@@ -66,6 +66,15 @@ export const CVModel = {
     return { id: result.insertId };
   },
 
+  // Xóa CV
+  async delete(id, userId) {
+    const [result] = await db.execute(
+      'DELETE FROM cvs WHERE id = ? AND userId = ?',
+      [id, userId]
+    );
+    return result.affectedRows > 0;
+  },
+
   // ✅ THÊM HÀM MỚI: Lấy CV theo userId + templateId (kiểm tra CV cũ)
   async findByUserAndTemplate(userId, templateId) {
     const [rows] = await db.execute(

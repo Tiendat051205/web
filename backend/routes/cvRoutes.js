@@ -10,6 +10,7 @@ router.use(authMiddleware);
 router.get('/cvs', cvController.getMyCVs);
 router.get('/cv/:id', cvController.getCVById);
 router.put('/cv/:id', cvController.updateCV);
+router.delete('/cv/:id', cvController.deleteCV);
 router.post('/cv/create', cvController.createCV);
 router.post('/cv/:id/export-pdf', cvController.exportPDF);
 router.get('/cv/user/:templateId', cvController.getCVByUserAndTemplate);
