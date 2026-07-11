@@ -141,6 +141,67 @@
     .comment-input:focus { outline: none; border-color: #2C7DA0; }
     .send-btn { width: 100%; margin-top: 8px; padding: 10px; background: #2C7DA0; color: white; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
     .send-btn:hover { background: #1e5c78; }
+    /* ===== RATING STARS ===== */
+.rating-stars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+  
+  .rating-stars i {
+    font-size: 22px;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+  }
+  
+  .rating-stars i.active,
+  .rating-stars i:hover,
+  .rating-stars i:hover ~ i {
+    color: #f5b342;
+  }
+  
+  .rating-stars i:hover {
+    transform: scale(1.2);
+  }
+  
+  .rating-text {
+    font-size: 13px;
+    color: #666;
+    margin-left: 8px;
+  }
+  
+  /* Rating trong comment */
+  .comment-rating {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 4px;
+  }
+  
+  .comment-rating i {
+    font-size: 14px;
+    color: #f5b342;
+  }
+  
+  .comment-rating i.empty {
+    color: #ddd;
+  }
+  /* ===== NÚT XÓA BÌNH LUẬN ===== */
+  .delete-comment-btn {
+    margin-top: 8px;
+    border: none;
+    background: #ff4d4f;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.2s;
+  }
+  
+  .delete-comment-btn:hover {
+    background: #e04345;
+  }
     
     /* ===== FOOTER ===== */
     .footer { background: #1a3a4a; color: white; padding: 20px 40px; border-top: 1px solid #112631; flex-shrink: 0; }
@@ -152,6 +213,7 @@
     .footer-links a { color: #ccc; text-decoration: none; font-size: 13px; transition: color 0.2s; }
     .footer-links a:hover { color: white; }
     .footer-copy { color: #8aa4b3; font-size: 12px; }
+    
     
     /* ===== RESPONSIVE ===== */
     @media (max-width: 1024px) {

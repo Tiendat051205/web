@@ -14,7 +14,73 @@ if (!getAuthToken()) {
   alert('Vui lòng đăng nhập');
   window.location.href = 'login.html';
 }
+// ========== RATING ==========
+let selectedRating = 0;
 
+function initRatingStars() {
+  const stars = document.querySelectorAll('#ratingStars i');
+  const ratingText = document.getElementById('ratingText');
+  if (!stars.length) return;
+  
+  stars.forEach(star => {
+    star.addEventListener('mouseenter', function() {
+      const rating = parseInt(this.dataset.rating);
+      highlightStars(rating);
+      ratingText.textContent = getRatingText(rating);
+    });
+    
+    star.addEventListener('mouseleave', function() {
+      if (selectedRating > 0) {
+        highlightStars(selectedRating);
+        ratingText.textContent = getRatingText(selectedRating);
+      } else {
+        highlightStars(0);
+        ratingText.textContent = 'Chọn số sao';
+      }
+    });
+    
+    star.addEventListener('click', function() {
+      selectedRating = parseInt(this.dataset.rating);
+      highlightStars(selectedRating);
+      ratingText.textContent = getRatingText(selectedRating);
+    });
+  });
+}
+
+function highlightStars(rating) {
+  const stars = document.querySelectorAll('#ratingStars i');
+  stars.forEach((star, index) => {
+    if (index < rating) {
+      star.classList.add('active');
+    } else {
+      star.classList.remove('active');
+    }
+  });
+}
+
+function getRatingText(rating) {
+  const texts = {
+    1: 'Rất tệ',
+    2: 'Tệ',
+    3: 'Bình thường',
+    4: 'Tốt',
+    5: 'Rất tốt'
+  };
+  return texts[rating] || 'Chọn số sao';
+}
+
+function renderRatingStars(rating) {
+  let html = '';
+  for (let i = 1; i <= 5; i++) {
+    if (i <= rating) {
+      html += '<i class="fas fa-star"></i>';
+    } else {
+      html += '<i class="fas fa-star empty"></i>';
+    }
+  }
+  return html;
+}
+//========== COMMENTS ==========
 // Hàm lấy templateId từ CV (khi chỉ có cvId)
 async function getTemplateIdFromCV(cvId) {
   const token = getAuthToken();
@@ -281,7 +347,6 @@ function getCurrentUser() {
 function renderComments(comments) {
   const container = document.getElementById('commentsList');
   if (!container) return;
-  console.log('📝 renderComments được gọi, comments:', comments);
   
   if (!comments || comments.length === 0) {
     container.innerHTML = '<div style="padding:40px;text-align:center;color:#999;">Chưa có bình luận nào</div>';
@@ -289,18 +354,12 @@ function renderComments(comments) {
   }
 
   const currentUser = getCurrentUser();
-  const canManageComment = (comment) => {
-    const userId = currentUser.id ?? currentUser.userId;
-    const role = currentUser.role;
-    return role === 'admin' || Number(comment.userId) === Number(userId);
-  };
   
   container.innerHTML = comments.map(c => {
-    const displayName = c.authorName || 'Người dùng';
+    const displayName = c.userName || 'Người dùng';
     const avatar = displayName.charAt(0).toUpperCase();
-    const manageButton = canManageComment(c)
-      ? `<button class="delete-comment-btn" onclick="deleteComment(${c.id})" style="margin-top:10px;border:none;background:#ff4d4f;color:white;padding:6px 10px;border-radius:8px;cursor:pointer;">Xóa</button>`
-      : '';
+    const ratingHtml = c.rating ? renderRatingStars(c.rating) : '';
+    const canDelete = currentUser.role === 'admin' || Number(c.userId) === Number(currentUser.id);
     
     return `
     <div class="comment-item">
@@ -311,8 +370,9 @@ function renderComments(comments) {
           <div class="comment-time">${formatTime(c.createdAt)}</div>
         </div>
       </div>
-      <div class="comment-text">${escapeHtml(c.content)}</div>
-      ${manageButton}
+      ${c.rating ? `<div class="comment-rating">${ratingHtml}</div>` : ''}
+      ${c.text ? `<div class="comment-text">${escapeHtml(c.text)}</div>` : ''}
+      ${canDelete ? `<button class="delete-comment-btn" onclick="deleteComment(${c.id})">Xóa</button>` : ''}
     </div>
     `;
   }).join('');
@@ -326,24 +386,15 @@ async function addComment() {
   }
 
   const input = document.getElementById('commentContent');
-  if (!input) return;
+  const text = input?.value.trim() || '';
   
-  const text = input.value.trim();
-  if (!text) {
-    alert('Vui lòng nhập nội dung bình luận');
+  // Kiểm tra: phải có text HOẶC rating
+  if (!text && selectedRating === 0) {
+    alert('Vui lòng nhập bình luận hoặc đánh giá sao');
     return;
   }
 
-  // Lấy templateId hiện tại
-  let currentTemplateId = getCurrentTemplateId();
-  
-  // Nếu chưa có templateId và có cvId, lấy từ CV
-  if (!currentTemplateId && currentCVId) {
-    currentTemplateId = await getTemplateIdFromCV(currentCVId);
-    if (currentTemplateId) {
-      templateId = currentTemplateId;
-    }
-  }
+  const currentTemplateId = getCurrentTemplateId();
   
   if (!currentTemplateId) {
     alert('Không tìm thấy template');
@@ -357,13 +408,19 @@ async function addComment() {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ text, content: text })
+      body: JSON.stringify({ 
+        text: text,
+        rating: selectedRating > 0 ? selectedRating : null
+      })
     });
     
     const data = await res.json();
     
     if (data.success) {
       input.value = '';
+      selectedRating = 0;
+      highlightStars(0);
+      document.getElementById('ratingText').textContent = 'Chọn số sao';
       await loadComments();
     } else {
       alert(data.error || 'Gửi bình luận thất bại');
@@ -436,37 +493,37 @@ if (saveBtn) {
 }
 
 // ========== NÚT TẢI PDF ==========
+// ========== NÚT TẢI PDF ==========
 const downloadBtn = document.getElementById('downloadCVBtn');
 if (downloadBtn) {
   downloadBtn.addEventListener('click', async () => {
-    const authToken = getAuthToken();
-    if (!authToken) {
+    const token = getAuthToken();
+    
+    if (!token) {
       alert('Vui lòng đăng nhập lại để tải PDF');
       return;
     }
 
-    if (!currentCVId && templateId) {
-      downloadBtn.textContent = '⏳ Đang lưu và tạo PDF...';
-      downloadBtn.disabled = true;
-      const saved = await saveCV();
-      if (!saved) {
-        downloadBtn.textContent = '📄 Tải CV (PDF)';
-        downloadBtn.disabled = false;
-        return;
-      }
-    } else if (!currentCVId) {
+    // Kiểm tra đã có CV chưa
+    if (!currentCVId) {
       alert('Vui lòng lưu CV trước khi tải PDF');
       return;
     }
 
+    // Đổi text nút
     downloadBtn.textContent = '⏳ Đang tạo PDF...';
     downloadBtn.disabled = true;
+    
     try {
       const response = await fetch(`${API_URL}/cv/${currentCVId}/export-pdf`, {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${authToken}` }
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
+      
       if (response.ok) {
+        // Tải file PDF
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -476,12 +533,21 @@ if (downloadBtn) {
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
+        
+        downloadBtn.textContent = '✅ Đã tải!';
+        setTimeout(() => {
+          downloadBtn.textContent = '📄 Tải CV (PDF)';
+          downloadBtn.disabled = false;
+        }, 2000);
       } else {
-        alert('Lỗi tạo PDF');
+        const error = await response.json();
+        alert(error.error || 'Lỗi tạo PDF');
+        downloadBtn.textContent = '📄 Tải CV (PDF)';
+        downloadBtn.disabled = false;
       }
     } catch (error) {
-      alert('Lỗi: ' + error.message);
-    } finally {
+      console.error('Lỗi tải PDF:', error);
+      alert('Lỗi kết nối server');
       downloadBtn.textContent = '📄 Tải CV (PDF)';
       downloadBtn.disabled = false;
     }
@@ -512,6 +578,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       await loadCVFromServer();
     }
   }
+  initRatingStars();
+
 
   // ✅ Tải bình luận sau khi có templateId (từ URL hoặc từ CV)
   await loadComments();

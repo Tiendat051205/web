@@ -468,6 +468,68 @@ textarea.edit-input {
 }
 .send-btn:hover { background: #1a5d7a; }
 .send-btn:active { transform: scale(0.99); }
+/* ===== RATING STARS ===== */
+.rating-stars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+  
+  .rating-stars i {
+    font-size: 22px;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+  }
+  
+  .rating-stars i.active,
+  .rating-stars i:hover,
+  .rating-stars i:hover ~ i {
+    color: #f5b342;
+  }
+  
+  .rating-stars i:hover {
+    transform: scale(1.2);
+  }
+  
+  .rating-text {
+    font-size: 13px;
+    color: #666;
+    margin-left: 8px;
+  }
+  
+  /* Rating trong comment */
+  .comment-rating {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 4px;
+  }
+  
+  .comment-rating i {
+    font-size: 14px;
+    color: #f5b342;
+  }
+  
+  .comment-rating i.empty {
+    color: #ddd;
+  }
+
+  /* ===== NÚT XÓA BÌNH LUẬN ===== */
+  .delete-comment-btn {
+    margin-top: 8px;
+    border: none;
+    background: #ff4d4f;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.2s;
+  }
+  
+  .delete-comment-btn:hover {
+    background: #e04345;
+  }
 
 /* ===== FOOTER ===== */
 .footer {

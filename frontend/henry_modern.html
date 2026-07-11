@@ -111,8 +111,24 @@
       </div>
 
       <div class="comment-input-area" id="commentInputArea" style="display: none;">
-        <textarea id="commentContent" class="comment-input" rows="3" placeholder="Viết bình luận của bạn... (tối đa 500 ký tự)"></textarea>
-        <button id="submitCommentBtn" class="send-btn"><i class="fas fa-paper-plane"></i> Gửi bình luận</button>
+        <!-- RATING STARS -->
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+          <span style="font-weight: 500; font-size: 14px; color: #333;">Đánh giá:</span>
+          <div class="rating-stars" id="ratingStars">
+            <i class="fas fa-star" data-rating="1"></i>
+            <i class="fas fa-star" data-rating="2"></i>
+            <i class="fas fa-star" data-rating="3"></i>
+            <i class="fas fa-star" data-rating="4"></i>
+            <i class="fas fa-star" data-rating="5"></i>
+          </div>
+          <span class="rating-text" id="ratingText">Chọn số sao</span>
+        </div>
+        
+        <textarea id="commentContent" class="comment-input" rows="2" placeholder="Viết bình luận của bạn... (tùy chọn)"></textarea>
+        
+        <button id="submitCommentBtn" class="send-btn">
+          <i class="fas fa-paper-plane"></i> Gửi bình luận
+        </button>
       </div>
 
       <div class="comment-input-area" id="loginPrompt" style="display: none; text-align: center;">
