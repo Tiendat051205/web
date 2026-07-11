@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mẫu CV 5 - Morden</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="toolbar">
+        <button id="exportPdfBtn">📥 Tải PDF</button>
+        <button id="resetBtn">🔄 Khôi phục</button>
+        <p>💡 Chỉnh sửa nhanh, xuất PDF ngay lập tức.</p>
+    </div>
+
+    <div id="cv-container" class="cv-shell">
+        <header class="cv-banner">
+            <div>
+                <h1 class="editable" data-field="name">Ngô Văn Dũng</h1>
+                <p class="editable" data-field="position">Quản lý Dự án</p>
+            </div>
+            <div class="header-meta">
+                <p>📞 <span class="editable" data-field="phone">0933 222 111</span></p>
+                <p>✉️ <span class="editable" data-field="email">vandung@example.com</span></p>
+                <p>📍 <span class="editable" data-field="address">Hà Nội, Việt Nam</span></p>
+            </div>
+        </header>
+
+        <section class="grid-layout">
+            <article class="card">
+                <h2>Giới thiệu</h2>
+                <div class="editable" data-field="summary">
+                    Tôi là quản lý dự án có 7 năm kinh nghiệm trong ngành công nghệ thông tin. Tôi quản lý tiến độ, nguồn lực và liên lạc khách hàng để đảm bảo dự án vận hành hiệu quả.
+                </div>
+            </article>
+
+            <article class="card">
+                <h2>Kỹ năng chính</h2>
+                <ul class="skills-list editable" data-field="skills">
+                    <li>Quản lý dự án Agile</li>
+                    <li>Giao tiếp với khách hàng</li>
+                    <li>Lập kế hoạch và đánh giá</li>
+                    <li>Kiểm soát rủi ro</li>
+                </ul>
+            </article>
+
+            <article class="card wide">
+                <h2>Kinh nghiệm làm việc</h2>
+                <div class="job">
+                    <strong class="editable" data-field="exp1_company">Công ty Phần mềm Mạnh Việt</strong>
+                    <span class="editable" data-field="exp1_period">2018 - Nay</span>
+                    <ul class="editable" data-field="exp1_details">
+                        <li>Quản lý nhiều dự án phát triển phần mềm, giám sát tiến độ và chất lượng.</li>
+                        <li>Đồng hành cùng khách hàng từ khâu yêu cầu đến nghiệm thu sản phẩm.</li>
+                    </ul>
+                </div>
+                <div class="job">
+                    <strong class="editable" data-field="exp2_company">Công ty Giải pháp Số An Bình</strong>
+                    <span class="editable" data-field="exp2_period">2015 - 2018</span>
+                    <ul class="editable" data-field="exp2_details">
+                        <li>Điều phối nguồn lực nội bộ và xây dựng báo cáo tiến trình dự án hàng tuần.</li>
+                        <li>Đảm bảo tuân thủ ngân sách và đánh giá hiệu quả công việc.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <article class="card">
+                <h2>Học vấn</h2>
+                <div class="editable" data-field="education">
+                    <strong>Đại học Công nghệ, ĐHQG Hà Nội</strong><br>
+                    Ngành: Quản trị Kinh doanh<br>
+                    2010 - 2014
+                </div>
+            </article>
+        </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

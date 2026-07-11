@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản trị - JobGenius</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <header class="header">
+    <div class="logo"><a href="home.html"><i class="fas fa-file-alt"></i> JobGenius Admin</a></div>
+    <nav class="nav-menu site-nav">
+      <a href="home.html" class="site-nav__link"><i class="fas fa-home"></i> Trang chủ</a>
+      <a href="history.html" class="site-nav__link"><i class="fas fa-history"></i> Lịch sử CV</a>
+      <a href="about.html" class="site-nav__link"><i class="fas fa-info-circle"></i> Giới thiệu</a>
+      <a href="admin.html" id="adminLink" class="active" style="display: none;">🔧 Quản trị</a>
+    </nav>
+    <div class="auth-section" id="authSection"></div>
+  </header>
+
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1><i class="fas fa-cog"></i> Bảng điều khiển</h1>
+      <span style="color:#666;">Chào mừng Admin!</span>
+    </div>
+
+    <div class="quick-actions">
+      <a href="home.html" class="action-btn action-btn-primary"><i class="fas fa-plus-circle"></i> Tạo CV mới</a>
+      <a href="history.html" class="action-btn"><i class="fas fa-history"></i> Xem lịch sử CV</a>
+      <a href="home.html" class="action-btn"><i class="fas fa-layer-group"></i> Chọn mẫu CV</a>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card"><i class="fas fa-users"></i><div class="number" id="totalUsers">0</div><div class="label">Người dùng</div></div>
+      <div class="stat-card"><i class="fas fa-file-alt"></i><div class="number" id="totalCVs">0</div><div class="label">CV đã tạo</div></div>
+      <div class="stat-card"><i class="fas fa-comments"></i><div class="number" id="totalComments">0</div><div class="label">Bình luận</div></div>
+      <div class="stat-card"><i class="fas fa-eye"></i><div class="number" id="totalViews">0</div><div class="label">Lượt xem</div></div>
+    </div>
+
+    <!-- Templates -->
+    <div class="admin-section">
+      <h2><i class="fas fa-edit"></i> Quản lý mẫu CV</h2>
+      <div id="templateList"></div>
+    </div>
+
+    <!-- Comments -->
+    <div class="admin-section">
+      <h2><i class="fas fa-comments"></i> Quản lý bình luận</h2>
+      <div id="commentsList"></div>
+    </div>
+
+    <!-- Contacts -->
+    <div class="admin-section">
+      <h2><i class="fas fa-envelope"></i> Quản lý liên hệ</h2>
+      <div id="contactsList"></div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:3000/api';
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+    if (!token) { alert('Vui lòng đăng nhập'); window.location.href = 'login.html'; }
+
+    document.getElementById('authSection').innerHTML = `
+      <span class="user-name-display"><i class="fas fa-user-circle"></i> ${user.fullName || 'Admin'}</span>
+      <button class="btn-logout" onclick="logout()">Đăng xuất</button>
+    `;
+
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = 'login.html';
+    }
+
+    // ===== LOAD STATS =====
+    async function loadStats() {
+      try {
+        const res = await fetch(`${API_URL}/admin/stats`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('totalUsers').textContent = data.stats.totalUsers;
+          document.getElementById('totalCVs').textContent = data.stats.totalCVs;
+          document.getElementById('totalComments').textContent = data.stats.totalComments;
+          document.getElementById('totalViews').textContent = data.stats.totalViews;
+        }
+      } catch (e) { console.error(e); }
+    }
+
+    // ===== TEMPLATES =====
+    async function loadTemplates() {
+      try {
+        const res = await fetch(`${API_URL}/admin/templates`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+          const container = document.getElementById('templateList');
+          if (data.templates.length === 0) {
+            container.innerHTML = '<p style="color:#999;">Chưa có mẫu CV</p>';
+            return;
+          }
+          container.innerHTML = data.templates.map(tpl => `
+            <div class="template-row">
+              <input type="text" id="name_${tpl.templateId}" value="${tpl.name}">
+              <input type="text" id="desc_${tpl.templateId}" value="${tpl.description || ''}" style="flex:2;">
+              <button class="btn-save-template" onclick="updateTemplate('${tpl.templateId}')">
+                <i class="fas fa-save"></i> Lưu
+              </button>
+            </div>
+          `).join('');
+        }
+      } catch (e) { console.error(e); }
+    }
+
+    window.updateTemplate = async (templateId) => {
+      const name = document.getElementById(`name_${templateId}`).value.trim();
+      const description = document.getElementById(`desc_${templateId}`).value.trim();
+      if (!name) { alert('Tên không được để trống'); return; }
+      try {
+        const res = await fetch(`${API_URL}/admin/template/${templateId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ name, description })
+        });
+        const data = await res.json();
+        if (data.success) alert('✅ Cập nhật thành công');
+        else alert('❌ ' + data.error);
+      } catch (e) { alert('Lỗi server'); }
+    };
+
+    // ===== COMMENTS =====
+    async function loadComments() {
+      try {
+        const res = await fetch(`${API_URL}/admin/comments`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+          const container = document.getElementById('commentsList');
+          if (data.comments.length === 0) {
+            container.innerHTML = '<p style="color:#999;">Chưa có bình luận</p>';
+            return;
+          }
+          container.innerHTML = `
+            <table class="admin-table">
+              <thead><tr><th>Người dùng</th><th>Nội dung</th><th>Ngày</th><th>Hành động</th></tr></thead>
+              <tbody>
+                ${data.comments.map(c => `
+                  <tr>
+                    <td>${c.fullName || 'Ẩn danh'}</td>
+                    <td>${c.content}</td>
+                    <td>${new Date(c.createdAt).toLocaleDateString('vi-VN')}</td>
+                    <td><button class="btn-delete" onclick="deleteComment(${c.id})">Xóa</button></td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+        }
+      } catch (e) { console.error(e); }
+    }
+
+    window.deleteComment = async (id) => {
+      if (!confirm('Xóa bình luận này?')) return;
+      try {
+        const res = await fetch(`${API_URL}/admin/comments/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) { alert('✅ Xóa thành công'); loadComments(); loadStats(); }
+        else alert('❌ ' + data.error);
+      } catch (e) { alert('Lỗi server'); }
+    };
+
+    // ===== CONTACTS =====
+    async function loadContacts() {
+      try {
+        const res = await fetch(`${API_URL}/admin/contacts`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+          const container = document.getElementById('contactsList');
+          if (data.contacts.length === 0) {
+            container.innerHTML = '<p style="color:#999;">Chưa có liên hệ</p>';
+            return;
+          }
+          container.innerHTML = `
+            <table class="admin-table">
+              <thead><tr><th>Người gửi</th><th>Chủ đề</th><th>Nội dung</th><th>Trạng thái</th><th>Hành động</th></tr></thead>
+              <tbody>
+                ${data.contacts.map(c => `
+                  <tr>
+                    <td>${c.fullName || 'Ẩn danh'}</td>
+                    <td>${c.subject || 'Khác'}</td>
+                    <td>${c.message}</td>
+                    <td><span class="${c.isRead ? 'badge-read' : 'badge-unread'}">${c.isRead ? 'Đã đọc' : 'Chưa đọc'}</span></td>
+                    <td>
+                      ${!c.isRead ? `<button class="btn-delete" onclick="markRead(${c.id})" style="background:#28a745;">Đọc</button>` : ''}
+                      <button class="btn-delete" onclick="deleteContact(${c.id})">Xóa</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+        }
+      } catch (e) { console.error(e); }
+    }
+
+    window.markRead = async (id) => {
+      try {
+        const res = await fetch(`${API_URL}/admin/contacts/${id}/read`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) loadContacts();
+      } catch (e) { console.error(e); }
+    };
+
+    window.deleteContact = async (id) => {
+      if (!confirm('Xóa liên hệ này?')) return;
+      try {
+        const res = await fetch(`${API_URL}/admin/contacts/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) { alert('✅ Xóa thành công'); loadContacts(); }
+        else alert('❌ ' + data.error);
+      } catch (e) { alert('Lỗi server'); }
+    };
+
+    // ===== INIT =====
+    loadStats();
+    loadTemplates();
+    loadComments();
+    loadContacts();
+  </script>
+</body>
+</html>

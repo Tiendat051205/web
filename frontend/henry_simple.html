@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Henry Jones - Professional CV</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/henry_simple.css">
+</head>
+<body>
+  
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="logo">
+      <a href="home.html"><i class="fas fa-file-alt"></i> JobGenius</a>
+    </div>
+    <nav class="nav-menu">
+      <a href="home.html">Trang chủ</a>
+      <a href="history.html">Lịch sử CV</a>
+      <a href="about.html" class="active">Giới thiệu</a>
+      <a href="admin.html">Quản trị</a>
+    </nav>
+    <div class="auth-section" id="authSection"></div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-container">
+    
+    <!-- ===== CV ===== -->
+    <div class="cv-wrapper">
+      <div class="cv-card">
+        
+        <!-- LEFT -->
+        <div class="cv-left">
+          <div class="cv-name-left editable" data-field="fullName">HENRY JONES</div>
+          
+          <div class="section-left">
+            <div class="section-title-left">CONTACTS</div>
+            <div class="contact-item-left editable" data-field="phone"><i class="fas fa-phone"></i> (512) 555-0199</div>
+            <div class="contact-item-left editable" data-field="email"><i class="fas fa-envelope"></i> resume@example.com</div>
+            <div class="contact-item-left editable" data-field="location"><i class="fas fa-map-marker-alt"></i> Austin, TX</div>
+            <div class="contact-item-left editable" data-field="linkedin"><i class="fab fa-linkedin"></i> linkedin.com/in/henryjones</div>
+          </div>
+          
+          <div class="section-left">
+            <div class="section-title-left">SKILLS</div>
+            <div class="skills-left" data-field="skills">
+              <span class="skill-tag-left">Strategic Upselling</span>
+              <span class="skill-tag-left">Visual Merchandising</span>
+              <span class="skill-tag-left">Inventory Control</span>
+              <span class="skill-tag-left">Conflict Resolution</span>
+              <span class="skill-tag-left">Team Leadership</span>
+              <span class="skill-tag-left">Data Analysis & ROI</span>
+              <span class="skill-tag-left">P&L Management</span>
+              <span class="skill-tag-left">CRM Software</span>
+            </div>
+          </div>
+
+          <div class="section-left">
+            <div class="section-title-left">LANGUAGES</div>
+            <div class="contact-item-left editable" data-field="lang1"><i class="fas fa-language"></i> English (Native)</div>
+            <div class="contact-item-left editable" data-field="lang2"><i class="fas fa-language"></i> Spanish (Professional)</div>
+          </div>
+
+          <div class="section-left">
+            <div class="section-title-left">CERTIFICATIONS</div>
+            <div class="contact-item-left editable" data-field="cert1"><i class="fas fa-certificate"></i> Certified Retail Management Professional (CRMP)</div>
+            <div class="contact-item-left editable" data-field="cert2"><i class="fas fa-certificate"></i> Lean Six Sigma Green Belt</div>
+          </div>
+        </div>
+        
+        <!-- RIGHT -->
+        <div class="cv-right">
+          <div class="cv-name-right editable" data-field="fullName">HENRY JONES</div>
+          <div class="cv-title-right editable" data-field="jobTitle">Lead Sales Operations Manager</div>
+          
+          <div class="section-right">
+            <div class="section-title-right">SUMMARY</div>
+            <div class="editable" data-field="summary">Results-oriented Retail Operations Specialist with over 5 years of experience in high-volume consumer environments. Expert in inventory management, visual merchandising, and team leadership. Proven track record in optimizing supply chain processes, decreasing overhead shrinkages, and steering marketing-centric retail initiatives to scale organizational revenue.</div>
+          </div>
+          
+          <div class="section-right">
+            <div class="section-title-right">EXPERIENCE</div>
+            
+            <div class="exp-item">
+              <div class="exp-header">
+                <span class="editable" data-field="exp1_title">Lead Sales Coordinator</span>
+                <span class="exp-date editable" data-field="exp1_date">Apr 2022 — Current</span>
+              </div>
+              <div class="exp-company editable" data-field="exp1_company">HomeGoods Solutions - Austin, TX</div>
+              <ul class="exp-list editable" data-field="exp1_desc">
+                <li>Executed comprehensive loss prevention protocols to identify security vulnerabilities and decrease annual inventory shrinkage by 12%.</li>
+                <li>Facilitated weekly training workshops for 15+ staff members on advanced closing techniques, upselling strategies, and client onboarding.</li>
+                <li>Managed seasonal layouts and product visual displays, directly leading to an 18% quarterly boost in impulse-buy department sales.</li>
+              </ul>
+            </div>
+            
+            <div class="exp-item">
+              <div class="exp-header">
+                <span class="editable" data-field="exp2_title">Retail Sales Specialist</span>
+                <span class="exp-date editable" data-field="exp2_date">Jul 2021 — Apr 2022</span>
+              </div>
+              <div class="exp-company editable" data-field="exp2_company">Global Apparel Corp - Austin, TX</div>
+              <ul class="exp-list editable" data-field="exp2_desc">
+                <li>Managed inventory replenishment cycles to ensure 100% availability of core product lines during peak seasonal periods.</li>
+                <li>Direct department aesthetics by implementing corporate style guides to maintain premium brand positioning.</li>
+                <li>Resolved complex customer complaints with high diplomatic poise, maintaining a personal customer satisfaction score of 96%.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="section-right">
+            <div class="section-title-right">KEY PROJECTS</div>
+            <div class="exp-item">
+              <div class="exp-header">
+                <span class="editable" data-field="proj1_title">Automated Inventory Integration</span>
+                <span class="exp-date editable" data-field="proj1_date">2023</span>
+              </div>
+              <div class="exp-company">HomeGoods Solutions</div>
+              <ul class="exp-list">
+                <li>Headed a cross-functional squad of 5 to successfully migrate legacy asset-tracking spreadsheets to an automated RFID cloud architecture.</li>
+                <li>Reduced stock reconciliation delays from 14 operational hours down to just 45 minutes weekly.</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="section-right">
+            <div class="section-title-right">EDUCATION</div>
+            <div class="exp-header">
+              <span class="editable" data-field="edu_degree">Bachelor of Science, Marketing</span>
+              <span class="exp-date editable" data-field="edu_date">Sep 2011 - May 2015</span>
+            </div>
+            <div class="exp-company editable" data-field="edu_school">University of Texas at Austin</div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- BUTTONS -->
+      <div class="cv-action-buttons">
+        <button id="saveCVBtn" class="btn-save"><i class="fas fa-save"></i> Lưu CV</button>
+        <button id="downloadCVBtn" class="btn-download"><i class="fas fa-file-pdf"></i> Tải PDF</button>
+      </div>
+    </div>
+
+    <!-- ===== COMMENTS ===== -->
+    <div class="comments-wrapper">
+      <div class="comments-header">
+        <h3><i class="fas fa-comments"></i> Nhận xét & Bình luận</h3>
+        <p>Để lại bình luận về CV này</p>
+      </div>
+      
+      <div class="comments-list" id="commentsList">
+        <div style="text-align:center;color:#999;padding:40px;font-size:13px;">Đang tải bình luận...</div>
+      </div>
+      
+      <div class="comment-input-area" id="commentInputArea" style="display: none;">
+        <textarea id="commentContent" class="comment-input" rows="3" placeholder="Viết bình luận của bạn... (tối đa 500 ký tự)"></textarea>
+        <button id="submitCommentBtn" class="send-btn">
+          <i class="fas fa-paper-plane"></i> Gửi bình luận
+        </button>
+      </div>
+      
+      <div class="comment-input-area" id="loginPrompt" style="display: none; text-align: center;">
+        <p style="padding: 10px; color: #666; font-size: 13px;">
+          <i class="fas fa-lock"></i> Vui lòng <a href="login.html" style="color:#2C7DA0; font-weight:600; text-decoration:none;">đăng nhập</a> để bình luận
+        </p>
+      </div>
+    </div>
+    
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-info">
+        <h3><i class="fas fa-file-alt"></i> JobGenius</h3>
+        <p>Tạo CV chuyên nghiệp, dễ dàng và nhanh chóng.</p>
+      </div>
+      <div class="footer-links">
+        <a href="about.html">Giới thiệu</a>
+        <a href="home.html">Mẫu CV</a>
+        <a href="history.html">Lịch sử CV</a>
+        <a href="login.html">Đăng nhập</a>
+      </div>
+      <div class="footer-copy">
+        &copy; 2026 JobGenius. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script src="edit-cv-common.js"></script>
+  <script src="auth-ui.js"></script>
+</body>
+</html>
