@@ -18,8 +18,7 @@ import {
 } from 'react-native';
 import { getCVHtml } from './pdfGenerator';
 
-// 🔴 CẬP NHẬT API Ở ĐÂY
-const API_URL = 'http://192.190.20.102:3000/api'; 
+const API_URL = 'http://192.190.20.103:3000/api'; 
 
 export default function EditCVScreen() {
   const router = useRouter();
@@ -33,7 +32,6 @@ export default function EditCVScreen() {
   const [isSaving, setIsSaving] = useState(false);
   const [activeTab, setActiveTab] = useState('form');
 
-  // Dữ liệu Form CV
   const [formData, setFormData] = useState({
     fullName: '', jobTitle: '', phone: '', email: '', location: '', summary: '', skills: '',
     exp1_title: '', exp1_date: '', exp1_company: '', exp1_desc: '',
@@ -41,9 +39,9 @@ export default function EditCVScreen() {
     edu_degree: '', edu_date: '', edu_school: ''
   });
 
-  // Dữ liệu Bình luận
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
+  const [rating, setRating] = useState(5); 
   const [currentUser, setCurrentUser] = useState({});
 
   useEffect(() => {
@@ -136,20 +134,63 @@ export default function EditCVScreen() {
           body: JSON.stringify({ content: contentToSave })
         });
         const data = await res.json();
-        if (data.success) Alert.alert('Thành công', 'Đã lưu CV thành công!');
+        if (data.success) Alert.alert('Thành công', 'Đã cập nhật CV thành công!');
         else Alert.alert('Lỗi', data.error);
       }
     } catch (e) { Alert.alert('Lỗi mạng', 'Lỗi kết nối server'); }
     setIsSaving(false);
   };
 
+  // HÀM TIỆN ÍCH: CHÈN CSS ÉP CV VỪA VẶN 1 TRANG A4 
+  const prepareHtmlForPrint = (rawHtml) => {
+    return rawHtml + `
+      <style>
+        @page { size: A4; margin: 0; }
+        body { 
+            width: 210mm !important; 
+            height: 297mm !important; 
+            overflow: hidden !important; 
+            margin: 0 !important; 
+            padding: 0 !important;
+            background-color: white !important;
+        }
+        /* Bao lô các ID và Class thường dùng bọc CV để thu nhỏ */
+        #cvCard, .cv-container, .cv-wrapper, .cv-document-wrapper {
+            margin: 0 !important;
+            box-shadow: none !important;
+            border: none !important;
+            zoom: 0.75 !important;
+            -webkit-transform: scale(0.75);
+            -webkit-transform-origin: top left;
+        }
+      </style>
+    `;
+  };
+
+  // HÀM XEM TRƯỚC CV
+  const handlePreviewCV = async () => {
+    try {
+      const rawHtml = getCVHtml(currentTemplateId, formData);
+      const printHtml = prepareHtmlForPrint(rawHtml); // Ép khung A4
+      
+      await Print.printAsync({
+        html: printHtml
+      });
+    } catch (error) {
+      // Đã xóa Alert báo lỗi. Giờ bạn bấm nút Cancel/Tắt máy in sẽ không bị báo lỗi mệt mỏi nữa.
+      console.log('Đã đóng bản xem trước');
+    }
+  };
+
+  // HÀM TẢI PDF
   const handleDownloadPDF = async () => {
     try {
       setIsSaving(true);
-      const htmlContent = getCVHtml(currentTemplateId, formData);
+      const rawHtml = getCVHtml(currentTemplateId, formData);
+      const printHtml = prepareHtmlForPrint(rawHtml); // Ép khung A4
       
       const { uri } = await Print.printToFileAsync({ 
-        html: htmlContent,
+        html: printHtml,
         base64: false
       });
       
@@ -177,25 +218,29 @@ export default function EditCVScreen() {
   };
 
   const handleAddComment = async () => {
-    if (!newComment.trim()) return;
+    if (!newComment.trim()) return Alert.alert('Cảnh báo', 'Vui lòng nhập nội dung bình luận!');
     const token = await AsyncStorage.getItem('userToken');
     try {
       const res = await fetch(`${API_URL}/template/${currentTemplateId}/comments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ text: newComment, content: newComment })
+        body: JSON.stringify({ text: newComment, content: newComment, rating: rating })
       });
       const data = await res.json();
       if (data.success) {
         setNewComment('');
+        setRating(5); 
+        Alert.alert('Thành công', 'Đã gửi bình luận');
         loadComments(currentTemplateId);
+      } else {
+        Alert.alert('Lỗi', data.error || 'Gửi bình luận thất bại');
       }
-    } catch (e) { Alert.alert('Lỗi', 'Không thể gửi bình luận'); }
+    } catch (e) { Alert.alert('Lỗi mạng', 'Không thể gửi bình luận'); }
   };
 
   const handleDeleteComment = async (commentId) => {
     const token = await AsyncStorage.getItem('userToken');
-    Alert.alert('Xóa', 'Bạn có chắc muốn xóa bình luận này?', [
+    Alert.alert('Xác nhận', 'Bạn có chắc muốn xóa bình luận này?', [
       { text: 'Hủy' },
       { text: 'Xóa', style: 'destructive', onPress: async () => {
           try {
@@ -203,7 +248,10 @@ export default function EditCVScreen() {
               method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
-            if (data.success) loadComments(currentTemplateId);
+            if (data.success) {
+              Alert.alert('Thành công', 'Đã xóa bình luận');
+              loadComments(currentTemplateId);
+            }
           } catch (e) {}
       }}
     ]);
@@ -215,7 +263,7 @@ export default function EditCVScreen() {
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <FontAwesome5 name="arrow-left" size={18} color="#333" />
+          <FontAwesome5 name="arrow-left" size={20} color="#333" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Chỉnh sửa CV</Text>
       </View>
@@ -233,69 +281,107 @@ export default function EditCVScreen() {
         {activeTab === 'form' && (
           <View style={styles.formSection}>
             <Text style={styles.sectionTitle}>Thông tin cá nhân</Text>
-            <TextInput style={styles.input} placeholder="Họ và Tên" value={formData.fullName} onChangeText={(v) => updateField('fullName', v)} />
-            <TextInput style={styles.input} placeholder="Vị trí ứng tuyển" value={formData.jobTitle} onChangeText={(v) => updateField('jobTitle', v)} />
-            <TextInput style={styles.input} placeholder="Số điện thoại" value={formData.phone} onChangeText={(v) => updateField('phone', v)} keyboardType="phone-pad" />
-            <TextInput style={styles.input} placeholder="Email" value={formData.email} onChangeText={(v) => updateField('email', v)} keyboardType="email-address" />
-            <TextInput style={styles.input} placeholder="Địa chỉ" value={formData.location} onChangeText={(v) => updateField('location', v)} />
+            <TextInput style={styles.input} placeholderTextColor="#888" placeholder="Họ và Tên" value={formData.fullName} onChangeText={(v) => updateField('fullName', v)} />
+            <TextInput style={styles.input} placeholderTextColor="#888" placeholder="Vị trí ứng tuyển" value={formData.jobTitle} onChangeText={(v) => updateField('jobTitle', v)} />
+            <TextInput style={styles.input} placeholderTextColor="#888" placeholder="Số điện thoại" value={formData.phone} onChangeText={(v) => updateField('phone', v)} keyboardType="phone-pad" />
+            <TextInput style={styles.input} placeholderTextColor="#888" placeholder="Email" value={formData.email} onChangeText={(v) => updateField('email', v)} keyboardType="email-address" />
+            <TextInput style={styles.input} placeholderTextColor="#888" placeholder="Địa chỉ" value={formData.location} onChangeText={(v) => updateField('location', v)} />
 
             <Text style={styles.sectionTitle}>Tóm tắt (Summary)</Text>
-            <TextInput style={[styles.input, styles.textArea]} placeholder="Giới thiệu bản thân..." value={formData.summary} onChangeText={(v) => updateField('summary', v)} multiline />
+            <TextInput style={[styles.input, styles.textArea]} placeholderTextColor="#888" placeholder="Giới thiệu bản thân..." value={formData.summary} onChangeText={(v) => updateField('summary', v)} multiline />
 
             <Text style={styles.sectionTitle}>Kỹ năng (Skills)</Text>
-            <TextInput style={[styles.input, styles.textArea]} placeholder="Cách nhau bằng dấu phẩy" value={formData.skills} onChangeText={(v) => updateField('skills', v)} multiline />
+            <TextInput style={[styles.input, styles.textArea]} placeholderTextColor="#888" placeholder="Cách nhau bằng dấu phẩy" value={formData.skills} onChangeText={(v) => updateField('skills', v)} multiline />
 
             <Text style={styles.sectionTitle}>Kinh nghiệm làm việc 1</Text>
-            <TextInput style={styles.input} placeholder="Chức danh" value={formData.exp1_title} onChangeText={(v) => updateField('exp1_title', v)} />
-            <TextInput style={styles.input} placeholder="Công ty & Địa điểm" value={formData.exp1_company} onChangeText={(v) => updateField('exp1_company', v)} />
-            <TextInput style={styles.input} placeholder="Thời gian" value={formData.exp1_date} onChangeText={(v) => updateField('exp1_date', v)} />
-            <TextInput style={[styles.input, styles.textArea]} placeholder="Mô tả công việc" value={formData.exp1_desc} onChangeText={(v) => updateField('exp1_desc', v)} multiline />
+            <TextInput style={styles.input} placeholderTextColor="#888" placeholder="Chức danh" value={formData.exp1_title} onChangeText={(v) => updateField('exp1_title', v)} />
+            <TextInput style={styles.input} placeholderTextColor="#888" placeholder="Công ty & Địa điểm" value={formData.exp1_company} onChangeText={(v) => updateField('exp1_company', v)} />
+            <TextInput style={styles.input} placeholderTextColor="#888" placeholder="Thời gian" value={formData.exp1_date} onChangeText={(v) => updateField('exp1_date', v)} />
+            <TextInput style={[styles.input, styles.textArea]} placeholderTextColor="#888" placeholder="Mô tả công việc" value={formData.exp1_desc} onChangeText={(v) => updateField('exp1_desc', v)} multiline />
 
             <Text style={styles.sectionTitle}>Học vấn</Text>
-            <TextInput style={styles.input} placeholder="Bằng cấp" value={formData.edu_degree} onChangeText={(v) => updateField('edu_degree', v)} />
-            <TextInput style={styles.input} placeholder="Trường học" value={formData.edu_school} onChangeText={(v) => updateField('edu_school', v)} />
-            <TextInput style={styles.input} placeholder="Thời gian" value={formData.edu_date} onChangeText={(v) => updateField('edu_date', v)} />
+            <TextInput style={styles.input} placeholderTextColor="#888" placeholder="Bằng cấp" value={formData.edu_degree} onChangeText={(v) => updateField('edu_degree', v)} />
+            <TextInput style={styles.input} placeholderTextColor="#888" placeholder="Trường học" value={formData.edu_school} onChangeText={(v) => updateField('edu_school', v)} />
+            <TextInput style={styles.input} placeholderTextColor="#888" placeholder="Thời gian" value={formData.edu_date} onChangeText={(v) => updateField('edu_date', v)} />
 
             <View style={styles.actionButtons}>
               <TouchableOpacity style={styles.saveBtn} onPress={handleSaveCV} disabled={isSaving}>
-                <Text style={styles.saveBtnText}>{isSaving ? '⏳ Đang lưu...' : '💾 Lưu CV'}</Text>
+                <Text style={styles.btnTextWhite}>{isSaving ? '⏳' : '💾 Lưu'}</Text>
               </TouchableOpacity>
+
+              <TouchableOpacity style={styles.previewBtn} onPress={handlePreviewCV} disabled={isSaving}>
+                <Text style={styles.btnTextWhite}>👁️ Xem</Text>
+              </TouchableOpacity>
+
               <TouchableOpacity style={styles.downloadBtn} onPress={handleDownloadPDF} disabled={isSaving}>
-                <Text style={styles.downloadBtnText}>📄 Tải PDF</Text>
+                <Text style={styles.btnTextWhite}>📄 PDF</Text>
               </TouchableOpacity>
             </View>
+
           </View>
         )}
 
         {activeTab === 'comments' && (
           <View style={styles.commentsSection}>
-            <View style={styles.commentInputArea}>
-              <TextInput style={styles.commentInput} placeholder="Viết bình luận..." value={newComment} onChangeText={setNewComment} multiline />
-              <TouchableOpacity style={styles.sendBtn} onPress={handleAddComment}>
-                <Text style={{ color: 'white', fontWeight: 'bold' }}>Gửi</Text>
-              </TouchableOpacity>
+            <View style={styles.commentInputContainer}>
+              <Text style={{fontWeight: 'bold', color: '#111', fontSize: 16, marginBottom: 12}}>Đánh giá mẫu CV này:</Text>
+              <View style={styles.starRow}>
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <TouchableOpacity key={star} onPress={() => setRating(star)}>
+                    <FontAwesome5 
+                      name="star" 
+                      solid={star <= rating} 
+                      size={28} 
+                      color={star <= rating ? "#FFD700" : "#d3d3d3"} 
+                      style={{marginRight: 10}} 
+                    />
+                  </TouchableOpacity>
+                ))}
+              </View>
+              <View style={styles.commentInputArea}>
+                <TextInput 
+                  style={styles.commentInput} 
+                  placeholderTextColor="#888" 
+                  placeholder="Viết bình luận..." 
+                  value={newComment} 
+                  onChangeText={setNewComment} 
+                  multiline 
+                />
+                <TouchableOpacity style={styles.sendBtn} onPress={handleAddComment}>
+                  <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>Gửi</Text>
+                </TouchableOpacity>
+              </View>
             </View>
 
             {comments.length === 0 ? (
-              <Text style={{ textAlign: 'center', color: '#999', marginTop: 20 }}>Chưa có bình luận nào</Text>
+              <Text style={{ textAlign: 'center', color: '#666', marginTop: 20, fontSize: 16 }}>Chưa có bình luận nào</Text>
             ) : (
               comments.map((c) => {
                 const isAdmin = String(currentUser.role || '').toLowerCase() === 'admin' || currentUser.isAdmin == 1;
                 const canManage = isAdmin || Number(c.userId) === Number(currentUser.id);
+                const displayName = c.authorName || c.authorname || c.fullName || c.fullname || c.name || 'Người dùng';
+                const ratingValue = c.rating || 5;
 
                 return (
                   <View key={c.id} style={styles.commentItem}>
                     <View style={styles.commentHeader}>
                       <View style={styles.commentAvatar}>
-                        <Text style={{ color: 'white' }}>{c.authorName?.charAt(0).toUpperCase() || 'U'}</Text>
+                        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>{displayName.charAt(0).toUpperCase()}</Text>
                       </View>
                       <View style={{ flex: 1 }}>
-                        <Text style={styles.commentName}>{c.authorName || 'Người dùng'}</Text>
+                        <Text style={styles.commentName}>{displayName}</Text>
+                        
+                        <View style={{flexDirection: 'row', marginTop: 4}}>
+                          {[1, 2, 3, 4, 5].map((s) => (
+                            <FontAwesome5 key={s} name="star" solid={s <= ratingValue} size={12} color={s <= ratingValue ? "#FFD700" : "#d3d3d3"} style={{marginRight: 3}} />
+                          ))}
+                        </View>
+
                         <Text style={styles.commentTime}>{new Date(c.createdAt).toLocaleDateString('vi-VN')}</Text>
                       </View>
                       {canManage && (
-                        <TouchableOpacity onPress={() => handleDeleteComment(c.id)}>
-                          <FontAwesome5 name="trash" color="#ff4d4f" />
+                        <TouchableOpacity style={{padding: 5}} onPress={() => handleDeleteComment(c.id)}>
+                          <FontAwesome5 name="trash" size={16} color="#ff4d4f" />
                         </TouchableOpacity>
                       )}
                     </View>
@@ -314,32 +400,34 @@ export default function EditCVScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f7fa' },
   loadingCenter: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  header: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'white', paddingTop: 50, paddingBottom: 15, paddingHorizontal: 20 },
+  header: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'white', paddingTop: 50, paddingBottom: 15, paddingHorizontal: 20, elevation: 2 },
   backBtn: { paddingRight: 20 },
-  headerTitle: { fontSize: 20, fontWeight: 'bold', color: '#1a3a4a' },
+  headerTitle: { fontSize: 22, fontWeight: 'bold', color: '#1a3a4a' },
   tabContainer: { flexDirection: 'row', backgroundColor: 'white', borderBottomWidth: 1, borderColor: '#ddd' },
-  tab: { flex: 1, paddingVertical: 15, alignItems: 'center' },
+  tab: { flex: 1, paddingVertical: 16, alignItems: 'center' },
   activeTab: { borderBottomWidth: 3, borderColor: '#2C7DA0' },
-  tabText: { color: '#666', fontWeight: 'bold' },
+  tabText: { color: '#666', fontWeight: 'bold', fontSize: 16 },
   activeTabText: { color: '#2C7DA0' },
-  content: { padding: 20 },
-  formSection: { backgroundColor: 'white', padding: 20, borderRadius: 12 },
-  sectionTitle: { fontSize: 16, fontWeight: 'bold', color: '#2C7DA0', marginTop: 15, marginBottom: 10, textTransform: 'uppercase' },
-  input: { borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 12, marginBottom: 12, fontSize: 14, backgroundColor: '#fafafa' },
-  textArea: { minHeight: 80, textAlignVertical: 'top' },
-  actionButtons: { flexDirection: 'row', gap: 10, marginTop: 20 },
-  saveBtn: { flex: 1, backgroundColor: '#2C7DA0', padding: 15, borderRadius: 8, alignItems: 'center' },
-  saveBtnText: { color: 'white', fontWeight: 'bold' },
-  downloadBtn: { flex: 1, backgroundColor: '#6c757d', padding: 15, borderRadius: 8, alignItems: 'center' },
-  downloadBtnText: { color: 'white', fontWeight: 'bold' },
+  content: { padding: 15 },
+  formSection: { backgroundColor: 'white', padding: 20, borderRadius: 12, elevation: 1 },
+  sectionTitle: { fontSize: 18, fontWeight: 'bold', color: '#2C7DA0', marginTop: 15, marginBottom: 12, textTransform: 'uppercase' },
+  input: { borderWidth: 1, borderColor: '#ccc', borderRadius: 8, paddingHorizontal: 15, paddingVertical: 14, marginBottom: 15, fontSize: 16, backgroundColor: '#fff', color: '#000' },
+  textArea: { minHeight: 100, textAlignVertical: 'top' },
+  actionButtons: { flexDirection: 'row', justifyContent: 'space-between', gap: 8, marginTop: 20 },
+  saveBtn: { flex: 1, backgroundColor: '#2C7DA0', paddingVertical: 14, borderRadius: 8, alignItems: 'center' },
+  previewBtn: { flex: 1, backgroundColor: '#f39c12', paddingVertical: 14, borderRadius: 8, alignItems: 'center' },
+  downloadBtn: { flex: 1, backgroundColor: '#6c757d', paddingVertical: 14, borderRadius: 8, alignItems: 'center' },
+  btnTextWhite: { color: 'white', fontWeight: 'bold', fontSize: 14 },
   commentsSection: { flex: 1 },
-  commentInputArea: { flexDirection: 'row', gap: 10, marginBottom: 20, backgroundColor: 'white', padding: 15, borderRadius: 12 },
-  commentInput: { flex: 1, borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 10, minHeight: 50 },
+  commentInputContainer: { backgroundColor: 'white', padding: 20, borderRadius: 12, marginBottom: 20, elevation: 1 },
+  starRow: { flexDirection: 'row', marginBottom: 15 },
+  commentInputArea: { flexDirection: 'row', gap: 10 },
+  commentInput: { flex: 1, borderWidth: 1, borderColor: '#ccc', borderRadius: 8, paddingHorizontal: 15, paddingVertical: 12, minHeight: 50, fontSize: 16, color: '#000', backgroundColor: '#fff' },
   sendBtn: { backgroundColor: '#2C7DA0', justifyContent: 'center', paddingHorizontal: 20, borderRadius: 8 },
-  commentItem: { backgroundColor: 'white', padding: 15, borderRadius: 12, marginBottom: 10 },
-  commentHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
-  commentAvatar: { width: 36, height: 36, borderRadius: 18, backgroundColor: '#2C7DA0', justifyContent: 'center', alignItems: 'center', marginRight: 10 },
-  commentName: { fontWeight: 'bold', color: '#333' },
-  commentTime: { fontSize: 11, color: '#999' },
-  commentText: { color: '#444' }
+  commentItem: { backgroundColor: 'white', padding: 20, borderRadius: 12, marginBottom: 15, elevation: 1 },
+  commentHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
+  commentAvatar: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#2C7DA0', justifyContent: 'center', alignItems: 'center', marginRight: 15 },
+  commentName: { fontWeight: 'bold', color: '#111', fontSize: 16 },
+  commentTime: { fontSize: 13, color: '#888', marginTop: 4 },
+  commentText: { color: '#222', fontSize: 16, lineHeight: 24, marginTop: 5 }
 });

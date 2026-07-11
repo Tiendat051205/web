@@ -348,18 +348,36 @@ function renderComments(comments) {
   const container = document.getElementById('commentsList');
   if (!container) return;
   
+  // Log ra console để bạn dễ dàng kiểm tra xem Backend trả về cái gì
+  console.log('Dữ liệu từng comment:', comments);
+
   if (!comments || comments.length === 0) {
     container.innerHTML = '<div style="padding:40px;text-align:center;color:#999;">Chưa có bình luận nào</div>';
     return;
   }
 
   const currentUser = getCurrentUser();
+  const canManageComment = (comment) => {
+    const userId = currentUser.id ?? currentUser.userId;
+    const role = currentUser.role;
+    return role === 'admin' || Number(comment.userId) === Number(userId);
+  };
   
   container.innerHTML = comments.map(c => {
-    const displayName = c.userName || 'Người dùng';
+    // BAO LÔ: Quét mọi khả năng tên biến bị viết hoa/thường từ Database
+    const displayName = c.authorName || c.authorname || c.fullName || c.fullname || c.name || 'Người dùng';
     const avatar = displayName.charAt(0).toUpperCase();
-    const ratingHtml = c.rating ? renderRatingStars(c.rating) : '';
-    const canDelete = currentUser.role === 'admin' || Number(c.userId) === Number(currentUser.id);
+    
+    const manageButton = canManageComment(c)
+      ? `<button class="delete-comment-btn" onclick="deleteComment(${c.id})" style="margin-top:10px;border:none;background:#ff4d4f;color:white;padding:6px 10px;border-radius:8px;cursor:pointer;">Xóa</button>`
+      : '';
+    
+    // TÍNH TOÁN RENDER SỐ SAO
+    const ratingValue = c.rating || 5;
+    let starsHtml = '';
+    for (let i = 1; i <= 5; i++) {
+        starsHtml += `<i class="${i <= ratingValue ? 'fas' : 'far'} fa-star" style="color: #FFD700; font-size: 13px; margin-right: 3px;"></i>`;
+    }
     
     return `
     <div class="comment-item">
@@ -367,12 +385,12 @@ function renderComments(comments) {
         <div class="comment-avatar">${avatar}</div>
         <div style="flex:1;">
           <div class="comment-name">${escapeHtml(displayName)}</div>
+          <div style="margin: 4px 0;">${starsHtml}</div>
           <div class="comment-time">${formatTime(c.createdAt)}</div>
         </div>
       </div>
-      ${c.rating ? `<div class="comment-rating">${ratingHtml}</div>` : ''}
-      ${c.text ? `<div class="comment-text">${escapeHtml(c.text)}</div>` : ''}
-      ${canDelete ? `<button class="delete-comment-btn" onclick="deleteComment(${c.id})">Xóa</button>` : ''}
+      <div class="comment-text">${escapeHtml(c.content)}</div>
+      ${manageButton}
     </div>
     `;
   }).join('');
@@ -493,37 +511,95 @@ if (saveBtn) {
 }
 
 // ========== NÚT TẢI PDF ==========
-// ========== NÚT TẢI PDF ==========
 const downloadBtn = document.getElementById('downloadCVBtn');
 if (downloadBtn) {
   downloadBtn.addEventListener('click', async () => {
-    const token = getAuthToken();
-    
-    if (!token) {
+    const authToken = getAuthToken();
+    if (!authToken) {
       alert('Vui lòng đăng nhập lại để tải PDF');
       return;
     }
 
-    // Kiểm tra đã có CV chưa
-    if (!currentCVId) {
+    if (!currentCVId && templateId) {
+      downloadBtn.textContent = '⏳ Đang lưu và tạo PDF...';
+      downloadBtn.disabled = true;
+      const saved = await saveCV();
+      if (!saved) {
+        downloadBtn.textContent = '📄 Tải CV (PDF)';
+        downloadBtn.disabled = false;
+        return;
+      }
+    } else if (!currentCVId) {
       alert('Vui lòng lưu CV trước khi tải PDF');
       return;
     }
 
-    // Đổi text nút
     downloadBtn.textContent = '⏳ Đang tạo PDF...';
     downloadBtn.disabled = true;
-    
     try {
+      // 1. LẤY MÃ HTML
+      const documentClone = document.documentElement.cloneNode(true);
+
+      // 2. CHUYỂN ĐỔI ĐƯỜNG DẪN 
+      const originalLinks = document.querySelectorAll('link[rel="stylesheet"]');
+      const clonedLinks = documentClone.querySelectorAll('link[rel="stylesheet"]');
+      originalLinks.forEach((link, index) => { clonedLinks[index].href = link.href; });
+
+      const originalImgs = document.querySelectorAll('img');
+      const clonedImgs = documentClone.querySelectorAll('img');
+      originalImgs.forEach((img, index) => { clonedImgs[index].src = img.src; });
+
+      // 3. TÌM KHỐI CV
+      const cvContentClone = documentClone.querySelector('#cvCard');
+
+      if (!cvContentClone) {
+        alert('Lỗi: Không tìm thấy thẻ id="cvCard". Hãy kiểm tra lại file HTML!');
+        downloadBtn.textContent = '📄 Tải CV (PDF)';
+        downloadBtn.disabled = false;
+        return;
+      }
+
+      const bodyClone = documentClone.querySelector('body');
+      bodyClone.innerHTML = ''; 
+      bodyClone.appendChild(cvContentClone); 
+
+      bodyClone.style.margin = '0';
+      bodyClone.style.padding = '0';
+      bodyClone.style.background = 'white';
+
+      // 4. THU NHỎ CV VÀ ÉP VÀO 1 TRANG A4
+      const printStyle = document.createElement('style');
+      printStyle.innerHTML = `
+        @page { size: A4; margin: 0; }
+        
+        body {
+            width: 210mm !important;
+            height: 297mm !important;
+            overflow: hidden !important; 
+        }
+
+        #cvCard {
+            margin: 0 !important;
+            box-shadow: none !important;
+            border: none !important;
+            zoom: 0.9; 
+        }
+      `;
+      documentClone.querySelector('head').appendChild(printStyle);
+
+      const finalHtmlContent = documentClone.outerHTML;
+
+      // 5. GỬI XUỐNG BACKEND
       const response = await fetch(`${API_URL}/cv/${currentCVId}/export-pdf`, {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        headers: { 
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({ htmlContent: finalHtmlContent }) 
       });
-      
+
       if (response.ok) {
-        // Tải file PDF
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -533,21 +609,12 @@ if (downloadBtn) {
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
-        
-        downloadBtn.textContent = '✅ Đã tải!';
-        setTimeout(() => {
-          downloadBtn.textContent = '📄 Tải CV (PDF)';
-          downloadBtn.disabled = false;
-        }, 2000);
       } else {
-        const error = await response.json();
-        alert(error.error || 'Lỗi tạo PDF');
-        downloadBtn.textContent = '📄 Tải CV (PDF)';
-        downloadBtn.disabled = false;
+        alert('Lỗi tạo PDF');
       }
     } catch (error) {
-      console.error('Lỗi tải PDF:', error);
-      alert('Lỗi kết nối server');
+      alert('Lỗi: ' + error.message);
+    } finally {
       downloadBtn.textContent = '📄 Tải CV (PDF)';
       downloadBtn.disabled = false;
     }

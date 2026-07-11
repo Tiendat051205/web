@@ -215,51 +215,32 @@ export const cvController = {
       const cvId = req.params.id;
       const userId = req.userId;
       
+      // 1. Nhận mã HTML giao diện từ Frontend gửi lên
+      const { htmlContent } = req.body;
+      
       const cv = await CVModel.findById(cvId, userId);
       if (!cv) {
         return res.status(404).json({ success: false, error: 'Không tìm thấy CV' });
       }
-      
-      const html = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="UTF-8">
-          <style>
-            body { font-family: Arial, sans-serif; padding: 40px; }
-            .name { font-size: 28px; font-weight: bold; }
-            .title { font-size: 18px; color: #2C7DA0; margin-bottom: 20px; }
-            .section { margin-bottom: 20px; }
-            .section-title { font-size: 18px; font-weight: bold; border-bottom: 2px solid #2C7DA0; margin-bottom: 10px; }
-          </style>
-        </head>
-        <body>
-          <div class="name">${cv.content.fullName || ''}</div>
-          <div class="title">${cv.content.title || ''}</div>
-          <div class="section">
-            <div class="section-title">Thông tin liên hệ</div>
-            <div>Email: ${cv.content.email || ''}</div>
-            <div>Điện thoại: ${cv.content.phone || ''}</div>
-            <div>Địa chỉ: ${cv.content.address || ''}</div>
-          </div>
-          <div class="section">
-            <div class="section-title">Tóm tắt</div>
-            <div>${cv.content.summary || ''}</div>
-          </div>
-          <div class="section">
-            <div class="section-title">Kinh nghiệm</div>
-            <div><strong>${cv.content.exp1_title || ''}</strong> - ${cv.content.exp1_date || ''}</div>
-            <div>${cv.content.exp1_company || ''}</div>
-            <ul>${(cv.content.exp1_achievements || []).map(a => `<li>${a}</li>`).join('')}</ul>
-          </div>
-        </body>
-        </html>
-      `;
+
+      // Nếu Frontend không gửi HTML lên thì báo lỗi
+      if (!htmlContent) {
+        return res.status(400).json({ success: false, error: 'Thiếu dữ liệu giao diện HTML để in' });
+      }
       
       const browser = await puppeteer.launch({ headless: true });
       const page = await browser.newPage();
-      await page.setContent(html, { waitUntil: 'networkidle0' });
-      const pdf = await page.pdf({ format: 'A4' });
+      
+      // 2. Nạp chính xác mã HTML của mẫu CV mà Frontend đang hiển thị
+      await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+      
+      // 3. Cấu hình in (bắt buộc có printBackground: true để giữ màu sắc)
+      const pdf = await page.pdf({ 
+        format: 'A4',
+        printBackground: true, 
+        margin: { top: '0', right: '0', bottom: '0', left: '0' } 
+      });
+      
       await browser.close();
       
       res.setHeader('Content-Type', 'application/pdf');

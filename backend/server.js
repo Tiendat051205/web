@@ -70,6 +70,11 @@ app.use('/api', commentRoutes);
 app.use('/api', contactRoutes);
 app.use('/api', adminRoutes);
 
+// Bắt buộc phải có '0.0.0.0' để mở khóa mạng LAN
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`✅ Server đang chạy mượt mà tại http://0.0.0.0:${PORT}`);
+});
+
 app.listen(PORT, HOST, () => {
   console.log(`🚀 Server running at http://${HOST}:${PORT}`);
 });

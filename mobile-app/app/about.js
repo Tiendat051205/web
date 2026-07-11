@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 
 // 🔴 CẬP NHẬT API Ở ĐÂY: Sửa IP và Port
-const API_URL = 'http://192.190.20.102:3000/api';
+const API_URL = 'http://192.190.20.103:3000/api';
 
 export default function AboutScreen() {
   const router = useRouter();

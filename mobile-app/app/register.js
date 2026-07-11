@@ -24,12 +24,11 @@ export default function RegisterScreen() {
 
   const handleRegister = async () => {
     if (!fullName || !email || !password) {
-      return Alert.alert("Lỗi", "Vui lòng điền đầy đủ thông tin!");
+      return Alert.alert("Cảnh báo", "Vui lòng điền đầy đủ thông tin!");
     }
 
     try {
-      // Lưu ý: Thay 192.168.1.X bằng địa chỉ IP LAN thực tế của máy tính
-      const response = await fetch('http://192.190.20.102:3000/api/register', {
+      const response = await fetch('http://192.190.20.103:3000/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fullName, email, password })
@@ -44,7 +43,6 @@ export default function RegisterScreen() {
         Alert.alert("Đăng ký thất bại", data.message || "Email đã tồn tại hoặc có lỗi xảy ra");
       }
     } catch (error) {
-      console.error(error);
       Alert.alert("Lỗi mạng", "Không thể kết nối đến Server.");
     }
   };
@@ -67,26 +65,16 @@ export default function RegisterScreen() {
               <FontAwesome5 name="home" size={14} color="#4b3a8b" />
               <Text style={styles.navText}>Trang chủ</Text>
             </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.navItem} onPress={() => router.push('/history')}>
-              <FontAwesome5 name="history" size={14} color="#4b3a8b" />
-              <Text style={styles.navText}>Lịch sử CV</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.navItem} onPress={() => router.push('/about')}>
-              <FontAwesome5 name="info-circle" size={14} color="#4b3a8b" />
-              <Text style={styles.navText}>Giới thiệu</Text>
-            </TouchableOpacity>
           </View>
 
           <View style={styles.registerContainer}>
-            <Text style={styles.title}>Sign up</Text>
+            <Text style={styles.title}>Đăng ký</Text>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Full Name</Text>
+              <Text style={styles.label}>Họ và tên</Text>
               <TextInput
                 style={[styles.input, focusedInput === 'fullName' && styles.inputFocused]}
-                placeholder="Enter your name"
+                placeholder="Nhập họ và tên"
                 placeholderTextColor="#999"
                 value={fullName}
                 onChangeText={setFullName}
@@ -99,7 +87,7 @@ export default function RegisterScreen() {
               <Text style={styles.label}>Email</Text>
               <TextInput
                 style={[styles.input, focusedInput === 'email' && styles.inputFocused]}
-                placeholder="Enter your email"
+                placeholder="Nhập email"
                 placeholderTextColor="#999"
                 value={email}
                 onChangeText={setEmail}
@@ -111,10 +99,10 @@ export default function RegisterScreen() {
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Password</Text>
+              <Text style={styles.label}>Mật khẩu</Text>
               <TextInput
                 style={[styles.input, focusedInput === 'password' && styles.inputFocused]}
-                placeholder="Enter your password"
+                placeholder="Nhập mật khẩu"
                 placeholderTextColor="#999"
                 value={password}
                 onChangeText={setPassword}
@@ -131,7 +119,7 @@ export default function RegisterScreen() {
                 end={{ x: 1, y: 1 }}
                 style={styles.registerBtn}
               >
-                <Text style={styles.registerBtnText}>Register</Text>
+                <Text style={styles.registerBtnText}>Đăng ký</Text>
               </LinearGradient>
             </TouchableOpacity>
 
@@ -150,112 +138,21 @@ export default function RegisterScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  gradientBackground: {
-    flex: 1,
-    minHeight: '100%',
-  },
-  scrollContent: {
-    flexGrow: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 40,
-  },
-  topNav: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    gap: 10,
-    backgroundColor: 'rgba(255,255,255,0.95)',
-    borderRadius: 999,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    marginBottom: 30,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.12,
-    shadowRadius: 20,
-    elevation: 5,
-  },
-  navItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    gap: 6,
-  },
-  navText: {
-    color: '#4b3a8b',
-    fontWeight: '600',
-    fontSize: 14,
-  },
-  registerContainer: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 40,
-    width: '100%',
-    maxWidth: 450,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 20 },
-    shadowOpacity: 0.3,
-    shadowRadius: 60,
-    elevation: 10,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: '600',
-    textAlign: 'center',
-    marginBottom: 30,
-    color: '#333',
-  },
-  inputGroup: {
-    marginBottom: 20,
-  },
-  label: {
-    marginBottom: 8,
-    color: '#555',
-    fontWeight: '500',
-    fontSize: 14,
-  },
-  input: {
-    width: '100%',
-    paddingVertical: 12,
-    paddingHorizontal: 15,
-    borderWidth: 2,
-    borderColor: '#e0e0e0',
-    borderRadius: 10,
-    fontSize: 16,
-    backgroundColor: '#fff',
-  },
-  inputFocused: {
-    borderColor: '#667eea',
-  },
-  registerBtn: {
-    width: '100%',
-    padding: 14,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  registerBtnText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  loginLinkContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 20,
-  },
-  loginLinkText: {
-    color: '#666',
-    fontSize: 14,
-  },
-  loginLinkHighlight: {
-    color: '#667eea',
-    fontWeight: '600',
-  },
+  container: { flex: 1 },
+  gradientBackground: { flex: 1, minHeight: '100%' },
+  scrollContent: { flexGrow: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20, paddingVertical: 40 },
+  topNav: { flexDirection: 'row', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.95)', borderRadius: 999, paddingVertical: 8, paddingHorizontal: 20, marginBottom: 30, elevation: 5 },
+  navItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  navText: { color: '#4b3a8b', fontWeight: 'bold', fontSize: 14 },
+  registerContainer: { backgroundColor: 'white', borderRadius: 20, padding: 40, width: '100%', maxWidth: 450, elevation: 10 },
+  title: { fontSize: 28, fontWeight: 'bold', textAlign: 'center', marginBottom: 30, color: '#333' },
+  inputGroup: { marginBottom: 20 },
+  label: { marginBottom: 8, color: '#555', fontWeight: 'bold', fontSize: 14 },
+  input: { width: '100%', paddingVertical: 12, paddingHorizontal: 15, borderWidth: 2, borderColor: '#e0e0e0', borderRadius: 10, fontSize: 16, backgroundColor: '#fff' },
+  inputFocused: { borderColor: '#667eea' },
+  registerBtn: { width: '100%', padding: 14, borderRadius: 10, alignItems: 'center', marginTop: 10 },
+  registerBtnText: { color: 'white', fontSize: 16, fontWeight: 'bold' },
+  loginLinkContainer: { flexDirection: 'row', justifyContent: 'center', marginTop: 20 },
+  loginLinkText: { color: '#666', fontSize: 14 },
+  loginLinkHighlight: { color: '#667eea', fontWeight: 'bold' }
 });

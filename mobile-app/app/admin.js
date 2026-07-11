@@ -14,15 +14,14 @@ import {
     View
 } from 'react-native';
 
-// 🔴 CẬP NHẬT API Ở ĐÂY
-const API_URL = 'http://192.190.20.102:3000/api';
+const API_URL = 'http://192.190.20.103:3000/api';
 
 export default function AdminScreen() {
   const router = useRouter();
   
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [activeTab, setActiveTab] = useState('stats'); // 'stats', 'templates', 'comments', 'contacts'
+  const [activeTab, setActiveTab] = useState('stats'); 
 
   const [stats, setStats] = useState({ totalUsers: 0, totalCVs: 0, totalComments: 0, totalViews: 0 });
   const [templates, setTemplates] = useState([]);
@@ -33,11 +32,9 @@ export default function AdminScreen() {
     checkAdminAndLoadData();
   }, []);
 
-  // 1. KIỂM TRA QUYỀN ADMIN & TẢI DỮ LIỆU
   const checkAdminAndLoadData = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
-      // Lấy thông tin user từ AsyncStorage (Bạn cần đảm bảo lúc Login, backend có trả về role='admin')
       const userStr = await AsyncStorage.getItem('userData'); 
       const user = userStr ? JSON.parse(userStr) : null;
 
@@ -49,7 +46,6 @@ export default function AdminScreen() {
 
       await fetchAllData(token);
     } catch (error) {
-      console.error(error);
       Alert.alert('Lỗi', 'Không thể xác thực quyền truy cập.');
     } finally {
       setIsLoading(false);
@@ -72,15 +68,13 @@ export default function AdminScreen() {
     setRefreshing(false);
   };
 
-  // ================= CÁC HÀM GỌI API =================
-
   // Tải Thống kê
   const loadStats = async (token) => {
     try {
       const res = await fetch(`${API_URL}/admin/stats`, { headers: { 'Authorization': `Bearer ${token}` }});
       const data = await res.json();
       if (data.success) setStats(data.stats);
-    } catch (e) { console.error('Lỗi tải thống kê', e); }
+    } catch (e) { console.error(e); }
   };
 
   // Tải & Cập nhật Mẫu CV
@@ -89,11 +83,11 @@ export default function AdminScreen() {
       const res = await fetch(`${API_URL}/admin/templates`, { headers: { 'Authorization': `Bearer ${token}` }});
       const data = await res.json();
       if (data.success) setTemplates(data.templates);
-    } catch (e) { console.error('Lỗi tải templates', e); }
+    } catch (e) { console.error(e); }
   };
 
   const handleUpdateTemplate = async (templateId, name, description) => {
-    if (!name.trim()) return Alert.alert('Lỗi', 'Tên không được để trống');
+    if (!name.trim()) return Alert.alert('Cảnh báo', 'Tên không được để trống');
     const token = await AsyncStorage.getItem('userToken');
     try {
       const res = await fetch(`${API_URL}/admin/template/${templateId}`, {
@@ -102,7 +96,7 @@ export default function AdminScreen() {
         body: JSON.stringify({ name, description })
       });
       const data = await res.json();
-      if (data.success) Alert.alert('Thành công', 'Cập nhật mẫu CV thành công');
+      if (data.success) Alert.alert('Thành công', 'Cập nhật mẫu CV thành công!');
       else Alert.alert('Lỗi', data.error);
     } catch (e) { Alert.alert('Lỗi mạng', 'Không thể cập nhật'); }
   };
@@ -117,7 +111,7 @@ export default function AdminScreen() {
       const res = await fetch(`${API_URL}/admin/comments`, { headers: { 'Authorization': `Bearer ${token}` }});
       const data = await res.json();
       if (data.success) setComments(data.comments);
-    } catch (e) { console.error('Lỗi tải bình luận', e); }
+    } catch (e) { console.error(e); }
   };
 
   const handleDeleteComment = async (id) => {
@@ -131,7 +125,7 @@ export default function AdminScreen() {
           });
           const data = await res.json();
           if (data.success) {
-            Alert.alert('Thành công', 'Đã xóa bình luận');
+            Alert.alert('Thành công', 'Đã xóa bình luận!');
             loadComments(token);
             loadStats(token);
           } else Alert.alert('Lỗi', data.error);
@@ -146,7 +140,7 @@ export default function AdminScreen() {
       const res = await fetch(`${API_URL}/admin/contacts`, { headers: { 'Authorization': `Bearer ${token}` }});
       const data = await res.json();
       if (data.success) setContacts(data.contacts);
-    } catch (e) { console.error('Lỗi tải liên hệ', e); }
+    } catch (e) { console.error(e); }
   };
 
   const handleMarkRead = async (id) => {
@@ -161,7 +155,7 @@ export default function AdminScreen() {
   };
 
   const handleDeleteContact = async (id) => {
-    Alert.alert('Xác nhận', 'Xóa liên hệ này?', [
+    Alert.alert('Xác nhận', 'Bạn có chắc muốn xóa liên hệ này?', [
       { text: 'Hủy' },
       { text: 'Xóa', style: 'destructive', onPress: async () => {
         const token = await AsyncStorage.getItem('userToken');
@@ -171,7 +165,7 @@ export default function AdminScreen() {
           });
           const data = await res.json();
           if (data.success) {
-            Alert.alert('Thành công', 'Đã xóa liên hệ');
+            Alert.alert('Thành công', 'Đã xóa liên hệ!');
             loadContacts(token);
           } else Alert.alert('Lỗi', data.error);
         } catch (e) { Alert.alert('Lỗi', 'Không thể xóa'); }
@@ -183,7 +177,6 @@ export default function AdminScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Top Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.push('/home')} style={styles.backBtn}>
           <FontAwesome5 name="arrow-left" size={18} color="#1a3a4a" />
@@ -191,7 +184,6 @@ export default function AdminScreen() {
         <Text style={styles.headerTitle}><FontAwesome5 name="cog" /> Bảng điều khiển</Text>
       </View>
 
-      {/* Tabs Menu */}
       <View style={styles.tabsMenu}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {[
@@ -212,7 +204,6 @@ export default function AdminScreen() {
         </ScrollView>
       </View>
 
-      {/* Main Content Area */}
       <ScrollView 
         contentContainerStyle={styles.content}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
@@ -276,18 +267,21 @@ export default function AdminScreen() {
         {activeTab === 'comments' && (
           <View style={styles.sectionCard}>
             {comments.length === 0 ? <Text style={styles.emptyText}>Chưa có bình luận</Text> : 
-              comments.map(c => (
-                <View key={c.id} style={styles.itemCard}>
-                  <View style={styles.itemHeader}>
-                    <Text style={styles.itemTitle}>{c.fullName || 'Ẩn danh'}</Text>
-                    <Text style={styles.itemDate}>{new Date(c.createdAt).toLocaleDateString('vi-VN')}</Text>
+              comments.map(c => {
+                const displayName = c.authorName || c.authorname || c.fullName || c.fullname || c.name || 'Người dùng';
+                return (
+                  <View key={c.id} style={styles.itemCard}>
+                    <View style={styles.itemHeader}>
+                      <Text style={styles.itemTitle}>{displayName}</Text>
+                      <Text style={styles.itemDate}>{new Date(c.createdAt).toLocaleDateString('vi-VN')}</Text>
+                    </View>
+                    <Text style={styles.itemBody}>{c.content}</Text>
+                    <TouchableOpacity style={styles.btnDanger} onPress={() => handleDeleteComment(c.id)}>
+                      <Text style={styles.btnText}>Xóa bình luận</Text>
+                    </TouchableOpacity>
                   </View>
-                  <Text style={styles.itemBody}>{c.content}</Text>
-                  <TouchableOpacity style={styles.btnDanger} onPress={() => handleDeleteComment(c.id)}>
-                    <Text style={styles.btnText}>Xóa bình luận</Text>
-                  </TouchableOpacity>
-                </View>
-              ))
+                )
+              })
             }
           </View>
         )}
@@ -339,13 +333,11 @@ const styles = StyleSheet.create({
   tabTextActive: { color: 'white' },
   content: { padding: 15 },
   
-  // Stats
   statsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 15, justifyContent: 'space-between' },
   statCard: { width: '47%', backgroundColor: 'white', padding: 20, borderRadius: 12, alignItems: 'center', elevation: 2, marginBottom: 15 },
   statNumber: { fontSize: 28, fontWeight: 'bold', color: '#1a3a4a', marginVertical: 8 },
   statLabel: { color: '#666', fontSize: 13 },
   
-  // Lists & Cards
   sectionCard: { gap: 15 },
   emptyText: { textAlign: 'center', color: '#999', marginTop: 20 },
   itemCard: { backgroundColor: 'white', padding: 15, borderRadius: 12, elevation: 2 },
@@ -355,7 +347,6 @@ const styles = StyleSheet.create({
   itemBody: { fontSize: 14, color: '#555', marginBottom: 15, lineHeight: 20 },
   input: { borderWidth: 1, borderColor: '#eee', borderRadius: 8, padding: 10, marginBottom: 10, backgroundColor: '#f9f9f9' },
   
-  // Badges & Buttons
   badge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12 },
   badgeRead: { backgroundColor: '#d4edda' },
   badgeUnread: { backgroundColor: '#fff3cd' },
