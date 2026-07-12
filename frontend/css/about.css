@@ -1,0 +1,655 @@
+/* /* Khung Header chính
+/* ==========================================
+   HEADER & THANH ĐIỀU HƯỚNG MỚI
+   ========================================== */
+   .container {
+    max-width: 6000px;         /* Độ rộng tối đa của khung header */
+    margin: 20px auto;          /* Lề trên dưới 20px, căn giữa màn hình */
+    padding: 0 15px;
+  }
+/* 1. Xóa đường viền ô vuông bao quanh Header và đưa Header tràn full chiều rộng */
+
+.header {
+  display: flex !important;
+  justify-content: space-between; /* Đẩy Logo sang trái, Menu ở giữa, Auth sang phải */
+  align-items: center;            /* Căn tất cả phần tử thẳng hàng ngang */
+  width: 100%;
+  padding: 15px 40px;             /* Khoảng cách căn lề trong thoáng đẹp */
+  background-color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Bóng đổ nhẹ tự nhiên thay vì ô vuông cứng */
+  border: none !important;        /* Bắt buộc xóa mọi viền khung ô vuông cũ */
+  border-radius: 0 !important;   /* Xóa bo góc khung nếu có */
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* 2. Đẩy Logo JobGenius nằm gọn ở bên trái */
+.logo {
+  flex: 1;                        /* Chiếm 1 phần không gian bên trái */
+  display: flex;
+  align-items: center;
+}
+
+.logo a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-size: 26px;
+  font-weight: 700;
+  color: #3B7A9E;                 /* Tông màu xanh chủ đạo */
+}
+
+/* 3. Đưa thanh Menu (Trang chủ, Lịch sử, Giới thiệu) RA CHÍNH GIỮA HEADER */
+.site-nav {
+  flex: 2;                        /* Chiếm phần giữa rộng hơn */
+  display: flex !important;
+  justify-content: center;        /* CĂN GIỮA MENU */
+  align-items: center;
+  gap: 30px;                      /* Khoảng cách giữa các nút menu */
+  margin: 0;
+  padding: 0;
+}
+
+.site-nav__link {
+  text-decoration: none;
+  color: #4a5568;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.site-nav__link:hover, 
+.site-nav__link.active {
+  color: #2C7DA0;
+  background-color: #eef7fa;
+}
+
+/* 4. Đẩy khối Auth (Tên User & Nút đăng xuất) sang góc bên phải */
+.auth-section {
+  flex: 1;                        /* Chiếm 1 phần không gian bên phải */
+  display: flex !important;
+  justify-content: flex-end;      /* CĂN SÁT LỀ PHẢI */
+  align-items: center;
+  gap: 12px;
+}
+.about-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+
+  .about-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .about-header h1 {
+    font-size: 36px;
+    color: #1a3a4a;
+    margin-bottom: 10px;
+  }
+
+  .about-header h1 i {
+    color: #2C7DA0;
+    margin-right: 10px;
+  }
+
+  .about-header p {
+    color: #666;
+    font-size: 16px;
+  }
+  .logo { font-size: 24px; font-weight: 700; color: #2C7DA0; }
+    .logo a { text-decoration: none; color: #2C7DA0; }
+    .logo i { margin-right: 8px; }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .about-card {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  }
+
+  .about-card h2 {
+    font-size: 22px;
+    color: #2C7DA0;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .about-card p {
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 15px;
+  }
+
+  .about-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .about-card ul li {
+    padding: 8px 0;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .about-card ul li i {
+    color: #2C7DA0;
+    width: 20px;
+  }
+
+  .about-card ul li:last-child {
+    border-bottom: none;
+  }
+
+  /* Form liên hệ */
+  .contact-form {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    margin-top: 40px;
+  }
+
+  .contact-form h2 {
+    font-size: 22px;
+    color: #2C7DA0;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .form-group {
+    margin-bottom: 18px;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #333;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    transition: border 0.3s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: #2C7DA0;
+    box-shadow: 0 0 0 3px rgba(44,125,160,0.1);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .btn-submit {
+    padding: 14px 35px;
+    background: #2C7DA0;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-submit:hover {
+    background: #1a5d7a;
+  }
+
+  .btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .btn-submit i {
+    font-size: 18px;
+  }
+
+  .success-message {
+    display: none;
+    background: #d4edda;
+    color: #155724;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+  }
+
+  .success-message.show {
+    display: block;
+  }
+
+  .error-message {
+    display: none;
+    background: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+  }
+
+  .error-message.show {
+    display: block;
+  }
+  /* ===== FOOTER STYLING ===== */
+.footer {
+  background-color: #1a3a4a; /* Màu xanh đậm thương hiệu */
+  color: #ffffff;
+  padding: 50px 20px 20px;
+  margin-top: 60px;
+  border-top: 4px solid #2C7DA0; /* Tạo điểm nhấn với màu thương hiệu chính */
+}
+
+.footer-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  text-align: center;
+}
+
+.footer-info h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.footer-info p {
+  color: #a0c4d6; /* Màu nhạt hơn để tạo chiều sâu */
+  font-size: 14px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #2C7DA0; /* Đổi màu khi di chuột vào */
+}
+
+.footer-copy {
+  font-size: 13px;
+  color: #888888;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 20px;
+  width: 100%;
+}
+
+  @media (max-width: 768px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+    }
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .about-container {
+      margin: 30px auto;
+      padding: 0 16px;
+    }
+  
+    .about-header h1 {
+      font-size: 30px;
+    }
+  
+    .about-grid {
+      gap: 30px;
+    }
+  
+    .about-card {
+      padding: 24px;
+    }
+  
+    .about-card h2 {
+      font-size: 20px;
+    }
+  
+    .contact-form {
+      padding: 24px;
+    }
+  
+    .contact-form h2 {
+      font-size: 20px;
+    }
+  
+    .form-row {
+      gap: 14px;
+    }
+  
+    .btn-submit {
+      padding: 12px 30px;
+      font-size: 15px;
+    }
+  }
+  
+  /* ===== TABLET NHỎ: 600px - 768px ===== */
+  @media (min-width: 600px) and (max-width: 768px) {
+    .about-container {
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+  
+    .about-header {
+      margin-bottom: 30px;
+    }
+  
+    .about-header h1 {
+      font-size: 28px;
+    }
+  
+    .about-header p {
+      font-size: 14px;
+    }
+  
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  
+    .about-card {
+      padding: 20px;
+    }
+  
+    .about-card h2 {
+      font-size: 18px;
+    }
+  
+    .about-card p {
+      font-size: 14px;
+    }
+  
+    .about-card ul li {
+      padding: 6px 0;
+      font-size: 14px;
+    }
+  
+    .contact-form {
+      padding: 20px;
+      margin-top: 30px;
+    }
+  
+    .contact-form h2 {
+      font-size: 18px;
+    }
+  
+    .contact-form p {
+      font-size: 14px;
+    }
+  
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+  
+    .form-group textarea {
+      min-height: 100px;
+    }
+  
+    .btn-submit {
+      width: 100%;
+      padding: 12px 20px;
+      font-size: 14px;
+      justify-content: center;
+    }
+  
+    .success-message,
+    .error-message {
+      font-size: 14px;
+      padding: 12px;
+    }
+  }
+  
+  /* ===== MOBILE: < 600px ===== */
+  @media (max-width: 600px) {
+    .about-container {
+      margin: 16px auto;
+      padding: 0 12px;
+    }
+  
+    .about-header {
+      margin-bottom: 24px;
+    }
+  
+    .about-header h1 {
+      font-size: 24px;
+    }
+  
+    .about-header h1 i {
+      font-size: 22px;
+    }
+  
+    .about-header p {
+      font-size: 13px;
+    }
+  
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+  
+    .about-card {
+      padding: 18px;
+      border-radius: 12px;
+    }
+  
+    .about-card h2 {
+      font-size: 17px;
+    }
+  
+    .about-card h2 i {
+      font-size: 18px;
+    }
+  
+    .about-card p {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+  
+    .about-card ul li {
+      padding: 6px 0;
+      font-size: 13px;
+      gap: 8px;
+    }
+  
+    .about-card ul li i {
+      width: 16px;
+      font-size: 14px;
+    }
+  
+    .contact-form {
+      padding: 16px;
+      margin-top: 24px;
+      border-radius: 12px;
+    }
+  
+    .contact-form h2 {
+      font-size: 17px;
+      margin-bottom: 12px;
+    }
+  
+    .contact-form h2 i {
+      font-size: 18px;
+    }
+  
+    .contact-form p {
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+  
+    .form-group {
+      margin-bottom: 14px;
+    }
+  
+    .form-group label {
+      font-size: 13px;
+    }
+  
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      padding: 10px 12px;
+      font-size: 13px;
+      border-radius: 6px;
+    }
+  
+    .form-group textarea {
+      min-height: 80px;
+    }
+  
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  
+    .btn-submit {
+      width: 100%;
+      padding: 12px 20px;
+      font-size: 14px;
+      justify-content: center;
+      border-radius: 6px;
+    }
+  
+    .btn-submit i {
+      font-size: 16px;
+    }
+  
+    .success-message,
+    .error-message {
+      font-size: 13px;
+      padding: 10px 12px;
+      border-radius: 6px;
+    }
+  }
+  
+  /* ===== MOBILE NHỎ: < 420px ===== */
+  @media (max-width: 420px) {
+    .about-container {
+      margin: 12px auto;
+      padding: 0 10px;
+    }
+  
+    .about-header h1 {
+      font-size: 20px;
+    }
+  
+    .about-header p {
+      font-size: 12px;
+    }
+  
+    .about-grid {
+      gap: 16px;
+    }
+  
+    .about-card {
+      padding: 14px;
+    }
+  
+    .about-card h2 {
+      font-size: 15px;
+    }
+  
+    .about-card p {
+      font-size: 12px;
+    }
+  
+    .about-card ul li {
+      padding: 5px 0;
+      font-size: 12px;
+    }
+  
+    .contact-form {
+      padding: 14px;
+    }
+  
+    .contact-form h2 {
+      font-size: 15px;
+    }
+  
+    .contact-form p {
+      font-size: 12px;
+    }
+  
+    .form-group label {
+      font-size: 12px;
+    }
+  
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+  
+    .btn-submit {
+      padding: 10px 16px;
+      font-size: 13px;
+    }
+  
+    .success-message,
+    .error-message {
+      font-size: 12px;
+      padding: 8px 10px;
+    }
+  } 

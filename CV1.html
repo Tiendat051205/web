@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV Profile với Bình luận</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f0f2f5;
+      color: #1a1a2e;
+      line-height: 1.6;
+    }
+
+    /* Layout chính */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+      max-width: 1400px;
+      margin: 0 auto;
+      background: white;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    /* Bên trái: CV (chiếm 2/3) */
+    .cv-section {
+      flex: 2;
+      background: white;
+      border-right: 1px solid #e0e0e0;
+      overflow-y: auto;
+      max-height: 100vh;
+      position: sticky;
+      top: 0;
+    }
+
+    /* Bên phải: Bình luận (chiếm 1/3) */
+    .comments-section {
+      flex: 1;
+      background: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+    }
+
+    /* ========== CV STYLES ========== */
+    .cv-content {
+      padding: 40px;
+    }
+
+    .cv-header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 3px solid #2C7DA0;
+    }
+
+    .avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+      border: 3px solid #2C7DA0;
+    }
+
+    .cv-name {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .cv-title {
+      color: #2C7DA0;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .cv-section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 25px 0 15px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #2C7DA0;
+      color: #2C7DA0;
+    }
+
+    .editable {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 8px;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .editable:hover {
+      background: #f0f7ff;
+      outline: 2px dashed #2C7DA0;
+    }
+
+    .editable:hover::after {
+      content: "✎ Click để sửa";
+      position: absolute;
+      right: 10px;
+      top: -20px;
+      background: #2C7DA0;
+      color: white;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .edit-input {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+      border: 2px solid #2C7DA0;
+      border-radius: 6px;
+      font-family: inherit;
+    }
+
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .skill-tag {
+      background: #e8f4f8;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+      color: #2C7DA0;
+    }
+
+    /* ========== COMMENTS STYLES ========== */
+    .comments-header {
+      padding: 20px;
+      background: white;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .comments-header h3 {
+      font-size: 20px;
+      color: #2C7DA0;
+    }
+
+    .comments-header p {
+      font-size: 14px;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .comments-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    .comment-item {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .comment-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .comment-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+
+    .comment-info {
+      flex: 1;
+    }
+
+    .comment-name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .comment-time {
+      font-size: 11px;
+      color: #999;
+    }
+
+    .comment-text {
+      color: #333;
+      line-height: 1.5;
+      margin-top: 8px;
+    }
+
+    .comment-actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 15px;
+    }
+
+    .comment-actions button {
+      background: none;
+      border: none;
+      color: #999;
+      cursor: pointer;
+      font-size: 12px;
+      transition: color 0.3s;
+    }
+
+    .comment-actions button:hover {
+      color: #2C7DA0;
+    }
+
+    .comment-input-area {
+      padding: 20px;
+      background: white;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .comment-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: inherit;
+      resize: vertical;
+      font-size: 14px;
+    }
+
+    .comment-input:focus {
+      outline: none;
+      border-color: #2C7DA0;
+    }
+
+    .send-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #2C7DA0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    .send-btn:hover {
+      background: #1a5d7a;
+    }
+
+    .edit-mode {
+      background: #fff9e6;
+    }
+
+    @media (max-width: 768px) {
+      .app-container {
+        flex-direction: column;
+      }
+      .cv-section, .comments-section {
+        flex: auto;
+        height: auto;
+        position: static;
+      }
+      .cv-section {
+        max-height: none;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="app-container">
+  <!-- Bên trái: CV có thể chỉnh sửa -->
+  <div class="cv-section">
+    <div class="cv-content">
+      <div class="cv-header">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar" class="avatar" id="avatar">
+        <h1 class="cv-name" id="name" class="editable">Nguyễn Văn A</h1>
+        <p class="cv-title" id="title" class="editable">Full Stack Developer</p>
+      </div>
+
+      <div class="cv-section-title">📞 Thông tin liên hệ</div>
+      <div class="editable" id="contact">
+        <p>📧 nguyenvana@example.com</p>
+        <p>📞 0123 456 789</p>
+        <p>📍 Hà Nội, Việt Nam</p>
+      </div>
+
+      <div class="cv-section-title">🎓 Học vấn</div>
+      <div class="editable" id="education">
+        <p><strong>Đại học Bách Khoa Hà Nội</strong></p>
+        <p>Công nghệ thông tin, 2016 - 2020</p>
+        <p>GPA: 3.6/4.0</p>
+      </div>
+
+      <div class="cv-section-title">💼 Kinh nghiệm làm việc</div>
+      <div class="editable" id="experience">
+        <p><strong>Công ty ABC</strong> - Frontend Developer (2020-2023)</p>
+        <p>Phát triển web app bằng React, Vue.js</p>
+        <p><strong>Công ty XYZ</strong> - Intern Developer (2019-2020)</p>
+        <p>Hỗ trợ phát triển website e-commerce</p>
+      </div>
+
+      <div class="cv-section-title">🛠 Kỹ năng</div>
+      <div class="editable" id="skills">
+        <div class="skill-list">
+          <span class="skill-tag">JavaScript/TypeScript</span>
+          <span class="skill-tag">React/Vue</span>
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">MongoDB/PostgreSQL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bên phải: Phần bình luận -->
+  <div class="comments-section">
+    <div class="comments-header">
+      <h3><i class="fas fa-comments"></i> Bình luận & Đánh giá</h3>
+      <p>Nhà tuyển dụng và đồng nghiệp nhận xét về CV này</p>
+    </div>
+
+    <div class="comments-list" id="commentsList">
+      <!-- Bình luận mẫu -->
+      <div class="comment-item">
+        <div class="comment-author">
+          <div class="comment-avatar">MT</div>
+          <div class="comment-info">
+            <div class="comment-name">Minh Thảo - HR Manager</div>
+            <div class="comment-time">2 ngày trước</div>
+          </div>
+        </div>
+        <div class="comment-text">
+          CV của bạn rất ấn tượng! Kỹ năng phù hợp với vị trí Senior Dev bên công ty mình.
+        </div>
+      </div>
+
+      <div class="comment-item">
+        <div class="comment-author">
+          <div class="comment-avatar">HL</div>
+          <div class="comment-info">
+            <div class="comment-name">Hoàng Long - Technical Lead</div>
+            <div class="comment-time">5 ngày trước</div>
+          </div>
+        </div>
+        <div class="comment-text">
+          Kinh nghiệm làm việc tốt, nhưng nên thêm phần dự án cá nhân để nổi bật hơn.
+        </div>
+      </div>
+    </div>
+
+    <div class="comment-input-area">
+      <textarea class="comment-input" id="commentInput" rows="3" placeholder="Viết bình luận của bạn... (tối đa 500 ký tự)"></textarea>
+      <button class="send-btn" id="sendCommentBtn">
+        <i class="fas fa-paper-plane"></i> Gửi bình luận
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ========== 1. CHỨC NĂNG CHỈNH SỬA CV ==========
+  // Lấy tất cả các element có class "editable"
+  const editableElements = document.querySelectorAll('.editable');
+  
+  editableElements.forEach(element => {
+    element.addEventListener('click', function(e) {
+      // Không cho edit nếu đang trong input
+      if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      
+      const currentContent = this.innerHTML;
+      const originalContent = currentContent;
+      
+      // Tạo input hoặc textarea tùy theo nội dung
+      let inputElement;
+      if(this.children.length > 0 || currentContent.includes('<br>')) {
+        // Nếu có nhiều dòng, dùng textarea
+        inputElement = document.createElement('textarea');
+        inputElement.value = currentContent.replace(/<br>/g, '\n').replace(/<[^>]*>/g, '');
+        inputElement.rows = 5;
+      } else {
+        inputElement = document.createElement('input');
+        inputElement.value = currentContent.replace(/<[^>]*>/g, '');
+      }
+      
+      inputElement.className = 'edit-input';
+      
+      // Thay thế nội dung bằng input
+      this.innerHTML = '';
+      this.appendChild(inputElement);
+      this.classList.add('edit-mode');
+      inputElement.focus();
+      
+      // Xử lý lưu khi nhấn Enter (với input) hoặc blur
+      const saveEdit = () => {
+        let newValue = inputElement.value;
+        if(this.children.length > 0 || currentContent.includes('<br>')) {
+          newValue = newValue.replace(/\n/g, '<br>');
+        }
+        this.innerHTML = newValue || originalContent;
+        this.classList.remove('edit-mode');
+        // Lưu vào localStorage
+        saveCVData();
+      };
+      
+      inputElement.addEventListener('blur', saveEdit);
+      inputElement.addEventListener('keypress', function(e) {
+        if(e.key === 'Enter' && !(inputElement.tagName === 'TEXTAREA' && !e.shiftKey)) {
+          e.preventDefault();
+          saveEdit();
+        }
+      });
+    });
+  });
+  
+  // Lưu dữ liệu CV vào localStorage
+  function saveCVData() {
+    const cvData = {
+      name: document.getElementById('name')?.innerHTML || '',
+      title: document.getElementById('title')?.innerHTML || '',
+      contact: document.getElementById('contact')?.innerHTML || '',
+      education: document.getElementById('education')?.innerHTML || '',
+      experience: document.getElementById('experience')?.innerHTML || '',
+      skills: document.getElementById('skills')?.innerHTML || ''
+    };
+    localStorage.setItem('cvData', JSON.stringify(cvData));
+    console.log('Đã lưu CV');
+  }
+  
+  // Tải dữ liệu CV từ localStorage
+  function loadCVData() {
+    const savedData = localStorage.getItem('cvData');
+    if(savedData) {
+      const cvData = JSON.parse(savedData);
+      if(cvData.name) document.getElementById('name').innerHTML = cvData.name;
+      if(cvData.title) document.getElementById('title').innerHTML = cvData.title;
+      if(cvData.contact) document.getElementById('contact').innerHTML = cvData.contact;
+      if(cvData.education) document.getElementById('education').innerHTML = cvData.education;
+      if(cvData.experience) document.getElementById('experience').innerHTML = cvData.experience;
+      if(cvData.skills) document.getElementById('skills').innerHTML = cvData.skills;
+    }
+  }
+  
+  // ========== 2. CHỨC NĂNG BÌNH LUẬN ==========
+  let comments = [];
+  
+  // Tải bình luận từ localStorage
+  function loadComments() {
+    const savedComments = localStorage.getItem('cvComments');
+    if(savedComments) {
+      comments = JSON.parse(savedComments);
+      renderComments();
+    }
+  }
+  
+  // Lưu bình luận vào localStorage
+  function saveComments() {
+    localStorage.setItem('cvComments', JSON.stringify(comments));
+  }
+  
+  // Hiển thị danh sách bình luận
+  function renderComments() {
+    const commentsList = document.getElementById('commentsList');
+    if(!commentsList) return;
+    
+    if(comments.length === 0) {
+      commentsList.innerHTML = '<div style="text-align:center;color:#999;padding:40px;">Chưa có bình luận nào. Hãy là người đầu tiên bình luận!</div>';
+      return;
+    }
+    
+    commentsList.innerHTML = comments.map((comment, index) => `
+      <div class="comment-item">
+        <div class="comment-author">
+          <div class="comment-avatar">${getInitials(comment.author)}</div>
+          <div class="comment-info">
+            <div class="comment-name">${escapeHtml(comment.author)}</div>
+            <div class="comment-time">${formatTime(comment.time)}</div>
+          </div>
+        </div>
+        <div class="comment-text">${escapeHtml(comment.text)}</div>
+        <div class="comment-actions">
+          <button onclick="deleteComment(${index})"><i class="fas fa-trash"></i> Xóa</button>
+          ${!comment.liked ? `<button onclick="likeComment(${index})"><i class="fas fa-thumbs-up"></i> Thích (${comment.likes || 0})</button>` : `<button style="color:#2C7DA0;"><i class="fas fa-thumbs-up"></i> Đã thích (${comment.likes})</button>`}
+        </div>
+      </div>
+    `).join('');
+  }
+  
+  // Lấy chữ cái đầu
+  function getInitials(name) {
+    if(!name) return 'U';
+    const words = name.split(' ');
+    if(words.length >= 2) {
+      return (words[0][0] + words[1][0]).toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+  }
+  
+  // Format thời gian
+  function formatTime(timestamp) {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diff = Math.floor((now - date) / 1000 / 60 / 60 / 24);
+    
+    if(diff === 0) return 'Hôm nay';
+    if(diff === 1) return 'Hôm qua';
+    if(diff < 7) return `${diff} ngày trước`;
+    return date.toLocaleDateString('vi-VN');
+  }
+  
+  // Thêm bình luận mới
+  function addComment(author, text) {
+    if(!text.trim()) {
+      alert('Vui lòng nhập nội dung bình luận!');
+      return false;
+    }
+    if(text.length > 500) {
+      alert('Bình luận không được quá 500 ký tự!');
+      return false;
+    }
+    
+    const newComment = {
+      author: author || 'Người dùng',
+      text: text.trim(),
+      time: new Date().toISOString(),
+      likes: 0,
+      liked: false
+    };
+    
+    comments.unshift(newComment); // Thêm lên đầu
+    saveComments();
+    renderComments();
+    return true;
+  }
+  
+  // Xóa bình luận
+  function deleteComment(index) {
+    if(confirm('Bạn có chắc muốn xóa bình luận này?')) {
+      comments.splice(index, 1);
+      saveComments();
+      renderComments();
+    }
+  }
+  
+  // Thích bình luận
+  function likeComment(index) {
+    if(comments[index] && !comments[index].liked) {
+      comments[index].likes = (comments[index].likes || 0) + 1;
+      comments[index].liked = true;
+      saveComments();
+      renderComments();
+    }
+  }
+  
+  // Escape HTML để tránh XSS
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+  
+  // Xử lý gửi bình luận
+  function sendComment() {
+    const commentInput = document.getElementById('commentInput');
+    const text = commentInput.value;
+    
+    // Lấy tên người dùng (có thể từ localStorage hoặc prompt)
+    let userName = localStorage.getItem('commentUserName');
+    if(!userName) {
+      userName = prompt('Vui lòng nhập tên của bạn để hiển thị trong bình luận:', 'Người dùng');
+      if(userName && userName.trim()) {
+        localStorage.setItem('commentUserName', userName.trim());
+      } else {
+        userName = 'Người dùng';
+      }
+    }
+    
+    if(addComment(userName, text)) {
+      commentInput.value = '';
+    }
+  }
+  
+  // Gán sự kiện cho nút gửi bình luận
+  const sendBtn = document.getElementById('sendCommentBtn');
+  if(sendBtn) {
+    sendBtn.addEventListener('click', sendComment);
+  }
+  
+  // Cho phép nhấn Ctrl+Enter để gửi
+  const commentInput = document.getElementById('commentInput');
+  if(commentInput) {
+    commentInput.addEventListener('keydown', function(e) {
+      if((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        sendComment();
+      }
+    });
+  }
+  
+  // Khởi tạo dữ liệu khi load trang
+  document.addEventListener('DOMContentLoaded', () => {
+    loadCVData();
+    loadComments();
+  });
+  
+  // Lưu CV khi người dùng rời trang
+  window.addEventListener('beforeunload', () => {
+    saveCVData();
+  });
+</script>
+</body>
+</html>

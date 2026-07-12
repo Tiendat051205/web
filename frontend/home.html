@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>JobGenius - Chọn Mẫu CV Tối Ưu</title>
+  <!-- Google Fonts & Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/home.css">
+
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="page-nav">
+    <div class="site-nav">
+      <a href="home.html" class="site-nav__link active"><i class="fas fa-home"></i> Trang chủ</a>
+      <a href="history.html" class="site-nav__link"><i class="fas fa-history"></i> Lịch sử CV</a>
+      <a href="about.html" class="site-nav__link"><i class="fas fa-info-circle"></i> Giới thiệu</a>
+      <a href="admin.html" id="adminLink" style="display: none;">🔧 Quản trị</a>
+      
+    </div>
+    <div class="auth-corner">
+      <div id="userProfile" style="display: none; align-items: center; flex-direction: column; gap: 2px; text-align: center;">
+        <img id="userAvatar" src="images/default-images.jpeg" alt="Avatar" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #2C7DA0;">
+        <span id="userNameDisplay" style="font-size: 13px; font-weight: 600; color: #333;"></span>
+      </div>
+      <span id="userNameDisplay" style="margin-right: 10px;"></span>
+      <button class="btn-login" id="loginBtn">Log in</button>
+      <button class="btn-signup" id="signupBtn">Sign up</button>
+      <button class="btn-logout" id="logoutBtn" style="display: none;">Đăng xuất</button>
+    </div>
+  </div>
+  <div class="top-bar">
+    <div class="header-title">
+      <h1><i class="fas fa-file-alt" style="color: #2C7DA0; margin-right: 8px;"></i>Select a job-winning CV template</h1>
+      <p>You can always change your template later. <span style="color:#2C7DA0;">✨ Preview: "Professional Modern"</span></p>
+    </div>
+  </div>
+  
+
+  <div class="templates-bar">
+    <div class="templates-left">
+      <span class="templates-label"><i class="fas fa-layer-group"></i> All templates</span>
+      <div class="template-list" id="templateFilter">
+        <button class="template-chip active" data-filter="all">Tất cả</button>
+        <button class="template-chip" data-filter="henry_simple">Simple</button>
+        <button class="template-chip" data-filter="henry_professional">Professional</button>
+        <button class="template-chip" data-filter="henry_modern">Modern</button>
+        <button class="template-chip" data-filter="henry_traditional">Traditional</button>
+      </div>
+    </div>
+  </div>
+  <!-- Grid 3 cột -->
+  <div class="cv-grid">
+  
+    <!-- Mẫu Henry Jones - Simple (1 cột) -->
+    <div class="cv-card" data-template-id="henry_simple">
+      <img src="images/Simple.jpeg" alt="Henry Jones Simple" class="cv-thumbnail">
+      <div class="cv-info">
+        <div class="cv-name">Henry Jones - Simple</div>
+        <div class="cv-category">Đơn giản · Chuyên nghiệp</div>
+        <div class="cv-description">Mẫu CV bố cục 1 cột, rõ ràng, tập trung vào nội dung.</div>
+        <div class="cv-tags">
+          <span class="tag">ATS-Friendly</span>
+          <span class="tag">Miễn phí</span>
+        </div>
+        <button class="select-btn" >✏️ Tạo CV này</button>
+      </div>
+    </div>
+  
+    <!-- Mẫu Henry Jones - Professional (2 cột) -->
+    <div class="cv-card" data-template-id="henry_professional">
+      <img src="images/Professional.jpeg" alt="Henry Jones Professional" class="cv-thumbnail">
+      <div class="cv-info">
+        <div class="cv-name">Henry Jones - Professional</div>
+        <div class="cv-category">2 cột · Hiện đại</div>
+        <div class="cv-description">Mẫu CV 2 cột, nổi bật kỹ năng và thông tin liên hệ.</div>
+        <div class="cv-tags">
+          <span class="tag">ATS-Friendly</span>
+          <span class="tag">Miễn phí</span>
+        </div>
+        <button class="select-btn">✏️ Tạo CV này</button>
+      </div>
+    </div>
+  
+    <!-- Mẫu Henry Jones - Traditional -->
+    <div class="cv-card" data-template-id="henry_traditional">
+      <img src="images/Tranditional.jpeg" alt="Henry Jones Traditional" class="cv-thumbnail">
+      <div class="cv-info">
+        <div class="cv-name">Henry Jones - Traditional</div>
+        <div class="cv-category">Cổ điển · Trang trọng</div>
+        <div class="cv-description">Mẫu CV truyền thống, phù hợp vị trí quản lý cấp cao.</div>
+        <div class="cv-tags">
+          <span class="tag">Executive</span>
+          <span class="tag">Premium</span>
+        </div>
+        <button class="select-btn" >✏️ Tạo CV này</button>
+      </div>
+    </div>
+  
+    <!-- Mẫu Henry Jones - Modern -->
+    <div class="cv-card" data-template-id="henry_modern">
+      <img src="images/Modern.jpeg" alt="Henry Jones Modern" class="cv-thumbnail">
+      <div class="cv-info">
+        <div class="cv-name">Henry Jones - Modern</div>
+        <div class="cv-category">Sáng tạo · Nổi bật</div>
+        <div class="cv-description">Mẫu CV màu sắc nổi bật, phù hợp ngành sáng tạo.</div>
+        <div class="cv-tags">
+          <span class="tag">Creative</span>
+          <span class="tag">Premium</span>
+        </div>
+        <button class="select-btn" >✏️ Tạo CV này</button>
+      </div>
+    </div>
+  
+  </div>
+  
+  
+  <div id="adPopup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
+    <div style="background: white; border-radius: 20px; padding: 30px; max-width: 450px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.4); position: relative; animation: popupFadeIn 0.4s ease;">
+      
+      <!-- Nút đóng (X) -->
+      <button id="closeAdBtn" style="position: absolute; top: 12px; right: 18px; background: none; border: none; font-size: 28px; cursor: pointer; color: #999; transition: 0.3s;">&times;</button>
+      
+      <!-- Nội dung quảng cáo -->
+      <div style="text-align: center;">
+        <!-- Ảnh quảng cáo (có thể thay link) -->
+        <img id = "adImage" alt="Quảng cáo" style="width: 100%; border-radius: 12px; margin-bottom: 15px;">
+        
+        <h2 style="color: #2C7DA0; margin: 10px 0;">🎯 Tạo CV Chuyên Nghiệp</h2>
+        <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
+          Nhận ngay ưu đãi đặc biệt cho CV của bạn. Hàng trăm mẫu CV đẹp, chuẩn nhà tuyển dụng.
+        </p>
+        
+        <!-- Nút hành động -->
+        <a href="#" style="display: inline-block; padding: 12px 35px; background: #2C7DA0; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; transition: 0.3s;">Khám phá ngay</a>
+      </div>
+    </div>
+  </div>
+  <style>
+    @keyframes popupFadeIn {
+      from { opacity: 0; transform: scale(0.9) translateY(-30px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+  </style>
+  
+  
+  <footer class="footer">
+    <div class="footer-content">
+      
+      <div class="footer-info">
+        <h3><i class="fas fa-file-alt"></i> JobGenius</h3>
+        <p>Tạo CV chuyên nghiệp, dễ dàng và nhanh chóng trong vài phút.</p>
+      </div>
+  
+      <div class="footer-links">
+        <a href="home.html">Trang chủ</a>
+        <a href="history.html">Lịch sử CV</a>
+        <a href="about.html">Giới thiệu</a>
+        <a href="#">Hỗ trợ</a>
+        <a href="#">Điều khoản sử dụng</a>
+      </div>
+  
+      <div class="footer-copy">
+        &copy; 2024 JobGenius. All rights reserved.
+      </div>
+  
+    </div>
+  </footer>
+
+
+
+<!-- một chút tương tác nhỏ: các category chuyển active (chỉ demo visual) -->
+<script src="js/home.js"></script>
+<script src="js/auth-ui.js"></script>
+<script src="js/popup.js"></script>
+
+</body>
+
+</html>

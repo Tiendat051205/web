@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lịch sử CV của tôi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/history.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <a href="home.html"><i class="fas fa-file-alt"></i> JobGenius</a>
+    </div>
+    <nav class="nav-menu site-nav">
+      <a href="home.html" class="site-nav__link"><i class="fas fa-home"></i> Trang chủ</a>
+      <a href="history.html" class="site-nav__link active"><i class="fas fa-history"></i> Lịch sử CV</a>
+      <a href="about.html" class="site-nav__link"><i class="fas fa-info-circle"></i> Giới thiệu</a>
+      <a href="admin.html" id="adminLink" style="display: none;">🔧 Quản trị</a>
+    </nav>
+    <div class="auth-section" id="authSection"></div>
+  </header>
+
+  <!-- Main -->
+  <div class="container">
+    <h1 class="page-title"><i class="fas fa-history"></i> Lịch sử CV của tôi</h1>
+    <p class="page-subtitle">Những CV bạn đã tạo và chỉnh sửa trước đây. Click vào CV để xem chi tiết.</p>
+
+    <div id="cvList">
+      <div class="loading"><i class="fas fa-spinner fa-spin"></i><br>Đang tải danh sách CV...</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-info">
+        <h3><i class="fas fa-file-alt"></i> JobGenius</h3>
+        <p>Tạo CV chuyên nghiệp, dễ dàng và nhanh chóng.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Giới thiệu</a>
+        <a href="#">Mẫu CV</a>
+        <a href="#">Hỗ trợ</a>
+        <a href="#">Điều khoản</a>
+      </div>
+      <div class="footer-copy">&copy; 2024 JobGenius. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script src="js/history.js"></script>
+</body>
+</html>
