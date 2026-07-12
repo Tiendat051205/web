@@ -329,327 +329,98 @@
   width: 100%;
 }
 
-  @media (max-width: 768px) {
-    .about-grid {
-      grid-template-columns: 1fr;
-    }
-    .form-row {
-      grid-template-columns: 1fr;
-    }
-  }
-  @media (min-width: 769px) and (max-width: 1024px) {
-    .about-container {
-      margin: 30px auto;
-      padding: 0 16px;
-    }
   
-    .about-header h1 {
-      font-size: 30px;
-    }
-  
-    .about-grid {
-      gap: 30px;
-    }
-  
-    .about-card {
-      padding: 24px;
-    }
-  
-    .about-card h2 {
-      font-size: 20px;
-    }
-  
-    .contact-form {
-      padding: 24px;
-    }
-  
-    .contact-form h2 {
-      font-size: 20px;
-    }
-  
-    .form-row {
-      gap: 14px;
-    }
-  
-    .btn-submit {
-      padding: 12px 30px;
-      font-size: 15px;
-    }
-  }
   
   /* ===== TABLET NHỎ: 600px - 768px ===== */
-  @media (min-width: 600px) and (max-width: 768px) {
-    .about-container {
-      margin: 24px auto;
-      padding: 0 16px;
-    }
-  
-    .about-header {
-      margin-bottom: 30px;
-    }
-  
-    .about-header h1 {
-      font-size: 28px;
-    }
-  
-    .about-header p {
-      font-size: 14px;
-    }
-  
-    .about-grid {
-      grid-template-columns: 1fr;
-      gap: 24px;
-    }
-  
-    .about-card {
-      padding: 20px;
-    }
-  
-    .about-card h2 {
-      font-size: 18px;
-    }
-  
-    .about-card p {
-      font-size: 14px;
-    }
-  
-    .about-card ul li {
-      padding: 6px 0;
-      font-size: 14px;
-    }
-  
-    .contact-form {
-      padding: 20px;
-      margin-top: 30px;
-    }
-  
-    .contact-form h2 {
-      font-size: 18px;
-    }
-  
-    .contact-form p {
-      font-size: 14px;
-    }
-  
-    .form-row {
-      grid-template-columns: 1fr;
-      gap: 0;
-    }
-  
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-      padding: 10px 12px;
-      font-size: 13px;
-    }
-  
-    .form-group textarea {
-      min-height: 100px;
-    }
-  
-    .btn-submit {
-      width: 100%;
-      padding: 12px 20px;
-      font-size: 14px;
-      justify-content: center;
-    }
-  
-    .success-message,
-    .error-message {
-      font-size: 14px;
-      padding: 12px;
-    }
+  /* ==========================================
+   RESPONSIVE MỚI - 3 NGƯỠNG (800px & 1200px)
+   ========================================== */
+
+/* 1. TABLET: 800px - 1199px */
+@media (min-width: 800px) and (max-width: 1199px) {
+  .header {
+    padding: 15px 30px;
   }
-  
-  /* ===== MOBILE: < 600px ===== */
-  @media (max-width: 600px) {
-    .about-container {
-      margin: 16px auto;
-      padding: 0 12px;
-    }
-  
-    .about-header {
-      margin-bottom: 24px;
-    }
-  
-    .about-header h1 {
-      font-size: 24px;
-    }
-  
-    .about-header h1 i {
-      font-size: 22px;
-    }
-  
-    .about-header p {
-      font-size: 13px;
-    }
-  
-    .about-grid {
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-  
-    .about-card {
-      padding: 18px;
-      border-radius: 12px;
-    }
-  
-    .about-card h2 {
-      font-size: 17px;
-    }
-  
-    .about-card h2 i {
-      font-size: 18px;
-    }
-  
-    .about-card p {
-      font-size: 13px;
-      line-height: 1.6;
-    }
-  
-    .about-card ul li {
-      padding: 6px 0;
-      font-size: 13px;
-      gap: 8px;
-    }
-  
-    .about-card ul li i {
-      width: 16px;
-      font-size: 14px;
-    }
-  
-    .contact-form {
-      padding: 16px;
-      margin-top: 24px;
-      border-radius: 12px;
-    }
-  
-    .contact-form h2 {
-      font-size: 17px;
-      margin-bottom: 12px;
-    }
-  
-    .contact-form h2 i {
-      font-size: 18px;
-    }
-  
-    .contact-form p {
-      font-size: 13px;
-      margin-bottom: 16px;
-    }
-  
-    .form-group {
-      margin-bottom: 14px;
-    }
-  
-    .form-group label {
-      font-size: 13px;
-    }
-  
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-      padding: 10px 12px;
-      font-size: 13px;
-      border-radius: 6px;
-    }
-  
-    .form-group textarea {
-      min-height: 80px;
-    }
-  
-    .form-row {
-      grid-template-columns: 1fr;
-      gap: 0;
-    }
-  
-    .btn-submit {
-      width: 100%;
-      padding: 12px 20px;
-      font-size: 14px;
-      justify-content: center;
-      border-radius: 6px;
-    }
-  
-    .btn-submit i {
-      font-size: 16px;
-    }
-  
-    .success-message,
-    .error-message {
-      font-size: 13px;
-      padding: 10px 12px;
-      border-radius: 6px;
-    }
+  .about-container {
+    max-width: 1100px;
+    margin: 35px auto;
+    padding: 0 20px;
   }
-  
-  /* ===== MOBILE NHỎ: < 420px ===== */
-  @media (max-width: 420px) {
-    .about-container {
-      margin: 12px auto;
-      padding: 0 10px;
-    }
-  
-    .about-header h1 {
-      font-size: 20px;
-    }
-  
-    .about-header p {
-      font-size: 12px;
-    }
-  
-    .about-grid {
-      gap: 16px;
-    }
-  
-    .about-card {
-      padding: 14px;
-    }
-  
-    .about-card h2 {
-      font-size: 15px;
-    }
-  
-    .about-card p {
-      font-size: 12px;
-    }
-  
-    .about-card ul li {
-      padding: 5px 0;
-      font-size: 12px;
-    }
-  
-    .contact-form {
-      padding: 14px;
-    }
-  
-    .contact-form h2 {
-      font-size: 15px;
-    }
-  
-    .contact-form p {
-      font-size: 12px;
-    }
-  
-    .form-group label {
-      font-size: 12px;
-    }
-  
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-      padding: 8px 10px;
-      font-size: 12px;
-    }
-  
-    .btn-submit {
-      padding: 10px 16px;
-      font-size: 13px;
-    }
-  
-    .success-message,
-    .error-message {
-      font-size: 12px;
-      padding: 8px 10px;
-    }
-  } 
+
+  .about-header h1 {
+    font-size: 32px;
+  }
+
+  .about-grid {
+    gap: 35px;
+  }
+
+  .about-card {
+    padding: 28px;
+  }
+
+  .contact-form {
+    padding: 28px;
+    margin-top: 35px;
+  }
+
+  .form-row {
+    gap: 20px;
+  }
+
+  .btn-submit {
+    padding: 13px 32px;
+    font-size: 15.5px;
+  }
+}
+
+/* 2. MOBILE: Dưới 800px */
+@media (max-width: 799px) {
+  .header {
+    padding: 12px 20px;
+    flex-direction: column;           /* Chuyển thành cột dọc */
+    gap: 15px;
+    text-align: center;
+  }
+  .about-container {
+    margin: 20px auto;
+    padding: 0 15px;
+  }
+
+  .about-header {
+    margin-bottom: 35px;
+  }
+
+  .about-header h1 {
+    font-size: 26px;
+  }
+
+  .about-header p {
+    font-size: 15px;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .about-card {
+    padding: 22px;
+  }
+
+  .contact-form {
+    padding: 22px;
+    margin-top: 30px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .btn-submit {
+    width: 100%;
+    padding: 13px 25px;
+    font-size: 15px;
+  }
+}

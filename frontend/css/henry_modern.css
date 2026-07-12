@@ -218,33 +218,132 @@
     .footer-copy { font-size: 13px; color: #666; }
     
     /* ===== RESPONSIVE ===== */
-    @media (max-width: 1024px) {
-      .main-container { flex-direction: column; padding: 20px; gap: 20px; }
-      .comments-wrapper { max-height: 450px; }
-    }
-    @media (max-width: 768px) {
-      .header { padding: 12px 20px; flex-direction: column; align-items: stretch; text-align: center; }
-      .nav-menu { justify-content: center; gap: 12px; }
-      .auth-section { justify-content: center; }
-      .main-container { flex-direction: column; padding: 15px; gap: 15px; }
-      .cv-wrapper { padding: 15px; }
-      .cv-card { padding: 20px; }
-      .contact-row { flex-direction: column; gap: 8px; }
-      .cv-name { font-size: 28px; }
-      .cv-action-buttons { flex-direction: column; gap: 10px; }
-      .btn-save, .btn-download { padding: 12px 20px; font-size: 14px; }
-      .footer { padding: 20px; }
-      .footer-content { flex-direction: column; text-align: center; }
-      .footer-links { justify-content: center; }
-      .editable:hover::after { display: none; }
-      .skills-list li { font-size: 13px; padding: 4px 12px; }
-      .comments-wrapper { max-height: 350px; }
-    }
-    @media (max-width: 480px) {
-      .header { padding: 12px 16px; }
-      .cv-card { padding: 15px; }
-      .cv-name { font-size: 22px; }
-      .exp-header { flex-direction: column; }
-      .comments-wrapper { max-height: 300px; }
-      .main-container { padding: 10px; gap: 10px; }
-    }
+    /* ============================================================
+   RESPONSIVE MỚI - 3 NGƯỠNG (800px & 1200px)
+   ============================================================ */
+
+/* 1. TABLET: 800px - 1199px */
+@media (min-width: 800px) and (max-width: 1199px) {
+  .main-container {
+    padding: 25px;
+    gap: 25px;
+  }
+
+  .cv-wrapper {
+    padding: 25px;
+  }
+
+  .cv-card {
+    padding: 30px;
+  }
+
+  .cv-name {
+    font-size: 32px;
+  }
+
+  .comments-wrapper {
+    max-height: 550px;
+  }
+
+  .header {
+    padding: 15px 30px;
+  }
+}
+
+/* 2. MOBILE: Dưới 800px */
+@media (max-width: 799px) {
+  .header {
+    padding: 12px 20px;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .nav-menu {
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .auth-section {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .main-container {
+    flex-direction: column;
+    padding: 15px;
+    gap: 20px;
+  }
+
+  .cv-wrapper {
+    padding: 20px;
+  }
+
+  .cv-card {
+    padding: 25px;
+  }
+
+  .cv-name {
+    font-size: 28px;
+  }
+
+  .cv-title {
+    font-size: 17px;
+  }
+
+  .contact-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .exp-header,
+  .edu-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .cv-action-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn-save,
+  .btn-download {
+    padding: 13px 20px;
+    font-size: 15px;
+  }
+
+  .skills-list li {
+    font-size: 13px;
+    padding: 5px 12px;
+  }
+
+  .footer {
+    padding: 20px 15px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .footer-links {
+    justify-content: center;
+  }
+
+  .comments-wrapper {
+    max-height: 400px;
+  }
+
+  .comment-input-area {
+    padding: 15px;
+  }
+
+  .editable:hover::after {
+    display: none;
+  }
+}

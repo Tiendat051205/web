@@ -146,43 +146,7 @@
   }
   
   /* Responsive: khi màn hình nhỏ, cho phép cuộn ngang phần template */
-  @media (max-width: 768px) {
-    .templates-bar {
-      flex-direction: column;
-      align-items: stretch;
-      padding: 12px 16px;
-    }
-    
-    .template-list {
-      overflow-x: auto;
-      flex-wrap: nowrap;
-      padding-bottom: 4px;
-    }
-    
-    .photo-btn {
-      justify-content: center;
-    }
-
-    .page-nav {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .auth-corner {
-      justify-content: flex-start;
-      margin-left: 0;
-    }
-
-    .site-nav {
-      border-radius: 16px;
-      padding: 8px;
-    }
-
-    .site-nav__link {
-      padding: 8px 10px;
-      font-size: 0.88rem;
-    }
-  }
+  
 
   /* preview chính */
   
@@ -428,30 +392,7 @@
     background: #1a5d7a;
   }
 
-  /* ========== RESPONSIVE ========== */
-  /* Tablet: 2 cột */
-  @media (max-width: 900px) {
-    .cv-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-  }
-
-  /* Mobile: 1 cột */
-  @media (max-width: 600px) {
-    .cv-grid {
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-    
-    body {
-      padding: 20px 15px;
-    }
-    
-    .page-title h1 {
-      font-size: 24px;
-    }
-  }
+  
 
 /* Nút đăng xuất */
 .btn-logout {
@@ -570,3 +511,134 @@
 }
 
 
+
+/* ============================================================
+   RESPONSIVE MỚI - 3 NGƯỠNG (800px & 1200px)
+   ============================================================ */
+
+/* 1. TABLET: 800px - 1199px */
+@media (min-width: 800px) and (max-width: 1199px) {
+  .container {
+    max-width: 1100px;
+  }
+
+  .cv-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .cv-thumbnail {
+    height: 240px;
+  }
+
+  .header-title h1 {
+    font-size: 1.6rem;
+  }
+
+  .templates-bar {
+    padding: 12px 20px;
+  }
+
+  .site-nav__link {
+    padding: 8px 14px;
+    font-size: 0.93rem;
+  }
+}
+
+/* 2. MOBILE: Dưới 800px */
+@media (max-width: 799px) {
+  body {
+    padding: 20px 15px 40px 15px;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .header-title h1 {
+    font-size: 1.5rem;
+  }
+
+  .header-title p {
+    font-size: 0.85rem;
+  }
+
+  /* Header & Navigation */
+  .top-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .templates-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  .template-list {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 6px;
+  }
+
+  .site-nav {
+    justify-content: center;
+    padding: 6px;
+    width: 100%;
+  }
+
+  .site-nav__link {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+
+  .auth-corner {
+    justify-content: center;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  /* CV Grid */
+  .cv-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .cv-card {
+    margin-bottom: 8px;
+  }
+
+  .cv-thumbnail {
+    height: 220px;
+  }
+
+  .cv-info {
+    padding: 18px;
+  }
+
+  .cv-name {
+    font-size: 17px;
+  }
+
+  .select-btn {
+    padding: 13px;
+    font-size: 15px;
+  }
+
+  /* Buttons */
+  .btn-login,
+  .btn-signup,
+  .btn-logout,
+  .choose-later-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 20px;
+  }
+
+  .photo-btn {
+    justify-content: center;
+    padding: 10px 20px;
+  }
+}

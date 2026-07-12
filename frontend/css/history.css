@@ -165,90 +165,132 @@
     .footer-links a:hover { color: #2C7DA0; }
     .footer-copy { font-size: 14px; color: #999; }
 
-    @media (max-width: 768px) {
-      .header { flex-direction: column; gap: 10px; padding: 15px 20px; }
-      .nav-menu { flex-wrap: wrap; justify-content: center; gap: 15px; }
-      .auth-section { flex-wrap: wrap; justify-content: center; }
-      .cv-grid { grid-template-columns: 1fr; }
-      .footer-content { flex-direction: column; text-align: center; }
-      .footer-links { flex-wrap: wrap; justify-content: center; }
-    }
-    @media (min-width: 769px) and (max-width: 1024px) {
-        .cv-grid {
-          grid-template-columns: repeat(2, 1fr);
-          gap: 20px;
-        }
-        .container { padding: 30px 16px; }
-        .cv-card { padding: 20px; }
-        .cv-name { font-size: 18px; }
-        .footer { padding: 25px 30px; }
-      }
-      
-      /* Tablet nhỏ: 600px - 768px */
-      @media (min-width: 600px) and (max-width: 768px) {
-        .header { flex-direction: column; gap: 10px; padding: 12px 20px; }
-        .logo { font-size: 20px; }
-        .nav-menu { justify-content: center; gap: 12px; flex-wrap: wrap; }
-        .nav-menu a { font-size: 13px; }
-        .auth-section { justify-content: center; flex-wrap: wrap; }
-        .btn-outline, .btn-primary, .btn-logout { padding: 6px 14px; font-size: 13px; }
-        .container { padding: 20px 16px; }
-        .page-title { font-size: 22px; }
-        .page-subtitle { font-size: 13px; margin-bottom: 20px; }
-        .cv-grid { grid-template-columns: 1fr; gap: 16px; }
-        .cv-card { padding: 18px; }
-        .cv-name { font-size: 18px; }
-        .cv-title { font-size: 13px; }
-        .cv-actions { flex-wrap: wrap; gap: 8px; }
-        .btn-edit, .btn-delete, .btn-view { flex: 1; min-width: 70px; padding: 8px 12px; font-size: 13px; }
-        .footer { padding: 20px; margin-top: 30px; }
-        .footer-content { flex-direction: column; text-align: center; gap: 12px; }
-        .footer-links { justify-content: center; flex-wrap: wrap; }
-        .footer-info h3 { font-size: 16px; }
-        .footer-info p { font-size: 13px; }
-        .footer-links a { font-size: 13px; }
-        .footer-copy { font-size: 12px; }
-        .empty-state { padding: 40px 20px; }
-        .empty-state i { font-size: 48px; }
-        .empty-state h3 { font-size: 18px; }
-        .btn-create { padding: 10px 24px; font-size: 13px; }
-      }
-      
-      /* Mobile nhỏ: < 480px */
-      @media (max-width: 480px) {
-        body { background: #f5f7fa; }
-        .header { padding: 10px 16px; gap: 8px; }
-        .logo { font-size: 18px; }
-        .nav-menu { gap: 8px; }
-        .nav-menu a { font-size: 12px; }
-        .btn-outline, .btn-primary, .btn-logout { padding: 4px 10px; font-size: 12px; }
-        .user-name-display { font-size: 12px; }
-        .container { padding: 16px 12px; }
-        .page-title { font-size: 20px; }
-        .page-title i { font-size: 18px; }
-        .page-subtitle { font-size: 12px; margin-bottom: 16px; }
-        .cv-grid { gap: 12px; }
-        .cv-card { padding: 14px; border-left-width: 3px; }
-        .cv-header-info { flex-direction: column; gap: 6px; }
-        .cv-template-badge { font-size: 10px; padding: 2px 10px; }
-        .cv-date { font-size: 10px; }
-        .cv-name { font-size: 16px; }
-        .cv-title { font-size: 12px; margin-bottom: 10px; }
-        .cv-preview { font-size: 12px; -webkit-line-clamp: 3; }
-        .cv-actions { flex-direction: column; gap: 6px; padding-top: 12px; }
-        .btn-edit, .btn-delete, .btn-view { width: 100%; padding: 8px; font-size: 13px; border-radius: 6px; }
-        .footer { padding: 16px; margin-top: 20px; }
-        .footer-info h3 { font-size: 15px; }
-        .footer-info p { font-size: 12px; }
-        .footer-links { gap: 12px; }
-        .footer-links a { font-size: 12px; }
-        .footer-copy { font-size: 11px; }
-        .empty-state { padding: 30px 16px; }
-        .empty-state i { font-size: 40px; }
-        .empty-state h3 { font-size: 16px; }
-        .empty-state p { font-size: 13px; }
-        .btn-create { padding: 8px 20px; font-size: 13px; }
-        .loading { padding: 30px 16px; }
-        .loading i { font-size: 32px; }
-        .loading br { display: none; }
-      }
+    /* ============================================================
+   RESPONSIVE MỚI - 3 NGƯỠNG (800px & 1200px)
+   ============================================================ */
+
+/* 1. TABLET: 800px - 1199px */
+@media (min-width: 800px) and (max-width: 1199px) {
+  .container {
+    padding: 30px 20px;
+  }
+
+  .cv-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 22px;
+  }
+
+  .cv-card {
+    padding: 22px;
+  }
+
+  .page-title {
+    font-size: 26px;
+  }
+
+  .footer {
+    padding: 25px 30px;
+  }
+}
+
+/* 2. MOBILE: Dưới 800px */
+@media (max-width: 799px) {
+  .header {
+    padding: 12px 20px;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .logo {
+    font-size: 22px;
+  }
+
+  .nav-menu {
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .nav-menu a {
+    font-size: 14px;
+  }
+
+  .auth-section {
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .btn-outline,
+  .btn-primary,
+  .btn-logout {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .container {
+    padding: 20px 15px;
+  }
+
+  .page-title {
+    font-size: 24px;
+  }
+
+  .page-subtitle {
+    font-size: 13.5px;
+    margin-bottom: 25px;
+  }
+
+  .cv-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .cv-card {
+    padding: 20px;
+  }
+
+  .cv-name {
+    font-size: 18px;
+  }
+
+  .cv-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn-edit,
+  .btn-delete,
+  .btn-view {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .footer {
+    padding: 20px 15px;
+    margin-top: 30px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .footer-links {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .empty-state {
+    padding: 45px 20px;
+  }
+
+  .empty-state i {
+    font-size: 52px;
+  }
+}

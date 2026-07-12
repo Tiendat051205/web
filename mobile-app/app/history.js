@@ -13,7 +13,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
 // 🔴 CẬP NHẬT API Ở ĐÂY: Sửa IP và Port theo Backend của bạn
-const API_URL = 'http://192.190.20.103:3000/api'; 
+const API_URL = 'http://192.168.2.45:3000/api'; 
 
 export default function HistoryScreen() {
   const router = useRouter();

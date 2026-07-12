@@ -28,7 +28,7 @@ export default function RegisterScreen() {
     }
 
     try {
-      const response = await fetch('http://192.190.20.103:3000/api/register', {
+      const response = await fetch('http://192.168.2.45:3000/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fullName, email, password })

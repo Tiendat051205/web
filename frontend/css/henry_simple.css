@@ -216,35 +216,127 @@
     
     
     /* ===== RESPONSIVE ===== */
-    @media (max-width: 1024px) {
-      .main-container { height: auto; overflow: visible; flex-direction: column; }
-      .comments-wrapper { width: 100%; height: 450px; border-left: none; border-top: 1px solid #e0e0e0; }
-    }
-    @media (max-width: 768px) {
-      .header { padding: 15px 20px; flex-direction: column; align-items: stretch; text-align: center; }
-      .nav-menu { justify-content: center; }
-      .auth-section { justify-content: center; }
-      .cv-card { flex-direction: column; }
-      .cv-left { width: 100%; }
-      .cv-right { width: 100%; }
-      .cv-wrapper { padding: 15px; }
-      .cv-left { padding: 20px; }
-      .cv-right { padding: 20px; }
-      .cv-name-left { font-size: 18px; }
-      .cv-name-right { font-size: 22px; }
-      .cv-action-buttons { flex-direction: column; align-items: stretch; }
-      .btn-save, .btn-download { justify-content: center; }
-      .footer-content { flex-direction: column; text-align: center; }
-      .footer-links { justify-content: center; }
-      .comments-wrapper { height: 350px; }
-      /* Ẩn tooltip trên mobile */
-      .editable:hover::after { display: none; }
-    }
-    @media (max-width: 480px) {
-      .header { padding: 12px 16px; }
-      .cv-left { padding: 15px; }
-      .cv-right { padding: 15px; }
-      .cv-name-right { font-size: 18px; }
-      .exp-header { flex-direction: column; }
-      .comments-wrapper { height: 300px; }
-    }
+    /* ============================================================
+   RESPONSIVE MỚI - 3 NGƯỠNG (800px & 1200px)
+   ============================================================ */
+
+/* 1. TABLET: 800px - 1199px */
+@media (min-width: 800px) and (max-width: 1199px) {
+  .main-container {
+    height: auto;
+    overflow: visible;
+  }
+
+  .cv-wrapper {
+    padding: 25px;
+  }
+
+  .cv-card {
+    max-width: 780px;
+  }
+
+  .cv-left {
+    padding: 25px;
+  }
+
+  .cv-right {
+    padding: 25px;
+  }
+
+  .comments-wrapper {
+    height: 520px;
+  }
+
+  .header {
+    padding: 15px 30px;
+  }
+}
+
+/* 2. MOBILE: Dưới 800px */
+@media (max-width: 799px) {
+  .header {
+    padding: 12px 20px;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .nav-menu {
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .auth-section {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .main-container {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+
+  .cv-wrapper {
+    padding: 15px;
+  }
+
+  .cv-card {
+    flex-direction: column;
+  }
+
+  .cv-left {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .cv-right {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .cv-name-left {
+    font-size: 19px;
+  }
+
+  .cv-name-right {
+    font-size: 24px;
+  }
+
+  .cv-action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-save,
+  .btn-download {
+    justify-content: center;
+  }
+
+  .footer {
+    padding: 20px 15px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .footer-links {
+    justify-content: center;
+  }
+
+  .comments-wrapper {
+    width: 100%;
+    height: 380px;
+    border-left: none;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  .editable:hover::after {
+    display: none;
+  }
+}
