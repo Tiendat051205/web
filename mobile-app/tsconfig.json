@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+, "app/about.jsx", "app/admin.jsx", "app/edit.jsx", "app/history.jsx", "app/home.jsx", "app/index.jsx", "app/pdfGenerator.jsx", "app/register.jsx"  ]
 }

@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 
 // 🔴 CẬP NHẬT API Ở ĐÂY: Sửa IP và Port
-const API_URL = 'http://192.168.2.45:3000/api';
+const API_URL = 'http://192.190.20.103:3000/api';
 
 export default function AboutScreen() {
   const router = useRouter();
@@ -139,7 +139,7 @@ export default function AboutScreen() {
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Nội dung *</Text>
               <TextInput 
-                style={[styles.input, styles.textArea]} 
+                style={[styles.input, styles.textArea,]} 
                 value={message} 
                 onChangeText={setMessage} 
                 placeholder="Nhập nội dung của bạn..." 

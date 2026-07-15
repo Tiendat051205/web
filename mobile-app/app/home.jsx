@@ -16,20 +16,20 @@ import {
 export default function HomeScreen() {
   const router = useRouter();
   
-  // States quản lý dữ liệu
   const [userName, setUserName] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showAdPopup, setShowAdPopup] = useState(false);
   const [userData, setUserData] = useState({});
+  const [activeFilter, setActiveFilter] = useState('all'); 
+  
+  const [adImageSource, setAdImageSource] = useState(null);
 
-  // Hàm kiểm tra Admin giống auth-ui.js
   const isAdminUser = (user) => {
     const role = String(user.role || '').toLowerCase();
     const isAdminFlag = user.isAdmin === true || user.isAdmin === 1 || user.isAdmin === '1';
     return role === 'admin' || isAdminFlag;
   };
 
-  // 1. Logic kiểm tra trạng thái đăng nhập (Đã gộp chuẩn xác)
   const checkLoginStatus = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
@@ -45,14 +45,14 @@ export default function HomeScreen() {
     }
   };
 
-  // Mảng dữ liệu các mẫu CV
+  // Mảng gốc chứa đúng 4 ảnh CV
   const cvTemplates = [
     {
       id: 'henry_simple',
       name: 'Henry Jones - Simple',
       category: 'Đơn giản · Chuyên nghiệp',
       desc: 'Mẫu CV bố cục 1 cột, rõ ràng, tập trung vào nội dung.',
-      img: 'https://picsum.photos/id/20/400/280',
+      img: require('../assets/images/Simple.jpeg'), 
       tags: ['ATS-Friendly', 'Miễn phí']
     },
     {
@@ -60,7 +60,7 @@ export default function HomeScreen() {
       name: 'Henry Jones - Professional',
       category: '2 cột · Hiện đại',
       desc: 'Mẫu CV 2 cột, nổi bật kỹ năng và thông tin liên hệ.',
-      img: 'https://picsum.photos/id/21/400/280',
+      img: require('../assets/images/Professional.jpeg'),
       tags: ['ATS-Friendly', 'Miễn phí']
     },
     {
@@ -68,7 +68,7 @@ export default function HomeScreen() {
       name: 'Henry Jones - Traditional',
       category: 'Cổ điển · Trang trọng',
       desc: 'Mẫu CV truyền thống, phù hợp vị trí quản lý cấp cao.',
-      img: 'https://picsum.photos/id/22/400/280',
+      img: require('../assets/images/Tranditional.jpeg'),
       tags: ['Executive', 'Premium']
     },
     {
@@ -76,22 +76,37 @@ export default function HomeScreen() {
       name: 'Henry Jones - Modern',
       category: 'Sáng tạo · Nổi bật',
       desc: 'Mẫu CV màu sắc nổi bật, phù hợp ngành sáng tạo.',
-      img: 'https://picsum.photos/id/23/400/280',
+      img: require('../assets/images/Modern.jpeg'),
       tags: ['Creative', 'Premium']
     }
   ];
 
-  // Khởi chạy khi màn hình load
-  useEffect(() => {
+  const filters = [
+    { id: 'all', label: 'Tất cả' },
+    { id: 'henry_simple', label: 'Simple' },
+    { id: 'henry_professional', label: 'Professional' },
+    { id: 'henry_traditional', label: 'Traditional' },
+    { id: 'henry_modern', label: 'Modern' }
+  ];
+
+ useEffect(() => {
+    // 👇 Thêm dòng này để XÓA TRÍ NHỚ TẠM THỜI (Luôn hiện Popup để test)
+    AsyncStorage.removeItem('popup_closed'); 
+    
     checkLoginStatus();
     checkAdPopup();
   }, []);
 
-  // 2. Logic kiểm tra và hiển thị Popup quảng cáo
   const checkAdPopup = async () => {
     try {
       const isClosed = await AsyncStorage.getItem('popup_closed');
       if (isClosed !== 'true') {
+        
+        // BỐC THĂM TRỰC TIẾP TỪ MẢNG CV_TEMPLATES 
+        // Tránh tình trạng require nhầm file của Expo
+        const randomIndex = Math.floor(Math.random() * cvTemplates.length);
+        setAdImageSource(cvTemplates[randomIndex].img);
+
         setTimeout(() => {
           setShowAdPopup(true);
         }, 1500);
@@ -101,23 +116,20 @@ export default function HomeScreen() {
     }
   };
 
-  // Hàm đóng popup
   const closePopup = async () => {
     setShowAdPopup(false);
     await AsyncStorage.setItem('popup_closed', 'true');
   };
 
-  // Hàm đăng xuất
   const handleLogout = async () => {
     await AsyncStorage.removeItem('userToken');
-    await AsyncStorage.removeItem('userData'); // Xóa luôn data user
+    await AsyncStorage.removeItem('userData');
     setIsLoggedIn(false);
     setUserName('');
     setUserData({});
     Alert.alert("Thành công", "Đã đăng xuất khỏi tài khoản.");
   };
 
-  // 3. Logic xử lý khi bấm nút "Tạo CV này"
   const handleSelectTemplate = async (templateId) => {
     const token = await AsyncStorage.getItem('userToken');
     
@@ -127,30 +139,30 @@ export default function HomeScreen() {
       ]);
       return;
     }
-    
-    // Nếu đã đăng nhập, chuyển hướng sang trang edit
     router.push(`/edit?templateId=${templateId}`);
   };
 
+  const filteredTemplates = activeFilter === 'all' 
+    ? cvTemplates 
+    : cvTemplates.filter(item => item.id === activeFilter);
+
   return (
     <View style={styles.container}>
-      {/* --- THANH ĐIỀU HƯỚNG TOP --- */}
       <View style={styles.topNav}>
         <View style={styles.navLinks}>
           <TouchableOpacity onPress={() => router.push('/home')}>
-            <FontAwesome5 name="home" size={18} color="#2C7DA0" />
+            <FontAwesome5 name="home" size={20} color="#2C7DA0" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => router.push('/history')}>
-            <FontAwesome5 name="history" size={18} color="#666" />
+            <FontAwesome5 name="history" size={20} color="#666" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => router.push('/about')}>
-            <FontAwesome5 name="info-circle" size={18} color="#666" />
+            <FontAwesome5 name="info-circle" size={20} color="#666" />
           </TouchableOpacity>
           
-          {/* NÚT QUẢN TRỊ - CHỈ HIỆN KHI LÀ ADMIN */}
           {isAdminUser(userData) && (
             <TouchableOpacity onPress={() => router.push('/admin')}>
-              <FontAwesome5 name="user-shield" size={18} color="#dc3545" />
+              <FontAwesome5 name="user-shield" size={20} color="#dc3545" />
             </TouchableOpacity>
           )}
         </View>
@@ -166,10 +178,10 @@ export default function HomeScreen() {
           ) : (
             <>
               <TouchableOpacity style={styles.btnLogin} onPress={() => router.push('/')}>
-                <Text style={styles.btnLoginText}>Log in</Text>
+                <Text style={styles.btnLoginText}>Đăng nhập</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.btnSignup} onPress={() => router.push('/register')}>
-                <Text style={styles.btnSignupText}>Sign up</Text>
+                <Text style={styles.btnSignupText}>Đăng ký</Text>
               </TouchableOpacity>
             </>
           )}
@@ -178,34 +190,37 @@ export default function HomeScreen() {
 
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         
-        {/* --- PHẦN HEADER --- */}
         <View style={styles.headerTitle}>
           <View style={styles.titleRow}>
-            <FontAwesome5 name="file-alt" size={24} color="#2C7DA0" />
-            <Text style={styles.titleText}>Select a job-winning CV template</Text>
+            <FontAwesome5 name="file-alt" size={26} color="#2C7DA0" />
+            <Text style={styles.titleText}>Chọn mẫu CV yêu thích</Text>
           </View>
           <Text style={styles.subtitleText}>
-            You can always change your template later. <Text style={styles.highlightText}>✨ Preview: "Professional Modern"</Text>
+            Bạn có thể dễ dàng thay đổi mẫu CV bất cứ lúc nào trong quá trình chỉnh sửa.
           </Text>
-          <TouchableOpacity style={styles.chooseLaterBtn} onPress={() => Alert.alert('Thông báo', 'You can always customize your CV later.')}>
-            <Text style={styles.chooseLaterText}>Choose later →</Text>
-          </TouchableOpacity>
         </View>
 
-        {/* --- THANH LỌC TEMPLATE --- */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.templateFilters}>
-          {['Simple', 'Professional', 'Modern', 'ATS', 'Two columns', 'Europass'].map((chip, index) => (
-            <TouchableOpacity key={index} style={[styles.templateChip, index === 0 && styles.templateChipActive]}>
-              <Text style={[styles.chipText, index === 0 && styles.chipTextActive]}>{chip}</Text>
+          {filters.map((filter) => (
+            <TouchableOpacity 
+              key={filter.id} 
+              style={[styles.templateChip, activeFilter === filter.id && styles.templateChipActive]}
+              onPress={() => setActiveFilter(filter.id)}
+            >
+              <Text style={[styles.chipText, activeFilter === filter.id && styles.chipTextActive]}>
+                {filter.label}
+              </Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
 
-        {/* --- GRID DANH SÁCH CV --- */}
         <View style={styles.cvGrid}>
-          {cvTemplates.map((item) => (
+          {filteredTemplates.map((item) => (
             <View key={item.id} style={styles.cvCard}>
-              <Image source={{ uri: item.img }} style={styles.cvThumbnail} />
+              <View style={styles.imageContainer}>
+                <Image source={item.img} style={styles.cvThumbnail} resizeMode="cover" />
+              </View>
+              
               <View style={styles.cvInfo}>
                 <Text style={styles.cvName}>{item.name}</Text>
                 <Text style={styles.cvCategory}>{item.category}</Text>
@@ -223,7 +238,7 @@ export default function HomeScreen() {
                   style={styles.selectBtn} 
                   onPress={() => handleSelectTemplate(item.id)}
                 >
-                  <Text style={styles.selectBtnText}>✏️ Tạo CV này</Text>
+                  <Text style={styles.selectBtnText}>✏️ Bắt đầu với mẫu này</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -231,7 +246,7 @@ export default function HomeScreen() {
         </View>
       </ScrollView>
 
-      {/* --- POPUP QUẢNG CÁO --- */}
+      {/* --- POPUP QUẢNG CÁO CẬP NHẬT --- */}
       <Modal visible={showAdPopup} transparent={true} animationType="fade">
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
@@ -239,7 +254,15 @@ export default function HomeScreen() {
               <Text style={styles.closeBtnText}>×</Text>
             </TouchableOpacity>
             
-            <Image source={{ uri: 'https://picsum.photos/seed/ad/400/200' }} style={styles.adImage} />
+            {/* Ảnh Random an toàn từ mảng cvTemplates */}
+            {adImageSource && (
+              <Image 
+                source={adImageSource} 
+                style={styles.adImage} 
+                resizeMode="cover" 
+              />
+            )}
+            
             <Text style={styles.adTitle}>🎯 Tạo CV Chuyên Nghiệp</Text>
             <Text style={styles.adDesc}>
               Nhận ngay ưu đãi đặc biệt cho CV của bạn. Hàng trăm mẫu CV đẹp, chuẩn nhà tuyển dụng.
@@ -256,240 +279,73 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8f9fa',
-  },
-  scrollContent: {
-    padding: 16,
-    paddingBottom: 40,
-  },
-  topNav: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderColor: '#eee',
-    marginTop: 40,
-  },
-  navLinks: {
-    flexDirection: 'row',
-    gap: 20,
-  },
-  authCorner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  userNameText: {
-    fontSize: 14,
-    color: '#333',
-    fontWeight: '600',
-  },
-  btnLogin: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-  },
-  btnLoginText: {
-    color: '#2C7DA0',
-    fontWeight: '600',
-  },
-  btnSignup: {
-    backgroundColor: '#2C7DA0',
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-    borderRadius: 20,
-  },
-  btnSignupText: {
-    color: 'white',
-    fontWeight: '600',
-  },
-  btnLogout: {
-    backgroundColor: '#ff4757',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 8,
-  },
-  btnLogoutText: {
-    color: 'white',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  headerTitle: {
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    marginBottom: 8,
-  },
-  titleText: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  subtitleText: {
-    color: '#666',
-    marginBottom: 15,
-  },
-  highlightText: {
-    color: '#2C7DA0',
-    fontWeight: '600',
-  },
-  chooseLaterBtn: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#eee',
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  chooseLaterText: {
-    color: '#555',
-    fontWeight: '600',
-  },
-  templateFilters: {
-    flexDirection: 'row',
-    marginBottom: 20,
-  },
-  templateChip: {
-    backgroundColor: '#fff',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    marginRight: 10,
-    borderWidth: 1,
-    borderColor: '#ddd',
-  },
-  templateChipActive: {
-    backgroundColor: '#2C7DA0',
-    borderColor: '#2C7DA0',
-  },
-  chipText: {
-    color: '#555',
-  },
-  chipTextActive: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  cvGrid: {
-    gap: 20,
-  },
-  cvCard: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 3,
+  container: { flex: 1, backgroundColor: '#f0f2f5' },
+  scrollContent: { padding: 16, paddingBottom: 40 },
+  topNav: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'white', paddingHorizontal: 16, paddingVertical: 15, elevation: 4, marginTop: 40 },
+  navLinks: { flexDirection: 'row', gap: 25 },
+  authCorner: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  userNameText: { fontSize: 14, color: '#333', fontWeight: 'bold' },
+  btnLogin: { paddingHorizontal: 12, paddingVertical: 8 },
+  btnLoginText: { color: '#2C7DA0', fontWeight: 'bold', fontSize: 15 },
+  btnSignup: { backgroundColor: '#2C7DA0', paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20 },
+  btnSignupText: { color: 'white', fontWeight: 'bold', fontSize: 15 },
+  btnLogout: { backgroundColor: '#ff4d4f', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8 },
+  btnLogoutText: { color: 'white', fontSize: 12, fontWeight: 'bold' },
+  
+  headerTitle: { marginTop: 25, marginBottom: 20 },
+  titleRow: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 10 },
+  titleText: { fontSize: 24, fontWeight: 'bold', color: '#1a3a4a' },
+  subtitleText: { color: '#555', fontSize: 15, lineHeight: 22 },
+  
+  templateFilters: { flexDirection: 'row', marginBottom: 25 },
+  templateChip: { backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 25, marginRight: 12, borderWidth: 1, borderColor: '#ddd', elevation: 2 },
+  templateChipActive: { backgroundColor: '#2C7DA0', borderColor: '#2C7DA0' },
+  chipText: { color: '#666', fontWeight: '600' },
+  chipTextActive: { color: 'white' },
+  
+  cvGrid: { gap: 25 },
+  cvCard: { backgroundColor: 'white', borderRadius: 15, overflow: 'hidden', elevation: 5, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.15, shadowRadius: 10 },
+  
+  imageContainer: {
+      width: '100%',
+      height: 380, 
+      backgroundColor: '#e9ecef',
+      padding: 10, 
   },
   cvThumbnail: {
-    width: '100%',
-    height: 200,
-    backgroundColor: '#eee',
+      width: '100%',
+      height: '100%',
+      borderRadius: 8, 
+      borderWidth: 1,
+      borderColor: '#e0e0e0',
   },
-  cvInfo: {
-    padding: 15,
+  
+  cvInfo: { padding: 20 },
+  cvName: { fontSize: 20, fontWeight: 'bold', color: '#1a3a4a', marginBottom: 6 },
+  cvCategory: { fontSize: 13, color: '#888', marginBottom: 10, fontWeight: '600' },
+  cvDesc: { fontSize: 15, color: '#555', marginBottom: 15, lineHeight: 22 },
+  tagsContainer: { flexDirection: 'row', gap: 10, marginBottom: 20 },
+  tag: { backgroundColor: '#e3f2fd', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8 },
+  tagText: { color: '#1976d2', fontSize: 12, fontWeight: 'bold' },
+  selectBtn: { backgroundColor: '#2C7DA0', paddingVertical: 15, borderRadius: 10, alignItems: 'center' },
+  selectBtnText: { color: 'white', fontWeight: 'bold', fontSize: 16 },
+  
+  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', justifyContent: 'center', alignItems: 'center' },
+  modalContent: { width: '88%', backgroundColor: 'white', borderRadius: 20, padding: 25, alignItems: 'center' },
+  closeBtn: { position: 'absolute', top: 10, right: 15, zIndex: 1, padding: 10 },
+  closeBtnText: { fontSize: 28, color: '#999', fontWeight: 'bold' },
+  
+  adImage: { 
+    width: '100%', 
+    height: 250, 
+    borderRadius: 12, 
+    marginBottom: 20, 
+    marginTop: 15,
+    borderWidth: 1,
+    borderColor: '#eee'
   },
-  cvName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 4,
-  },
-  cvCategory: {
-    fontSize: 12,
-    color: '#888',
-    marginBottom: 8,
-  },
-  cvDesc: {
-    fontSize: 14,
-    color: '#555',
-    marginBottom: 12,
-  },
-  tagsContainer: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: 15,
-  },
-  tag: {
-    backgroundColor: '#e3f2fd',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
-  },
-  tagText: {
-    color: '#1976d2',
-    fontSize: 11,
-    fontWeight: 'bold',
-  },
-  selectBtn: {
-    backgroundColor: '#2C7DA0',
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  selectBtnText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 14,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    width: '85%',
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 25,
-    alignItems: 'center',
-  },
-  closeBtn: {
-    position: 'absolute',
-    top: 10,
-    right: 15,
-    zIndex: 1,
-  },
-  closeBtnText: {
-    fontSize: 28,
-    color: '#999',
-  },
-  adImage: {
-    width: '100%',
-    height: 150,
-    borderRadius: 12,
-    marginBottom: 15,
-  },
-  adTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#2C7DA0',
-    marginBottom: 10,
-  },
-  adDesc: {
-    textAlign: 'center',
-    color: '#666',
-    marginBottom: 20,
-    lineHeight: 22,
-  },
-  adActionBtn: {
-    backgroundColor: '#2C7DA0',
-    paddingHorizontal: 30,
-    paddingVertical: 12,
-    borderRadius: 10,
-  },
-  adActionText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
-  }
+  adTitle: { fontSize: 22, fontWeight: 'bold', color: '#2C7DA0', marginBottom: 10 },
+  adDesc: { textAlign: 'center', color: '#555', marginBottom: 25, lineHeight: 24, fontSize: 15 },
+  adActionBtn: { backgroundColor: '#2C7DA0', paddingHorizontal: 35, paddingVertical: 14, borderRadius: 12 },
+  adActionText: { color: 'white', fontWeight: 'bold', fontSize: 16 }
 });

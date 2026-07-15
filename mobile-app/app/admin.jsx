@@ -14,7 +14,7 @@ import {
     View
 } from 'react-native';
 
-const API_URL = 'http://192.168.2.45:3000/api';
+const API_URL = 'http://192.190.20.103:3000/api';
 
 export default function AdminScreen() {
   const router = useRouter();
